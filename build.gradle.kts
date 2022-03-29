@@ -1,7 +1,9 @@
 import org.jetbrains.changelog.markdownToHTML
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+
 fun properties(key: String) = project.findProperty(key).toString()
+
 
 plugins {
     // Java support
@@ -15,6 +17,10 @@ plugins {
     // Gradle Qodana Plugin
     id("org.jetbrains.qodana") version "0.1.13"
 }
+apply(plugin="idea")
+apply(plugin="java")
+apply(plugin="kotlin")
+apply(plugin="org.jetbrains.intellij")
 
 group = properties("pluginGroup")
 version = properties("pluginVersion")
@@ -32,6 +38,12 @@ intellij {
 
     // Plugin Dependencies. Uses `platformPlugins` property from the gradle.properties file.
     plugins.set(properties("platformPlugins").split(',').map(String::trim).filter(String::isNotEmpty))
+}
+
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
 }
 
 // Configure Gradle Changelog Plugin - read more: https://github.com/JetBrains/gradle-changelog-plugin

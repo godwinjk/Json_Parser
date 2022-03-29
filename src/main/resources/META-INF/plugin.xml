@@ -1,18 +1,42 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
-    <id>com.github.godwinjk.jsonparser</id>
-    <name>Json_Parser</name>
-    <vendor>godwinjk</vendor>
+    <id>com.godwin.jsonparser</id>
+    <name>Json Parser</name>
+    <version>1.4</version>
+    <vendor email="godwinjoseph.k.com">Godwin</vendor>
 
+    <description><![CDATA[
+      Simple JSON Parser is an IntelliJ IDE plugin for validation and formatting JSON string<br>
+    ]]></description>
+
+    <depends>com.intellij.modules.lang</depends>
     <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.java</depends>
+    <depends>org.jetbrains.kotlin</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationService serviceImplementation="com.github.godwinjk.jsonparser.services.MyApplicationService"/>
-        <projectService serviceImplementation="com.github.godwinjk.jsonparser.services.MyProjectService"/>
+        <applicationService serviceImplementation="com.godwin.jsonparser.services.MyApplicationService"/>
+        <projectService serviceImplementation="com.godwin.jsonparser.services.ProjectService"/>
+        <toolWindow factoryClass="com.godwin.jsonparser.ParserToolWindowFactory" id="Json Parser" anchor="right"/>
     </extensions>
-
+    <actions>
+        <action id="ParserActionId" class="com.godwin.jsonparser.ui.action.OpenParserAction" text="Parse Json"
+                description="Open In json parser">
+            <add-to-group group-id="ConsoleView.PopupMenu" anchor="first"/>
+            <add-to-group group-id="EditorPopupMenu" anchor="first"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl shift alt J" second-keystroke="ctrl alt J"/>
+        </action>
+    </actions>
+    <project-components>
+        <!--        <component>-->
+        <!--            <implementation-class>com.godwin.jsonparser.ParserComponent</implementation-class>-->
+        <!--        </component>-->
+    </project-components>
     <applicationListeners>
-        <listener class="com.github.godwinjk.jsonparser.listeners.MyProjectManagerListener"
+        <listener class="com.godwin.jsonparser.listeners.MyProjectManagerListener"
                   topic="com.intellij.openapi.project.ProjectManagerListener"/>
+
+        <listener class="com.godwin.jsonparser.listeners.ToolWindowListener"
+                  topic="com.intellij.openapi.wm.ex.ToolWindowManagerListener"/>
     </applicationListeners>
 </idea-plugin>

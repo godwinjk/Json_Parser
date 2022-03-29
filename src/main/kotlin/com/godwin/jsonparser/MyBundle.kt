@@ -1,4 +1,4 @@
-package com.github.godwinjk.jsonparser
+package com.godwin.jsonparser
 
 import com.intellij.DynamicBundle
 import org.jetbrains.annotations.NonNls
