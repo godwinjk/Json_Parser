@@ -73,6 +73,11 @@ public class ParserTabsIml implements com.godwin.jsonparser.ui.tab.IParserTabs {
     }
 
     @Override
+    public TabInfo getCurrentTab() {
+        return mTabs.getSelectedInfo();
+    }
+
+    @Override
     public String getTitleAt(int i) {
         return getTabAt(i).getText();
     }

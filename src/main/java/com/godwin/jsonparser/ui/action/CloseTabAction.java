@@ -1,5 +1,6 @@
 package com.godwin.jsonparser.ui.action;
 
+import com.godwin.jsonparser.common.Logger;
 import com.godwin.jsonparser.ui.IParserWidget;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.AnAction;
@@ -13,14 +14,14 @@ public class CloseTabAction extends AnAction {
     private final IParserWidget mParserWidget;
 
     public CloseTabAction(IParserWidget parserWidget) {
-        super("Close Tab", "Close ApiDebugger Session", AllIcons.Actions.Cancel);
+        super("Close Tab", "Close parser session", AllIcons.Actions.Cancel);
         mParserWidget = parserWidget;
     }
 
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
         mParserWidget.closeCurrentParserSession();
-        System.out.println("CloseTabAction.actionPerformed");
+        Logger.i("CloseTabAction.actionPerformed");
     }
 
     @Override

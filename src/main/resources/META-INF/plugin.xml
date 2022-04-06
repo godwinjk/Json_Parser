@@ -1,14 +1,35 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
-    <id>com.godwin.jsonparser</id>
+    <id>com.godwin.json.parser</id>
     <name>Json Parser</name>
-    <version>1.4</version>
+    <version>1.5</version>
     <vendor email="godwinjoseph.k.com">Godwin</vendor>
 
     <description><![CDATA[
       Simple JSON Parser is an IntelliJ IDE plugin for validation and formatting JSON string<br>
     ]]></description>
 
+    <change-notes><![CDATA[
+      <h4> Version 1.5 </h4>
+<ol>
+  <li>Now you can directly open JsonParser window from logcat or console window. No need to copy and paste from multiple window.</li>
+  <li>Tree structure updated with child number and object number for arrays.</li>
+  <li>Copy to clipboard added.</li>
+</ol>
+<h4> Version 1.4 </h4>
+<ol>
+  <li> Multiple tabs added </li>
+  <li> Rate/ donate tab issue fixed </li>
+  <li> Menu item added under Edit menu (ctrl shift alt J) </li>
+</ol>
+<h4> Version 1.3 </h4> 1. Bug fixes <h4> Version 1.2 </h4> Added 3 options <ul>
+  <li>Pretty print</li>
+  <li>Raw</li>
+  <li>Tree</li>
+</ul>
+<h4> Version 1.2.1 </h4> 1. Error message if not a valid json 2. Bug fixes <h4> Version 1.1 </h4> Support for all platforms. <h4> Version 1.0 </h4> Parse VALID JSON string only.
+    ]]>
+    </change-notes>
     <depends>com.intellij.modules.lang</depends>
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.java</depends>
@@ -17,7 +38,7 @@
     <extensions defaultExtensionNs="com.intellij">
         <applicationService serviceImplementation="com.godwin.jsonparser.services.MyApplicationService"/>
         <projectService serviceImplementation="com.godwin.jsonparser.services.ProjectService"/>
-        <toolWindow factoryClass="com.godwin.jsonparser.ParserToolWindowFactory" id="Json Parser" anchor="right"/>
+        <toolWindow factoryClass="com.godwin.jsonparser.ParserToolWindowFactory" id="Json Parser" anchor="right" icon="AllIcons.Json.Object"/>
     </extensions>
     <actions>
         <action id="ParserActionId" class="com.godwin.jsonparser.ui.action.OpenParserAction" text="Parse Json"

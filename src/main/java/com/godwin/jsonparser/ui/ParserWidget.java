@@ -20,6 +20,7 @@ public class ParserWidget extends JPanel implements IParserWidget {
     private JBPanel<JBPanel> mPanel;
     private IParserTabs mTabs;
 
+
     public ParserWidget(Project project, Disposable disposable) {
         super(new BorderLayout());
         mProject = project;
@@ -74,7 +75,6 @@ public class ParserWidget extends JPanel implements IParserWidget {
             mTabs = createTabPanel();
             mTabs.addListener(createTabsListener());
             add(mTabs.getComponent(), BorderLayout.CENTER);
-
         }
         addTab(nextComponent, mTabs);
     }
@@ -88,6 +88,11 @@ public class ParserWidget extends JPanel implements IParserWidget {
     @Override
     public int getTabCount() {
         return mTabs == null ? 0 : mTabs.getTabCount();
+    }
+
+    @Override
+    public IParserTabs getTabs() {
+        return mTabs;
     }
 
     private JComponent createInnerDebuggerWidget() {

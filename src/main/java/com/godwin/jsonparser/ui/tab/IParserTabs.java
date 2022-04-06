@@ -23,6 +23,8 @@ public interface IParserTabs {
 
     JBEditorTabs getComponent();
 
+    TabInfo getCurrentTab();
+
     String getTitleAt(int i);
 
     JComponent getCurrentComponent();

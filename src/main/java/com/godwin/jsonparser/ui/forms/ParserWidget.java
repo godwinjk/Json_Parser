@@ -39,13 +39,16 @@ public class ParserWidget implements Publisher {
 
     private ParserBodyWidget mBodyWidget;
 
+    IParserWidget mParserWidget;
+
     public ParserWidget(Project project, Disposable disposable, IParserWidget parserWidget) {
         this.mProject = project;
         this.mParent = disposable;
+        this.mParserWidget = parserWidget;
 
         this.mInputEditor = createEditor();
 
-        this.mBodyWidget = new ParserBodyWidget(mProject,parserWidget);
+        this.mBodyWidget = new ParserBodyWidget(mProject, parserWidget);
 
         this.inputEditorContainer.add(mInputEditor.getComponent(), BorderLayout.CENTER);
         this.outputContainer.add(this.mBodyWidget.container, BorderLayout.CENTER);
@@ -109,7 +112,13 @@ public class ParserWidget implements Publisher {
     @Override
     public void onMessage(@NotNull String message) {
         try {
-            WriteCommandAction.runWriteCommandAction(mProject, () -> mInputEditor.getDocument().setText(message));
+            if (mParserWidget != null && mParserWidget.getTabs() != null) {
+                if (mParserWidget.getTabs().getCurrentTab().getComponent() == container) {
+                    WriteCommandAction.runWriteCommandAction(mProject, () -> mInputEditor.getDocument().setText(message));
+                }
+            } else {
+                WriteCommandAction.runWriteCommandAction(mProject, () -> mInputEditor.getDocument().setText(message));
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

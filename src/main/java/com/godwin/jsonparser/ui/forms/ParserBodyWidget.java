@@ -1,6 +1,7 @@
 package com.godwin.jsonparser.ui.forms;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.godwin.jsonparser.common.Logger;
 import com.godwin.jsonparser.ui.IParserWidget;
 import com.godwin.jsonparser.ui.TreeNodeCreator;
 import com.godwin.jsonparser.ui.action.CopyToClipBoardAction;
@@ -245,7 +246,8 @@ public class ParserBodyWidget {
         try {
             WriteCommandAction.runWriteCommandAction(mProject, () -> rawEditor.getDocument().setText(text));
         } catch (Exception e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            Logger.e("json Error catch");
         }
     }
 
@@ -261,17 +263,17 @@ public class ParserBodyWidget {
             outputTree.setModel(model);
             expandAllNodes(outputTree, 0, outputTree.getRowCount());
         } catch (Exception e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            Logger.e("json Error catch");
         }
     }
-
 
     private void changeIcon() {
         DefaultTreeCellRenderer renderer = (DefaultTreeCellRenderer) outputTree.getCellRenderer();
         Icon icon = new ImageIcon();
-        renderer.setClosedIcon(icon);
-        renderer.setOpenIcon(icon);
-        renderer.setLeafIcon(icon);
+        renderer.setClosedIcon(AllIcons.General.ArrowRight);
+        renderer.setOpenIcon(AllIcons.General.ArrowDown);
+        renderer.setLeafIcon(AllIcons.Nodes.C_plocal);
     }
 
     private void setEmptyTree() {

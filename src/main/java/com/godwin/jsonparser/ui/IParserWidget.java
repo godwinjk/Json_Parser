@@ -1,5 +1,7 @@
 package com.godwin.jsonparser.ui;
 
+import com.godwin.jsonparser.ui.tab.IParserTabs;
+
 import javax.swing.*;
 
 /**
@@ -13,6 +15,8 @@ public interface IParserWidget {
     void closeCurrentParserSession();
 
     int getTabCount();
+
+    IParserTabs getTabs();
 
     JComponent getComponent();
 }

@@ -19,11 +19,11 @@ public class TreeNodeCreator {
         List<String> list = Arrays.asList(lines);
         ListIterator<String> iterator = list.listIterator();
 
-        createNode(iterator, root);
+        createNode(iterator, root, 0);
         return new DefaultTreeModel(root);
     }
 
-    private static DefaultMutableTreeNode createNode(ListIterator<String> iterator, DefaultMutableTreeNode rootNode) {
+    private static DefaultMutableTreeNode createNode(ListIterator<String> iterator, DefaultMutableTreeNode rootNode, int count) {
 
         if (!iterator.hasNext()) {
             return rootNode;
@@ -32,22 +32,35 @@ public class TreeNodeCreator {
         while (iterator.hasNext()) {
             String line = iterator.next();
             line = line.trim();
-            if (line.contains("{") || line.contains("[")) {
-                DefaultMutableTreeNode root = new DefaultMutableTreeNode(line);
-                rootNode.add(createNode(iterator, root));
+            if (line.endsWith("{") || line.endsWith("[")) {
+                String sub;
+                if (line.length() > 3) {
+                    sub = line.substring(0, line.length() - 3);
+                } else {
+                    sub = "" + count;
+                }
+                if (line.equals("{")) count++;
+                else count = 0;
+                DefaultMutableTreeNode root = new DefaultMutableTreeNode(sub);
+                DefaultMutableTreeNode children = createNode(iterator, root, count);
+                root.setUserObject(sub + "  {" + children.getChildCount() + "}");
+                rootNode.add(children);
             } else {
                 boolean isBreakable = true;
                 while (true) {
-                    DefaultMutableTreeNode dataNode = new DefaultMutableTreeNode(line);
-
-                    if (line.contains("}") || line.contains("]")) {
-                        rootNode.add(dataNode);
+                    if (line.endsWith("},") || line.endsWith("],") || line.endsWith("}") || line.endsWith("]")) {
+                        if (line.length() > 2) {
+                            String sub = line.substring(0, line.length() - 2);
+                            DefaultMutableTreeNode dataNode = new DefaultMutableTreeNode(sub);
+                            rootNode.add(dataNode);
+                        }
                         break;
                     } else if (line.contains("{") || line.contains("[")) {
                         iterator.previous();
                         isBreakable = false;
                         break;
                     } else {
+                        DefaultMutableTreeNode dataNode = new DefaultMutableTreeNode(line);
                         rootNode.add(dataNode);
                         if (iterator.hasNext()) {
                             line = iterator.next();

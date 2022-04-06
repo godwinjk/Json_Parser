@@ -44,11 +44,16 @@ public class JBRadioAction extends AnAction implements CustomComponentAction {
 
     @Override
     public @NotNull JComponent createCustomComponent(@NotNull Presentation presentation, @NotNull String place) {
-        return CustomComponentAction.super.createCustomComponent(presentation, place);
+        return getComponent(presentation);
     }
 
     @Override
     public JComponent createCustomComponent(Presentation presentation) {
+        return getComponent(presentation);
+    }
+
+    @NotNull
+    private JRadioButton getComponent(Presentation presentation) {
         JRadioButton jRadioButton = new JRadioButton("");
         jRadioButton.addActionListener(e -> {
             JRadioButton radioButton = (JRadioButton) e.getSource();
@@ -75,8 +80,8 @@ public class JBRadioAction extends AnAction implements CustomComponentAction {
         radioButton.setMnemonic(presentation.getMnemonic());
         radioButton.setDisplayedMnemonicIndex(presentation.getDisplayedMnemonicIndex());
         radioButton.setSelected(Boolean.TRUE.equals(presentation.getClientProperty("selected")));
-        radioButton.setEnabled(presentation.isEnabled());
-        radioButton.setVisible(presentation.isVisible());
+        radioButton.setEnabled(true);
+        radioButton.setVisible(true);
 
         if (!StringUtil.isEmpty(mActionCommand)) {
             radioButton.setActionCommand(mActionCommand);
@@ -88,7 +93,7 @@ public class JBRadioAction extends AnAction implements CustomComponentAction {
 
     @Override
     public void update(@NotNull AnActionEvent e) {
-        super.update(e);
-
+        e.getPresentation().setVisible(true);
+        e.getPresentation().setEnabled(true);
     }
 }

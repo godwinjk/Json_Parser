@@ -14,7 +14,7 @@ public class AddTabAction extends AnAction {
     private final IParserWidget mParserWidget;
 
     public AddTabAction(IParserWidget parserWidget) {
-        super("Add Tab", "Create New ApiDebugger Tab", AllIcons.General.Add);
+        super("Add Tab", "Create new parser tab", AllIcons.General.Add);
         mParserWidget = parserWidget;
     }
 
