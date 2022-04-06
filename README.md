@@ -1,37 +1,66 @@
-# Json_Parser
+# Json Parser
 
 ![Build](https://github.com/godwinjk/Json_Parser/workflows/Build/badge.svg)
-[![Version](https://img.shields.io/jetbrains/plugin/v/PLUGIN_ID.svg)](https://plugins.jetbrains.com/plugin/PLUGIN_ID)
-[![Downloads](https://img.shields.io/jetbrains/plugin/d/PLUGIN_ID.svg)](https://plugins.jetbrains.com/plugin/PLUGIN_ID)
+[![Version](https://img.shields.io/jetbrains/plugin/v/10650-json-parser.svg)](https://plugins.jetbrains.com/plugin/10650-json-parser)
+[![Downloads](https://img.shields.io/jetbrains/plugin/d/10650-json-parser.svg)](https://plugins.jetbrains.com/plugin/10650-json-parser)
 
-## Template ToDo list
-- [x] Create a new [IntelliJ Platform Plugin Template][template] project.
-- [ ] Get familiar with the [template documentation][template].
-- [ ] Verify the [pluginGroup](/gradle.properties), [plugin ID](/src/main/resources/META-INF/plugin.xml) and [sources package](/src/main/kotlin).
-- [ ] Review the [Legal Agreements](https://plugins.jetbrains.com/docs/marketplace/legal-agreements.html).
-- [ ] [Publish a plugin manually](https://plugins.jetbrains.com/docs/intellij/publishing-plugin.html?from=IJPluginTemplate) for the first time.
-- [ ] Set the Plugin ID in the above README badges.
-- [ ] Set the [Deployment Token](https://plugins.jetbrains.com/docs/marketplace/plugin-upload.html).
-- [ ] Click the <kbd>Watch</kbd> button on the top of the [IntelliJ Platform Plugin Template][template] to be notified about releases containing new features and fixes.
-
-<!-- Plugin description -->
 Simple JSON Parser is an IntelliJ IDE plugin for validation and formatting JSON string<br>
-<!-- Plugin description end -->
+
+## Features
+
+- [x] Pretty print Json
+- [x] Validate Json
+- [x] Single click formatting from logcat or console window
+- [x] Review the [Legal Agreements](https://plugins.jetbrains.com/docs/marketplace/legal-agreements.html).
+- [x] Tree model view, so user can easily hide or expand particular object
 
 ## Installation
 
 - Using IDE built-in plugin system:
-  
-  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd> > <kbd>Search for "Json_Parser"</kbd> >
+  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd> > <kbd>Search for "Json Parser"</kbd> >
   <kbd>Install Plugin</kbd>
-  
-- Manually:
 
+- Manually:
   Download the [latest release](https://github.com/godwinjk/Json_Parser/releases/latest) and install it manually using
   <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
 
+## Changelog
 
----
-Plugin based on the [IntelliJ Platform Plugin Template][template].
+### Version 1.5
 
-[template]: https://github.com/JetBrains/intellij-platform-plugin-template
+1. Now you can directly open JsonParser window from logcat or console window. No need to copy and paste from multiple
+   window.
+2. Tree structure updated with child number and object number for arrays.
+3. Copy to clipboard added.
+
+### Version 1.4
+
+1. Multiple tabs added
+2. Rate/ donate tab issue fixed
+3. Menu item added under Edit menu (ctrl shift alt J)
+
+### Version 1.3
+
+1. Bug fixes
+
+### Version 1.2
+
+Added 3 options
+
+- Pretty print
+- Raw
+- Tree
+
+### Version 1.2.1
+
+1. Error message if not a valid json
+2. Bug fixes
+
+### Version 1.1
+
+Support for all platforms.
+
+### Version 1.0
+
+Parse VALID JSON string only.
+
