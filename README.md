@@ -4,7 +4,10 @@
 [![Version](https://img.shields.io/jetbrains/plugin/v/10650-json-parser.svg)](https://plugins.jetbrains.com/plugin/10650-json-parser)
 [![Downloads](https://img.shields.io/jetbrains/plugin/d/10650-json-parser.svg)](https://plugins.jetbrains.com/plugin/10650-json-parser)
 
+<!-- Plugin description -->
 Simple JSON Parser is an IntelliJ IDE plugin for validation and formatting JSON string<br>
+<!-- Plugin description end -->
+
 
 ## Features
 
