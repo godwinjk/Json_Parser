@@ -50,12 +50,18 @@ public class TreeNodeCreator {
                 while (true) {
                     if (line.endsWith("},") || line.endsWith("],") || line.endsWith("}") || line.endsWith("]")) {
                         if (line.length() > 2) {
-                            String sub = line.substring(0, line.length() - 2);
+                            String sub;
+                            if(line.endsWith("}") || line.endsWith("]")){
+                                sub = line;
+                            }else{
+                                sub = line.substring(0, line.length() - 2);
+                            }
+
                             DefaultMutableTreeNode dataNode = new DefaultMutableTreeNode(sub);
                             rootNode.add(dataNode);
                         }
                         break;
-                    } else if (line.contains("{") || line.contains("[")) {
+                    } else if (line.endsWith("{") || line.endsWith("[")) {
                         iterator.previous();
                         isBreakable = false;
                         break;

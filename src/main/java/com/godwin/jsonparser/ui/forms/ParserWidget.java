@@ -87,7 +87,7 @@ public class ParserWidget implements Publisher {
             public void documentChanged(DocumentEvent e) {
                 if (e != null && !TextUtils.isEmpty(e.getDocument().getText())) {
 //                    try {
-//                        showBody(e.getDocument().getText());
+//                        showBody(e.getDocument().getText())
 //                    } catch (Exception ex) {
 //                        ex.printStackTrace();
 //                    }
