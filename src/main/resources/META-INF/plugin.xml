@@ -2,7 +2,7 @@
 <idea-plugin>
     <id>com.godwin.json.parser</id>
     <name>Json Parser</name>
-    <version>1.5</version>
+    <version>1.6</version>
     <vendor email="godwinjoseph.k.com">Godwin</vendor>
 
     <description><![CDATA[
