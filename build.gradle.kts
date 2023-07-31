@@ -9,11 +9,11 @@ plugins {
     // Java support
     id("java")
     // Kotlin support
-    id("org.jetbrains.kotlin.jvm") version "1.6.10"
+    id("org.jetbrains.kotlin.jvm") version "1.8.0"
     // Gradle IntelliJ Plugin
-    id("org.jetbrains.intellij") version "1.4.0"
+    id("org.jetbrains.intellij") version "1.15.0"
     // Gradle Changelog Plugin
-    id("org.jetbrains.changelog") version "1.3.1"
+    id("org.jetbrains.changelog") version "2.1.2"
     // Gradle Qodana Plugin
     id("org.jetbrains.qodana") version "0.1.13"
 }
@@ -42,8 +42,8 @@ intellij {
 
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 // Configure Gradle Changelog Plugin - read more: https://github.com/JetBrains/gradle-changelog-plugin

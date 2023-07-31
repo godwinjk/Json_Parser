@@ -11,22 +11,29 @@ import com.intellij.openapi.actionSystem.ActionManager
 import com.intellij.openapi.actionSystem.ActionPlaces
 import com.intellij.openapi.actionSystem.ActionToolbar
 import com.intellij.openapi.actionSystem.DefaultActionGroup
+import com.intellij.openapi.components.Service
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.ui.content.Content
 import com.intellij.ui.content.ContentFactory
 import javax.swing.SwingConstants
 
-class ProjectService(private val project: Project) {
-
+@Service(value = [Service.Level.PROJECT])
+class ProjectService() {
+    lateinit var project: Project
     init {
-        println(MyBundle.message("projectService", project.name))
-        field= this
+        field = this
     }
 
-    companion object{
-        private lateinit var field:ProjectService
-        fun getInstance(): ProjectService{
+    companion object {
+        private lateinit var field: ProjectService
+        fun init(project: Project): ProjectService {
+            field = ProjectService()
+            field.project = project
+            return field
+        }
+
+        fun getInstance(): ProjectService {
             return field
         }
     }

@@ -2,7 +2,9 @@ package com.godwin.jsonparser.ui.forms;
 
 import com.godwin.jsonparser.rx.Publisher;
 import com.godwin.jsonparser.rx.Subscriber;
+import com.godwin.jsonparser.services.JsonPersistence;
 import com.godwin.jsonparser.ui.IParserWidget;
+import com.godwin.jsonparser.util.NotificationUtil;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.editor.Document;
@@ -81,6 +83,8 @@ public class ParserWidget implements Publisher {
         parseButton.addActionListener(e -> {
             String jsonString = mInputEditor.getDocument().getText();
             showBody(jsonString);
+
+            NotificationUtil.showDonateNotification();
         });
         mInputEditor.getDocument().addDocumentListener(new DocumentListener() {
             @Override
@@ -102,7 +106,6 @@ public class ParserWidget implements Publisher {
         mBodyWidget.showPretty(jsonString);
         mBodyWidget.showRaw(jsonString);
         mBodyWidget.showTree(jsonString);
-
     }
 
     public JPanel getContainer() {

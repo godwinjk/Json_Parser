@@ -32,9 +32,9 @@ public class CopyToClipBoardAction extends AnAction {
                 Logger.i("Not in editor window");
                 Notifications.Bus.notifyAndHide(new Notification(
                         "Json Parser",
-                        "Text not copied",
-                        "Please select text to copy",
-                        NotificationType.ERROR));
+                        "Json Parser",
+                        "Text not copied. Please select text and press copy to clipboard button.",
+                        NotificationType.ERROR),e.getProject());
                 return;
             }
 

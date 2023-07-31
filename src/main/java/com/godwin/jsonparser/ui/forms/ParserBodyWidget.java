@@ -37,7 +37,6 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.tree.IElementType;
 import org.apache.http.util.TextUtils;
 
-import javax.annotation.Nonnull;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
@@ -103,7 +102,7 @@ public class ParserBodyWidget {
                 new CopyToClipBoardAction("Copy to Clipboard", "Click to copy selected text to clipboard", AllIcons.Actions.Copy),
                 new AnAction("Use Soft Wraps", "Toggle using soft wraps in current editor", AllIcons.Actions.ToggleSoftWrap) {
                     @Override
-                    public void actionPerformed(@Nonnull AnActionEvent anActionEvent) {
+                    public void actionPerformed(AnActionEvent anActionEvent) {
                         try {
                             String actionCommand = buttonGroup.getSelection().getActionCommand();
                             if ("Pretty".equalsIgnoreCase(actionCommand)) {

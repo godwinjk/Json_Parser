@@ -1,18 +1,15 @@
 package com.godwin.jsonparser.services
 
 import com.godwin.jsonparser.MyBundle
+import com.intellij.openapi.components.Service
 
+@Service(Service.Level.APP)
 class MyApplicationService {
-
-    init {
-        println(MyBundle.message("applicationService"))
-        field= this
-    }
-
     companion object{
-        private lateinit var field:MyApplicationService
+        private var field:MyApplicationService? =null
         fun getInstance(): MyApplicationService{
-            return field
+            if(field == null) field = MyApplicationService()
+            return field!!
         }
     }
 }

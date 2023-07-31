@@ -10,7 +10,11 @@
     ]]></description>
 
     <change-notes><![CDATA[
-      <h4> Version 1.5 </h4>
+    <h4> Version 1.6.1 </h4>
+    <ol>
+        <li>Updated for new latest version support</li>
+    </ol>
+     <h4> Version 1.5 </h4>
 <ol>
   <li>Now you can directly open JsonParser window from logcat or console window. No need to copy and paste from multiple window.</li>
   <li>Tree structure updated with child number and object number for arrays.</li>
@@ -34,9 +38,8 @@
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationService serviceImplementation="com.godwin.jsonparser.services.MyApplicationService"/>
-        <projectService serviceImplementation="com.godwin.jsonparser.services.ProjectService"/>
         <toolWindow factoryClass="com.godwin.jsonparser.ParserToolWindowFactory" id="Json Parser" anchor="right" icon="AllIcons.Json.Object"/>
+        <applicationService serviceImplementation="com.godwin.jsonparser.services.JsonPersistence"/>
     </extensions>
     <actions>
         <action id="ParserActionId" class="com.godwin.jsonparser.ui.action.OpenParserAction" text="Parse Json"
@@ -46,11 +49,15 @@
             <keyboard-shortcut keymap="$default" first-keystroke="ctrl shift alt J" second-keystroke="ctrl alt J"/>
         </action>
     </actions>
-    <project-components>
+<!--    <project-components>-->
         <!--        <component>-->
         <!--            <implementation-class>com.godwin.jsonparser.ParserComponent</implementation-class>-->
         <!--        </component>-->
-    </project-components>
+<!--        <component>-->
+<!--            <implementation-class>com.godwin.jsonparser.ParserComponent</implementation-class>-->
+<!--            <interface-class>com.godwin.jsonparser.ParserComponent</interface-class>-->
+<!--        </component>-->
+<!--    </project-components>-->
     <applicationListeners>
         <listener class="com.godwin.jsonparser.listeners.MyProjectManagerListener"
                   topic="com.intellij.openapi.project.ProjectManagerListener"/>

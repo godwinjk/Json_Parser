@@ -12,11 +12,9 @@ import com.intellij.openapi.wm.ToolWindow
  */
 class ParserToolWindowFactory : ToolWindowFactory {
     override fun createToolWindowContent(project: Project, toolWindow: ToolWindow) {
+//        ProjectService.init(project).initParser(toolWindow)
+
         val parser = ProjectService.getInstance()
         parser.initParser(toolWindow)
-    }
-
-    companion object {
-        const val TOOL_WINDOW_ID = "Json Parser"
     }
 }
