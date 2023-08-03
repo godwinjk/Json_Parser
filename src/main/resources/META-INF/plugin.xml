@@ -2,7 +2,7 @@
 <idea-plugin>
     <id>com.godwin.json.parser</id>
     <name>Json Parser</name>
-    <version>1.6.1</version>
+    <version>1.7</version>
     <vendor email="godwinjoseph.k.com">Godwin</vendor>
 
     <description><![CDATA[
@@ -10,6 +10,11 @@
     ]]></description>
 
     <change-notes><![CDATA[
+    <h4> Version 1.7 </h4>
+    <ol>
+        <li>Significant Change in tree view.</li>
+        <li>Major bug fixes</li>
+    </ol>
     <h4> Version 1.6.1 </h4>
     <ol>
         <li>Updated for new latest version support</li>
@@ -38,7 +43,8 @@
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="com.godwin.jsonparser.ParserToolWindowFactory" id="Json Parser" anchor="right" icon="AllIcons.Json.Object"/>
+        <toolWindow factoryClass="com.godwin.jsonparser.ParserToolWindowFactory" id="Json Parser" anchor="right"
+                    icon="AllIcons.Json.Object"/>
         <applicationService serviceImplementation="com.godwin.jsonparser.services.JsonPersistence"/>
     </extensions>
     <actions>
@@ -49,15 +55,15 @@
             <keyboard-shortcut keymap="$default" first-keystroke="ctrl shift alt J" second-keystroke="ctrl alt J"/>
         </action>
     </actions>
-<!--    <project-components>-->
-        <!--        <component>-->
-        <!--            <implementation-class>com.godwin.jsonparser.ParserComponent</implementation-class>-->
-        <!--        </component>-->
-<!--        <component>-->
-<!--            <implementation-class>com.godwin.jsonparser.ParserComponent</implementation-class>-->
-<!--            <interface-class>com.godwin.jsonparser.ParserComponent</interface-class>-->
-<!--        </component>-->
-<!--    </project-components>-->
+    <!--    <project-components>-->
+    <!--        <component>-->
+    <!--            <implementation-class>com.godwin.jsonparser.ParserComponent</implementation-class>-->
+    <!--        </component>-->
+    <!--        <component>-->
+    <!--            <implementation-class>com.godwin.jsonparser.ParserComponent</implementation-class>-->
+    <!--            <interface-class>com.godwin.jsonparser.ParserComponent</interface-class>-->
+    <!--        </component>-->
+    <!--    </project-components>-->
     <applicationListeners>
         <listener class="com.godwin.jsonparser.listeners.MyProjectManagerListener"
                   topic="com.intellij.openapi.project.ProjectManagerListener"/>

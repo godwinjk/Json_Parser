@@ -1,10 +1,12 @@
 package com.godwin.jsonparser.util;
 
 import com.godwin.jsonparser.services.JsonPersistence;
-import com.intellij.notification.Notification;
-import com.intellij.notification.NotificationListener;
-import com.intellij.notification.NotificationType;
-import com.intellij.notification.Notifications;
+import com.intellij.ide.BrowserUtil;
+import com.intellij.notification.*;
+import com.intellij.openapi.actionSystem.AnActionEvent;
+import org.jetbrains.annotations.NotNull;
+
+import java.net.URI;
 
 import static com.godwin.jsonparser.constants.ConstantsKt.TOOL_WINDOW_ID;
 
@@ -15,15 +17,27 @@ public class NotificationUtil {
         long tenDaysBack = now - (10 * 24 * 60 * 60 * 1000);
 //        long tenDaysBack = now - 60*1000;
         long lastShownTime = JsonPersistence.Companion.getInstance().getJsonParserLastDisplayTime();
-        if (lastShownTime < tenDaysBack) {
+        if ( lastShownTime < tenDaysBack) {
             JsonPersistence.Companion.getInstance().setJsonParserLastDisplayTime(now);
-            Notifications.Bus.notify(
-                    new Notification(
-                            TOOL_WINDOW_ID,
-                            "Like it",
-                            "Like this plugin? <a href=https://paypal.me/godwinj>Donate</a> or <b>Give it a star</b>  <a href=https://plugins.jetbrains.com/plugin/10650-json-parser>Json Parser</a> and spread the word",
-                            NotificationType.INFORMATION,
-                            new NotificationListener.UrlOpeningListener(true)));
+            Notification notification = new Notification(
+                    TOOL_WINDOW_ID,
+                    "Love it?",
+                    "Love this plugin? Donate or Give it a star and spread the word",
+                    NotificationType.INFORMATION);
+            notification.addAction(new NotificationAction("Donate") {
+                @Override
+                public void actionPerformed(@NotNull AnActionEvent e, @NotNull Notification notification) {
+                    BrowserUtil.browse(URI.create("https://paypal.me/godwinj"));
+                }
+            });
+            notification.addAction(new NotificationAction("Give it a star") {
+                @Override
+                public void actionPerformed(@NotNull AnActionEvent e, @NotNull Notification notification) {
+                    BrowserUtil.browse(URI.create("https://plugins.jetbrains.com/plugin/10650-json-parser"));
+                }
+            });
+            Notifications.Bus.notify(notification
+            );
         }
     }
 }

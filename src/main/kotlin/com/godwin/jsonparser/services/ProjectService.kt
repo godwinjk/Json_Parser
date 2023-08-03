@@ -47,7 +47,7 @@ class ProjectService() {
     private fun createParserContentPanel(toolWindow: ToolWindow): Content {
         toolWindow.setToHideOnEmptyContent(true)
         val panel = ParserToolWindowPanel(PropertiesComponent.getInstance(project), toolWindow)
-        val content = ContentFactory.SERVICE.getInstance().createContent(panel, "Parser", false)
+        val content = ContentFactory.getInstance().createContent(panel, "Parser", false)
         val debuggerWidget = createContent(content)
         val toolBar = createToolBar(debuggerWidget)
         panel.toolbar = toolBar.component

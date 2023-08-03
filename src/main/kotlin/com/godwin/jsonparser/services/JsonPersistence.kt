@@ -1,5 +1,6 @@
 package com.godwin.jsonparser.services
 
+import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.components.*
 import com.intellij.util.xmlb.XmlSerializerUtil
 
@@ -8,7 +9,7 @@ class JsonPersistence : PersistentStateComponent<JsonPersistence> {
 
     companion object {
         fun getInstance(): JsonPersistence {
-            return  ServiceManager.getService(JsonPersistence::class.java)
+            return  ApplicationManager.getApplication().getService(JsonPersistence::class.java)
         }
     }
 

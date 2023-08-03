@@ -33,6 +33,7 @@ public class ParserWidget implements Publisher {
     private JPanel outputContainer;
     private JPanel inputEditorContainer;
     private JButton parseButton;
+    private JSplitPane splitPane;
 
     private Editor mInputEditor;
 

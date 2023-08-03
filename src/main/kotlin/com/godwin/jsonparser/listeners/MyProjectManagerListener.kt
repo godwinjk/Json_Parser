@@ -7,10 +7,10 @@ import com.godwin.jsonparser.services.ProjectService
 
 internal class MyProjectManagerListener : ProjectManagerListener {
 
-    override fun projectOpened(project: Project) {
-        val service =project.service<ProjectService>()
-        service.project =project
-    }
+//    override fun projectOpened(project: Project) {
+//        val service =project.service<ProjectService>()
+//        service.project =project
+//    }
 
 
     override fun projectClosed(project: Project) {

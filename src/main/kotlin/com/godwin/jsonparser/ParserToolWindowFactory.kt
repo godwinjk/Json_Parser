@@ -14,7 +14,7 @@ class ParserToolWindowFactory : ToolWindowFactory {
     override fun createToolWindowContent(project: Project, toolWindow: ToolWindow) {
 //        ProjectService.init(project).initParser(toolWindow)
 
-        val parser = ProjectService.getInstance()
+        val parser = ProjectService.init(project)
         parser.initParser(toolWindow)
     }
 }
