@@ -1,6 +1,7 @@
 package com.godwin.jsonparser.services
 
 import com.godwin.jsonparser.MyBundle
+import com.godwin.jsonparser.constants.CONTENT_FACTORY_DEPRECATION_VERSION
 import com.godwin.jsonparser.ui.IParserWidget
 import com.godwin.jsonparser.ui.ParserToolWindowPanel
 import com.godwin.jsonparser.ui.ParserWidget
@@ -11,6 +12,8 @@ import com.intellij.openapi.actionSystem.ActionManager
 import com.intellij.openapi.actionSystem.ActionPlaces
 import com.intellij.openapi.actionSystem.ActionToolbar
 import com.intellij.openapi.actionSystem.DefaultActionGroup
+import com.intellij.openapi.application.ApplicationInfo
+import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.wm.ToolWindow
@@ -21,6 +24,7 @@ import javax.swing.SwingConstants
 @Service(value = [Service.Level.PROJECT])
 class ProjectService() {
     lateinit var project: Project
+
     init {
         field = this
     }
@@ -47,7 +51,13 @@ class ProjectService() {
     private fun createParserContentPanel(toolWindow: ToolWindow): Content {
         toolWindow.setToHideOnEmptyContent(true)
         val panel = ParserToolWindowPanel(PropertiesComponent.getInstance(project), toolWindow)
-        val content = ContentFactory.getInstance().createContent(panel, "Parser", false)
+//        val content = if(isVersionAbove()) {
+//            ContentFactory.getInstance().createContent(panel, "Parser", false)
+//        }else{
+//            ContentFactory.SERVICE.getInstance().createContent(panel, "Parser", false)
+//        }
+        val content=   ContentFactory.SERVICE.getInstance().createContent(panel, "Parser", false)
+
         val debuggerWidget = createContent(content)
         val toolBar = createToolBar(debuggerWidget)
         panel.toolbar = toolBar.component
@@ -70,4 +80,11 @@ class ProjectService() {
         toolbar.setOrientation(SwingConstants.VERTICAL)
         return toolbar
     }
+
+    private fun isVersionAbove(): Boolean {
+        val major = ApplicationInfo.getInstance().majorVersion.toIntOrNull() ?: return false
+
+        return major >= CONTENT_FACTORY_DEPRECATION_VERSION
+    }
+
 }
