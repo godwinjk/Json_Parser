@@ -51,12 +51,7 @@ class ProjectService() {
     private fun createParserContentPanel(toolWindow: ToolWindow): Content {
         toolWindow.setToHideOnEmptyContent(true)
         val panel = ParserToolWindowPanel(PropertiesComponent.getInstance(project), toolWindow)
-//        val content = if(isVersionAbove()) {
-//            ContentFactory.getInstance().createContent(panel, "Parser", false)
-//        }else{
-//            ContentFactory.SERVICE.getInstance().createContent(panel, "Parser", false)
-//        }
-        val content=   ContentFactory.SERVICE.getInstance().createContent(panel, "Parser", false)
+        val content = ContentFactory.getInstance().createContent(panel, "Parser", false)
 
         val debuggerWidget = createContent(content)
         val toolBar = createToolBar(debuggerWidget)
@@ -79,12 +74,6 @@ class ProjectService() {
         val toolbar = ActionManager.getInstance().createActionToolbar(ActionPlaces.TOOLBAR, group, false)
         toolbar.setOrientation(SwingConstants.VERTICAL)
         return toolbar
-    }
-
-    private fun isVersionAbove(): Boolean {
-        val major = ApplicationInfo.getInstance().majorVersion.toIntOrNull() ?: return false
-
-        return major >= CONTENT_FACTORY_DEPRECATION_VERSION
     }
 
 }
