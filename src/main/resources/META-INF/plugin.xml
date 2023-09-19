@@ -2,7 +2,7 @@
 <idea-plugin>
     <id>com.godwin.json.parser</id>
     <name>Json Parser</name>
-    <version>1.7</version>
+    <version>1.1</version>
     <vendor email="godwinjoseph.k.com">Godwin</vendor>
 
     <description><![CDATA[
@@ -10,6 +10,10 @@
     ]]></description>
 
     <change-notes><![CDATA[
+     <h4> Version 1.7.1 </h4>
+    <ol>
+        <li>Tree view bug fixes</li>
+    </ol>
     <h4> Version 1.7 </h4>
     <ol>
         <li>Significant Change in tree view.</li>
