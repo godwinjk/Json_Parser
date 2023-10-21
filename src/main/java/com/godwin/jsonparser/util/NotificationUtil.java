@@ -14,11 +14,17 @@ public class NotificationUtil {
 
     public static void showDonateNotification() {
         long now = System.currentTimeMillis();
-        long tenDaysBack = now - (10 * 24 * 60 * 60 * 1000);
-//        long tenDaysBack = now - 60*1000;
+        long daysBack = now - (10 * 24 * 60 * 60 * 1000); //10 days back
+        long starClicked = JsonPersistence.Companion.getInstance().getStarClicked();
+        long donateClicked = JsonPersistence.Companion.getInstance().getDonateClicked();
+        if (starClicked == 1 || donateClicked == 1) {
+            daysBack = now - (30L * 24 * 60 * 60 * 1000); //30 days back
+        }
         long lastShownTime = JsonPersistence.Companion.getInstance().getJsonParserLastDisplayTime();
-        if ( lastShownTime < tenDaysBack) {
+        if (lastShownTime < daysBack) {
             JsonPersistence.Companion.getInstance().setJsonParserLastDisplayTime(now);
+            JsonPersistence.Companion.getInstance().setStarClicked(0);
+            JsonPersistence.Companion.getInstance().setDonateClicked(0);
             Notification notification = new Notification(
                     TOOL_WINDOW_ID,
                     "Love it?",
@@ -28,12 +34,14 @@ public class NotificationUtil {
                 @Override
                 public void actionPerformed(@NotNull AnActionEvent e, @NotNull Notification notification) {
                     BrowserUtil.browse(URI.create("https://paypal.me/godwinj"));
+                    JsonPersistence.Companion.getInstance().setDonateClicked(1);
                 }
             });
             notification.addAction(new NotificationAction("Give it a star") {
                 @Override
                 public void actionPerformed(@NotNull AnActionEvent e, @NotNull Notification notification) {
                     BrowserUtil.browse(URI.create("https://plugins.jetbrains.com/plugin/10650-json-parser"));
+                    JsonPersistence.Companion.getInstance().setStarClicked(1);
                 }
             });
             Notifications.Bus.notify(notification
