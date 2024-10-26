@@ -29,6 +29,26 @@ Simple JSON Parser is an IntelliJ IDE plugin for validation and formatting JSON 
 
 ## Changelog
 
+### Version 1.7.2
+
+1. Unquoted fields and single quoted fields now supported
+2. YAML comments and normal comments will not throw error anymore
+3. Deprecation fixes
+4. Runtime error fixed
+
+### Version 1.7.1
+
+1. Tree view bug fixes
+
+### Version 1.7
+
+1. Significant Change in tree view.
+2. Major bug fixes
+
+### Version 1.6.1
+
+1. Updated for new latest version support
+
 ### Version 1.5
 
 1. Now you can directly open JsonParser window from logcat or console window. No need to copy and paste from multiple

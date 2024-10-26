@@ -10,6 +10,13 @@
     ]]></description>
 
     <change-notes><![CDATA[
+    <h4> Version 1.7.2 </h4>
+    <ol>
+        <li>Unquoted fields and single quoted fields now supported</li>
+        <li>YAML comments and normal comments will not throw error anymore</li>
+        <li>Deprecation fixes</li>
+        <li>Runtime error fixed</li>
+    </ol>
      <h4> Version 1.7.1 </h4>
     <ol>
         <li>Tree view bug fixes</li>
