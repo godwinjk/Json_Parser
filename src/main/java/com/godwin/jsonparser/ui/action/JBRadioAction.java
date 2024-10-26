@@ -3,6 +3,7 @@ package com.godwin.jsonparser.ui.action;
 import com.intellij.ide.DataManager;
 import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.actionSystem.ex.CustomComponentAction;
+import com.intellij.openapi.util.Key;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.util.ui.UIUtil;
 import org.jetbrains.annotations.NotNull;
@@ -17,7 +18,7 @@ import java.awt.event.ActionListener;
  * @author : Godwin Joseph Kurinjikattu
  */
 public class JBRadioAction extends AnAction implements CustomComponentAction {
-    private ButtonGroup mButtonGroup;
+    private final ButtonGroup mButtonGroup;
     private String mActionCommand;
     private ActionListener mActionListener;
     private boolean selected;
@@ -47,11 +48,6 @@ public class JBRadioAction extends AnAction implements CustomComponentAction {
         return getComponent(presentation);
     }
 
-    @Override
-    public JComponent createCustomComponent(Presentation presentation) {
-        return getComponent(presentation);
-    }
-
     @NotNull
     private JRadioButton getComponent(Presentation presentation) {
         JRadioButton jRadioButton = new JRadioButton("");
@@ -65,13 +61,13 @@ public class JBRadioAction extends AnAction implements CustomComponentAction {
                 mActionListener.actionPerformed(e);
             }
         });
-        presentation.putClientProperty("selected", selected);
+        presentation.putClientProperty(Key.create("selected"), selected);
         this.updateCustomComponent(jRadioButton, presentation);
         return jRadioButton;
     }
 
     @Override
-    public void actionPerformed(AnActionEvent anActionEvent) {
+    public void actionPerformed(@NotNull AnActionEvent anActionEvent) {
     }
 
     protected void updateCustomComponent(JRadioButton radioButton, Presentation presentation) {
@@ -79,7 +75,7 @@ public class JBRadioAction extends AnAction implements CustomComponentAction {
         radioButton.setToolTipText(presentation.getDescription());
         radioButton.setMnemonic(presentation.getMnemonic());
         radioButton.setDisplayedMnemonicIndex(presentation.getDisplayedMnemonicIndex());
-        radioButton.setSelected(Boolean.TRUE.equals(presentation.getClientProperty("selected")));
+        radioButton.setSelected(Boolean.TRUE.equals(presentation.getClientProperty(Key.create("selected"))));
         radioButton.setEnabled(true);
         radioButton.setVisible(true);
 
@@ -95,5 +91,10 @@ public class JBRadioAction extends AnAction implements CustomComponentAction {
     public void update(@NotNull AnActionEvent e) {
         e.getPresentation().setVisible(true);
         e.getPresentation().setEnabled(true);
+    }
+
+    @Override
+    public @NotNull ActionUpdateThread getActionUpdateThread() {
+        return ActionUpdateThread.BGT;
     }
 }

@@ -1,5 +1,6 @@
 package com.godwin.jsonparser.util;
 
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.core.util.DefaultIndenter;
@@ -15,23 +16,28 @@ public class JsonUtils {
     }
 
     public static String formatJson(String jsonStr) throws JsonProcessingException {
-        Object jsonObject = Holder.MAPPER.readValue(jsonStr, Object.class);
+        ObjectMapper mapper = Holder.MAPPER;
+        mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES,true);
+        mapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES,true);
+        mapper.configure(JsonParser.Feature.ALLOW_COMMENTS,true);
+        mapper.configure(JsonParser.Feature.ALLOW_YAML_COMMENTS,true);
+        Object jsonObject = mapper.readValue(jsonStr, Object.class);
         return Holder.MAPPER.writer(Holder.DEFAULT_PRETTY_PRINTER).writeValueAsString(jsonObject);
     }
 
     public static Map<String, Object> getMap(String jsonStr) throws JsonProcessingException {
-        return Holder.MAPPER.readValue(jsonStr, new TypeReference<Map<String, Object>>() {
+        return Holder.MAPPER.readValue(jsonStr, new TypeReference<>() {
         });
     }
 
-    public static String minifyJson(String jsonStr) throws JsonProcessingException {
+/*    public static String minifyJson(String jsonStr) throws JsonProcessingException {
         Object jsonObject = Holder.MAPPER.readValue(jsonStr, Object.class);
         return Holder.MAPPER.writeValueAsString(jsonObject);
-    }
+    }*/
 
-    public static void verifyJson(String jsonStr) throws JsonProcessingException {
+/*    public static void verifyJson(String jsonStr) throws JsonProcessingException {
         Holder.MAPPER.readValue(jsonStr, Object.class);
-    }
+    }*/
 
     private static final class Holder {
         public static final ObjectMapper MAPPER = new CustomMapper();
