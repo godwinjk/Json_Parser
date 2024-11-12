@@ -5,6 +5,7 @@ import com.godwin.jsonparser.util.EditorHintsNotifier;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
+import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
@@ -53,5 +54,9 @@ public class CopyToClipBoardAction extends AnAction {
         } catch (Exception exception) {
             exception.printStackTrace();
         }
+    }
+    @Override
+    public @NotNull ActionUpdateThread getActionUpdateThread() {
+        return ActionUpdateThread.BGT;
     }
 }

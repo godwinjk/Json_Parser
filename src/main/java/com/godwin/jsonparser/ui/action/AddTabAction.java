@@ -2,6 +2,7 @@ package com.godwin.jsonparser.ui.action;
 
 import com.godwin.jsonparser.ui.IParserWidget;
 import com.intellij.icons.AllIcons;
+import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import org.jetbrains.annotations.NotNull;
@@ -28,5 +29,9 @@ public class AddTabAction extends AnAction {
     public void update(@NotNull AnActionEvent e) {
         super.update(e);
         e.getPresentation().setVisible(mParserWidget.getTabCount() <= 10);
+    }
+    @Override
+    public @NotNull ActionUpdateThread getActionUpdateThread() {
+        return ActionUpdateThread.BGT;
     }
 }

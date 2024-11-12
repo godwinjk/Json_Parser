@@ -9,7 +9,7 @@ plugins {
     // Java support
     id("java")
     // Kotlin support
-    id("org.jetbrains.kotlin.jvm") version "1.8.0"
+    id("org.jetbrains.kotlin.jvm") version "1.9.0"
     // Gradle IntelliJ Plugin
     id("org.jetbrains.intellij") version "1.15.0"
     // Gradle Changelog Plugin
@@ -17,10 +17,10 @@ plugins {
     // Gradle Qodana Plugin
     id("org.jetbrains.qodana") version "0.1.13"
 }
-apply(plugin="idea")
-apply(plugin="java")
-apply(plugin="kotlin")
-apply(plugin="org.jetbrains.intellij")
+apply(plugin = "idea")
+apply(plugin = "java")
+apply(plugin = "kotlin")
+apply(plugin = "org.jetbrains.intellij")
 
 group = properties("pluginGroup")
 version = properties("pluginVersion")
@@ -59,7 +59,10 @@ qodana {
     saveReport.set(true)
     showReport.set(System.getenv("QODANA_SHOW_REPORT")?.toBoolean() ?: false)
 }
-
+dependencies {
+//    implementation(files("lib/JsonToKotlinClass-3.7.4.jar"))
+    implementation("com.squareup:kotlinpoet:2.0.0")
+}
 tasks {
     // Set the JVM compatibility versions
     properties("javaVersion").let {
@@ -117,12 +120,15 @@ tasks {
         password.set(System.getenv("PRIVATE_KEY_PASSWORD"))
     }
 
-    publishPlugin {
+   /* publishPlugin {
         dependsOn("patchChangelog")
         token.set(System.getenv("PUBLISH_TOKEN"))
         // pluginVersion is based on the SemVer (https://semver.org) and supports pre-release labels, like 2.1.7-alpha.3
         // Specify pre-release label to publish the plugin in a custom Release Channel automatically. Read more:
         // https://plugins.jetbrains.com/docs/intellij/deployment.html#specifying-a-release-channel
-        channels.set(listOf(properties("pluginVersion").split('-').getOrElse(1) { "default" }.split('.').first()))
-    }
+        channels.set(listOf(properties("pluginVersion")
+            .split('-')
+            .getOrElse(1) { "default" }
+                .split('.').first()))
+    }*/
 }

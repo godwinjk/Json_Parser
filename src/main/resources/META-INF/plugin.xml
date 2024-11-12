@@ -65,6 +65,20 @@
             <add-to-group group-id="EditorPopupMenu" anchor="first"/>
             <keyboard-shortcut keymap="$default" first-keystroke="ctrl shift alt J" second-keystroke="ctrl alt J"/>
         </action>
+        <action id="com.github.typ0520.jsontodart.makedartdata" class="com.godwin.jsonparser.generator.wu.seal.jsontodart.MakeKotlinClassAction"
+                text="Generate from JSON"
+                description="convert a json string data into Dart class code">
+            <add-to-group group-id="GenerateGroup" anchor="last"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="alt l"/>
+        </action>
+
+        <action id="com.github.typ0520.jsontodart.GenerateKotlinFileAction"
+                class="com.godwin.jsonparser.generator.wu.seal.jsontodart.GenerateKotlinFileAction"
+                text="Generate from JSON"
+                icon="/icons/json_action.png"
+                description="Generate Dart class File from JSON">
+        <add-to-group group-id="NewGroup" anchor="before" relative-to-action="NewFile"/>
+        </action>
     </actions>
     <!--    <project-components>-->
     <!--        <component>-->

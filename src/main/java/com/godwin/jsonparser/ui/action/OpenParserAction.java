@@ -3,6 +3,7 @@ package com.godwin.jsonparser.ui.action;
 import com.godwin.jsonparser.ParserToolWindowFactory;
 import com.godwin.jsonparser.common.Logger;
 import com.godwin.jsonparser.rx.Subscriber;
+import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
@@ -46,5 +47,15 @@ public class OpenParserAction extends AnAction {
         } catch (Exception e) {
             Logger.e(e.getMessage());
         }
+    }
+
+    @Override
+    public void update(@NotNull AnActionEvent e) {
+        super.update(e);
+    }
+
+    @Override
+    public @NotNull ActionUpdateThread getActionUpdateThread() {
+        return ActionUpdateThread.BGT;
     }
 }
