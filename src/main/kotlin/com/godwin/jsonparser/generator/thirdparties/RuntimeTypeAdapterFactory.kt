@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package thirdparties
+package com.godwin.jsonparser.generator.thirdparties
 
 import java.io.IOException
 import java.util.LinkedHashMap

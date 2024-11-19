@@ -65,19 +65,36 @@
             <add-to-group group-id="EditorPopupMenu" anchor="first"/>
             <keyboard-shortcut keymap="$default" first-keystroke="ctrl shift alt J" second-keystroke="ctrl alt J"/>
         </action>
-        <action id="com.github.typ0520.jsontodart.makedartdata" class="com.godwin.jsonparser.generator.wu.seal.jsontodart.MakeKotlinClassAction"
-                text="Generate from JSON"
-                description="convert a json string data into Dart class code">
+
+        <action id="com.godwin.jsonparser.generator.jsontodart.makedartdata"
+                class="com.godwin.jsonparser.generator.jsontodart.InsertDartClassAction"
+                text="Generate Dart Class from JSON"
+                description="Convert a json string data into class code">
+            <add-to-group group-id="GenerateGroup" anchor="last"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="alt l"/>
+        </action>
+        <action id="com.godwin.jsonparser.generator.jsontodart.GenerateDartClassAction"
+                class="com.godwin.jsonparser.generator.jsontodart.GenerateDartClassAction"
+                text="Generate Dart Class from JSON"
+                icon="/icons/json_action.png"
+                description="Convert a json string data into class code">
+            <add-to-group group-id="NewGroup" anchor="before" relative-to-action="NewFile"/>
+        </action>
+
+        <action id="com.godwin.jsonparser.generator.jsontokt.insert"
+                class="com.godwin.jsonparser.generator_kt.jsontokotlin.InsertKotlinClassAction"
+                text="Generate Kotlin Class from JSON"
+                description="Convert a json string data into class code">
             <add-to-group group-id="GenerateGroup" anchor="last"/>
             <keyboard-shortcut keymap="$default" first-keystroke="alt l"/>
         </action>
 
-        <action id="com.github.typ0520.jsontodart.GenerateKotlinFileAction"
-                class="com.godwin.jsonparser.generator.wu.seal.jsontodart.GenerateKotlinFileAction"
-                text="Generate from JSON"
+        <action id="com.godwin.jsonparser.generator.jsontokt.GenerateClassAction"
+                class="com.godwin.jsonparser.generator_kt.jsontokotlin.GenerateKotlinFileAction"
+                text="Generate Kotlin Class from JSON"
                 icon="/icons/json_action.png"
-                description="Generate Dart class File from JSON">
-        <add-to-group group-id="NewGroup" anchor="before" relative-to-action="NewFile"/>
+                description="Convert a json string data into class code">
+            <add-to-group group-id="NewGroup" anchor="before" relative-to-action="NewFile"/>
         </action>
     </actions>
     <!--    <project-components>-->

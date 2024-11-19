@@ -1,10 +1,10 @@
-package extensions
+package com.godwin.jsonparser.generator.extensions
 
 import com.google.gson.Gson
 import com.google.gson.JsonObject
-import wu.seal.jsontodart.ConfigManager
-import wu.seal.jsontodart.interceptor.IImportClassDeclarationInterceptor
-import wu.seal.jsontodart.interceptor.IKotlinDataClassInterceptor
+import com.godwin.jsonparser.generator.jsontodart.ConfigManager
+import com.godwin.jsonparser.generator.jsontodart.interceptor.IImportClassDeclarationInterceptor
+import com.godwin.jsonparser.generator.jsontodart.interceptor.IKotlinDataClassInterceptor
 import javax.swing.JPanel
 
 /**
