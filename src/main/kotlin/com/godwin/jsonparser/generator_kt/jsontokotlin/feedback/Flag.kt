@@ -1,6 +1,6 @@
 package com.godwin.jsonparser.generator_kt.jsontokotlin.feedback
 
-import com.godwin.jsonparser.generator_kt.jsontokotlin.model.ConfigManager
+import com.godwin.jsonparser.generator_kt.jsontokotlin.model.KotlinConfigManager
 import com.godwin.jsonparser.generator_kt.jsontokotlin.test.TestConfig
 import com.intellij.ide.plugins.PluginManager
 import com.intellij.openapi.extensions.PluginId
@@ -10,15 +10,14 @@ import com.intellij.openapi.extensions.PluginId
  * Created by Seal.Wu on 2017/9/25.
  */
 
-val PLUGIN_VERSION = if (TestConfig.isTestModel.not()){
+val PLUGIN_VERSION = if (TestConfig.isTestModel.not()) {
     PluginManager.getPlugin(PluginId.getId("wu.seal.tool.jsontokotlin"))?.version.toString()
 } else "1.X"
 
-val UUID = if (ConfigManager.userUUID.isEmpty()) {
+val UUID = if (KotlinConfigManager.userUUID.isEmpty()) {
     val uuid = java.util.UUID.randomUUID().toString()
-    ConfigManager.userUUID = uuid
+    KotlinConfigManager.userUUID = uuid
     uuid
-} else ConfigManager.userUUID
+} else KotlinConfigManager.userUUID
 
 
-const val PLUGIN_NAME = "JSON To Kotlin Class"

@@ -1,11 +1,11 @@
 package com.godwin.jsonparser.generator.extensions
 
+import com.godwin.jsonparser.generator.jsontodart.classscodestruct.DartClass
+import com.godwin.jsonparser.generator.jsontodart.utils.getChildType
+import com.godwin.jsonparser.generator.jsontodart.utils.getRawType
 import com.intellij.ui.layout.panel
 import com.intellij.util.ui.JBDimension
 import com.intellij.util.ui.JBEmptyBorder
-import com.godwin.jsonparser.generator.jsontodart.utils.getChildType
-import com.godwin.jsonparser.generator.jsontodart.utils.getRawType
-import com.godwin.jsonparser.generator.jsontodart.classscodestruct.KotlinDataClass
 import java.awt.event.FocusEvent
 import java.awt.event.FocusListener
 import javax.swing.JCheckBox
@@ -57,51 +57,53 @@ object ClassNameSuffixSupport : Extension() {
     }
 
 
-    override fun intercept(kotlinDataClass: KotlinDataClass): KotlinDataClass {
+    override fun intercept(dartClass: DartClass): DartClass {
 
         val suffix = getConfig(suffixKey)
 
         return if (getConfig(suffixKeyEnable).toBoolean() && suffix.isNotEmpty()) {
             val standTypes = listOf("Int", "Double", "Long", "String", "Boolean")
-            val originName = kotlinDataClass.name
+            val originName = dartClass.name
             val newPropertyTypes =
-                kotlinDataClass.properties.map {
+                dartClass.properties.map {
                     val rawSubType = getChildType(getRawType(it.type))
                     when {
                         it.type.isMapType() -> {
                             it.type//currently don't support map type
                         }
+
                         standTypes.contains(rawSubType) -> it.type
                         else -> it.type.replace(rawSubType, rawSubType + suffix)
                     }
                 }
 
-            val newPropertyDefaultValues = kotlinDataClass.properties.map {
+            val newPropertyDefaultValues = dartClass.properties.map {
                 val rawSubType = getChildType(getRawType(it.type))
                 when {
-                    it.value.isEmpty()-> it.value
+                    it.value.isEmpty() -> it.value
                     it.type.isMapType() -> {
                         it.value//currently don't support map type
                     }
+
                     standTypes.contains(rawSubType) -> it.value
                     else -> it.value.replace(rawSubType, rawSubType + suffix)
                 }
             }
 
-            val newProperties = kotlinDataClass.properties.mapIndexed { index, property ->
+            val newProperties = dartClass.properties.mapIndexed { index, property ->
 
                 val newType = newPropertyTypes[index]
 
                 val newValue = newPropertyDefaultValues[index]
 
-                property.copy(type = newType,value = newValue)
+                property.copy(type = newType, value = newValue)
             }
 
 
-            kotlinDataClass.copy(name = originName + suffix, properties = newProperties)
+            dartClass.copy(name = originName + suffix, properties = newProperties)
 
         } else {
-            kotlinDataClass
+            dartClass
         }
 
     }

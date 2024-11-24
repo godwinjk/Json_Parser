@@ -9,7 +9,6 @@ import com.intellij.ui.components.JBTabbedPane
 import com.intellij.util.ui.JBDimension
 import javax.swing.Action
 import javax.swing.JComponent
-import javax.swing.JPanel
 
 /**
  *
@@ -35,9 +34,9 @@ class AdvancedDialog(canBeParent: Boolean) : DialogWrapper(canBeParent) {
 
     private fun createDartTab(): JComponent {
         return JBTabbedPane().apply {
-            add("Property", createPropertyTab(GenFileType.dart))
-            add("Annotation", createAnnotationTab(GenFileType.dart))
-            add("Other", createOtherSettingTab(GenFileType.dart))
+            add("Property", createPropertyTab(GenFileType.Dart))
+            add("Annotation", createAnnotationTab(GenFileType.Dart))
+            add("Other", createOtherSettingTab(GenFileType.Dart))
 //            add("Extensions", createExtensionTab())
             minimumSize = JBDimension(500, 300)
         }
@@ -45,24 +44,24 @@ class AdvancedDialog(canBeParent: Boolean) : DialogWrapper(canBeParent) {
 
     private fun createKotlinTab(): JComponent {
         return JBTabbedPane().apply {
-            add("Property", createPropertyTab(GenFileType.kotlin))
-            add("Annotation", createAnnotationTab(GenFileType.kotlin))
-            add("Other", createOtherSettingTab(GenFileType.kotlin))
-            add("Extensions", createExtensionTab(GenFileType.kotlin))
+            add("Property", createPropertyTab(GenFileType.Kotlin))
+            add("Annotation", createAnnotationTab(GenFileType.Kotlin))
+            add("Other", createOtherSettingTab(GenFileType.Kotlin))
+            add("Extensions", createExtensionTab())
             minimumSize = JBDimension(500, 300)
         }
     }
 
     private fun createOtherSettingTab(genFileType: GenFileType) =
-        if (genFileType == GenFileType.kotlin) AdvancedOtherTab(true) else AdvancedDartOtherTab(true)
+        if (genFileType == GenFileType.Kotlin) AdvancedOtherTab(true) else AdvancedDartOtherTab(true)
 
     private fun createAnnotationTab(genFileType: GenFileType) =
-        if (genFileType == GenFileType.kotlin) AdvancedAnnotationTab(true) else AdvancedDartAnnotationTab(true)
+        if (genFileType == GenFileType.Kotlin) AdvancedAnnotationTab(true) else AdvancedDartAnnotationTab(true)
 
-    private fun createExtensionTab(genFileType: GenFileType) = ExtensionsTab(genFileType, true)
+    private fun createExtensionTab() = ExtensionsTab( true)
 
     private fun createPropertyTab(genFileType: GenFileType) =
-        if (genFileType == GenFileType.kotlin) AdvancedPropertyTab(true) else AdvancedDartPropertyTab(true)
+        if (genFileType == GenFileType.Kotlin) AdvancedPropertyTab(true) else AdvancedDartPropertyTab(true)
 
     override fun createActions(): Array<Action> {
         return arrayOf(okAction)

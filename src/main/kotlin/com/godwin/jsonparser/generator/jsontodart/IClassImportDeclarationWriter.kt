@@ -1,4 +1,4 @@
-package com.godwin.jsonparser.generatorjsontodart
+package com.godwin.jsonparser.generator.jsontodart
 
 import com.intellij.openapi.editor.Document
 import com.intellij.openapi.project.Project
@@ -9,6 +9,6 @@ import com.intellij.openapi.project.Project
  */
 interface IClassImportDeclarationWriter {
 
-    fun insertImportClassCode(project: Project?, editFile: Document)
+    fun insertImportClassCode(project: Project?, editFile: Document, className: String)
 
 }

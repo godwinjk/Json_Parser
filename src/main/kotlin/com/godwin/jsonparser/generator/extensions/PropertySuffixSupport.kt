@@ -1,6 +1,6 @@
 package com.godwin.jsonparser.generator.extensions
 
-import com.godwin.jsonparser.generator.jsontodart.classscodestruct.KotlinDataClass
+import com.godwin.jsonparser.generator.jsontodart.classscodestruct.DartClass
 import com.intellij.ui.layout.panel
 import com.intellij.util.ui.JBDimension
 import com.intellij.util.ui.JBEmptyBorder
@@ -14,6 +14,7 @@ object PropertySuffixSupport : Extension() {
 
     private const val suffixKeyEnable = "wu.seal.property_suffix_enable"
     private const val suffixKey = "wu.seal.property_suffix"
+
     override fun createUI(): JPanel {
         val suffixJField = JTextField().apply {
             text = getConfig(suffixKey)
@@ -51,17 +52,17 @@ object PropertySuffixSupport : Extension() {
     }
 
 
-    override fun intercept(kotlinDataClass: KotlinDataClass): KotlinDataClass {
+    override fun intercept(dartClass: DartClass): DartClass {
         return if (getConfig(suffixKeyEnable).toBoolean() && getConfig(suffixKey).isNotEmpty()) {
-            val originProperties = kotlinDataClass.properties
+            val originProperties = dartClass.properties
             val newProperties = originProperties.map {
                 val suffix = getConfig(suffixKey)
                 val newName = it.name + suffix.first().toUpperCase() + suffix.substring(1)
                 it.copy(name = newName)
             }
-            kotlinDataClass.copy(properties = newProperties)
+            dartClass.copy(properties = newProperties)
         } else {
-            kotlinDataClass
+            dartClass
         }
     }
 }

@@ -1,16 +1,13 @@
 package com.godwin.jsonparser.generator.jsontodart.interceptor.annotations.custom
 
-import com.godwin.jsonparser.generator.jsontodart.ConfigManager
 import com.godwin.jsonparser.generator.jsontodart.interceptor.IImportClassDeclarationInterceptor
+import com.godwin.jsonparser.generator_kt.jsontokotlin.model.DartConfigManager
 
 class AddCustomAnnotationClassImportDeclarationInterceptor : IImportClassDeclarationInterceptor {
 
-    override fun intercept(originClassImportDeclaration: String): String {
+    override fun intercept(originClassImportDeclaration: String, fileName: String): String {
 
-
-        val propertyAnnotationImportClassString = ConfigManager.customAnnotationClassImportdeclarationString
-
-
+        val propertyAnnotationImportClassString = DartConfigManager.customAnnotationClassImportdeclarationString
         return originClassImportDeclaration.append(propertyAnnotationImportClassString)
     }
 }

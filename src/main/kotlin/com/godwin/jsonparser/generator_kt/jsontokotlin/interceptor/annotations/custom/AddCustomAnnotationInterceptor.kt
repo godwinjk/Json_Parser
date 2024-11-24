@@ -1,7 +1,7 @@
 package com.godwin.jsonparser.generator_kt.jsontokotlin.interceptor.annotations.custom
 
 import com.godwin.jsonparser.generator_kt.jsontokotlin.interceptor.IKotlinClassInterceptor
-import com.godwin.jsonparser.generator_kt.jsontokotlin.model.ConfigManager
+import com.godwin.jsonparser.generator_kt.jsontokotlin.model.KotlinConfigManager
 import com.godwin.jsonparser.generator_kt.jsontokotlin.model.classscodestruct.DataClass
 import com.godwin.jsonparser.generator_kt.jsontokotlin.model.classscodestruct.KotlinClass
 import com.godwin.jsonparser.generator_kt.jsontokotlin.model.codeannotations.CustomPropertyAnnotationTemplate
@@ -19,14 +19,14 @@ class AddCustomAnnotationInterceptor : IKotlinClassInterceptor<KotlinClass> {
 
                 val annotations = CustomPropertyAnnotationTemplate(it.originName).getAnnotations()
 
-                it.copy(annotations = annotations,name = camelCaseName)
+                it.copy(annotations = annotations, name = camelCaseName)
             }
 
-            val classAnnotationString = ConfigManager.customClassAnnotationFormatString
+            val classAnnotationString = KotlinConfigManager.customClassAnnotationFormatString
 
             val classAnnotation = Annotation.fromAnnotationString(classAnnotationString)
 
-            return kotlinClass.copy(properties = addCustomAnnotationProperties,annotations = listOf(classAnnotation))
+            return kotlinClass.copy(properties = addCustomAnnotationProperties, annotations = listOf(classAnnotation))
         } else {
             return kotlinClass
         }

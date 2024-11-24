@@ -27,7 +27,6 @@ object KPropertyName : KName(), IPropertyNameMaker {
     }
 
     override fun makePropertyName(rawString: String): String {
-
         return rawString
     }
 
@@ -43,8 +42,7 @@ object KPropertyName : KName(), IPropertyNameMaker {
     /**
      * get the none empty legal came case name
      */
-    fun makeLowerCamelCaseLegalName(rawNameString:String) :String{
-
+    fun makeLowerCamelCaseLegalName(rawNameString: String): String {
         return makePropertyName(rawNameString, true)
     }
 
@@ -73,9 +71,7 @@ object KPropertyName : KName(), IPropertyNameMaker {
      * this function can remove the rest white space
      */
     private fun toLowerCamelCase(temp: String): String {
-
         val stringBuilder = StringBuilder()
-
         temp.split(nameSeparator.toRegex()).forEach {
             if (it.isNotBlank()) {
                 stringBuilder.append(it.substring(0, 1).toUpperCase().plus(it.substring(1)))
@@ -83,7 +79,6 @@ object KPropertyName : KName(), IPropertyNameMaker {
         }
 
         val camelCaseName = stringBuilder.toString()
-
         return if (camelCaseName.isNotEmpty()) {
             camelCaseName.substring(0, 1).toLowerCase().plus(camelCaseName.substring(1))
         } else {

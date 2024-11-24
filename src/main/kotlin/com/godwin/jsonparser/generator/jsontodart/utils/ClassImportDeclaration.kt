@@ -12,21 +12,23 @@ object ClassImportDeclaration {
     /**
      * import class declaration getter
      */
-    fun getImportClassDeclaration(): String {
+    fun getImportClassDeclaration(fileName: String): String {
 
         return applyImportClassDeclarationInterceptors(
-                InterceptorManager.getEnabledImportClassDeclarationInterceptors())
+            InterceptorManager.getEnabledImportClassDeclarationInterceptors(), fileName
+        )
 
     }
 
 
     fun applyImportClassDeclarationInterceptors(
-            interceptors: List<IImportClassDeclarationInterceptor>): String {
+        interceptors: List<IImportClassDeclarationInterceptor>, fileName: String
+    ): String {
 
         var classImportDeclaration = ""
 
         interceptors.forEach {
-            classImportDeclaration = it.intercept(classImportDeclaration)
+            classImportDeclaration = it.intercept(classImportDeclaration, fileName)
         }
         return classImportDeclaration
     }

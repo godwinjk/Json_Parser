@@ -1,6 +1,7 @@
 package com.godwin.jsonparser.generator.jsontodart.ui
 
 import com.godwin.jsonparser.generator.jsontodart.filetype.GenFileType
+import com.godwin.jsonparser.generator.jsontodart.utils.addComponentIntoVerticalBoxAlignmentLeft
 import com.godwin.jsonparser.icons.JsonIcons
 import com.google.gson.*
 import com.intellij.json.JsonFileType
@@ -17,7 +18,6 @@ import com.intellij.openapi.ui.Messages
 import com.intellij.ui.components.JBLabel
 import com.intellij.util.ui.JBDimension
 import com.intellij.util.ui.JBEmptyBorder
-import com.godwin.jsonparser.generator.jsontodart.utils.addComponentIntoVerticalBoxAlignmentLeft
 import java.awt.BorderLayout
 import java.awt.Dimension
 import java.awt.Toolkit
@@ -69,7 +69,7 @@ class JsonInputDialog(classsName: String, private val project: Project) : Messag
 
     private val prettyGson: Gson = GsonBuilder().setPrettyPrinting().serializeNulls().disableHtmlEscaping().create()
 
-    private var fileType: GenFileType = GenFileType.dart
+    private var fileType: GenFileType = GenFileType.Dart
 
     init {
         setOKButtonText("Generate")
@@ -143,7 +143,7 @@ class JsonInputDialog(classsName: String, private val project: Project) : Messag
         val dartButton = JRadioButton("Dart").apply {
             addActionListener { e ->
                 run {
-                    fileType = GenFileType.dart
+                    fileType = GenFileType.Dart
                 }
             }
 
@@ -151,7 +151,7 @@ class JsonInputDialog(classsName: String, private val project: Project) : Messag
         val kotlinButton = JRadioButton("Kotlin").apply {
             addActionListener { e ->
                 run {
-                    fileType = GenFileType.kotlin
+                    fileType = GenFileType.Kotlin
                 }
             }
         }

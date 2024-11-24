@@ -1,7 +1,6 @@
 package com.godwin.jsonparser.generator_kt.jsontokotlin.ui
 
-import com.godwin.jsonparser.generator.jsontodart.filetype.GenFileType
-import com.godwin.jsonparser.generator_kt.jsontokotlin.model.ConfigManager
+import com.godwin.jsonparser.generator_kt.jsontokotlin.model.KotlinConfigManager
 import com.godwin.jsonparser.generator_kt.jsontokotlin.model.DefaultValueStrategy
 import com.godwin.jsonparser.generator_kt.jsontokotlin.model.PropertyTypeStrategy
 import com.intellij.util.ui.JBDimension
@@ -19,28 +18,39 @@ class AdvancedPropertyTab(isDoubleBuffered: Boolean) : JPanel(BorderLayout(), is
             jVerticalLinearLayout {
                 jLabel("Keyword")
                 jButtonGroup {
-                    jRadioButton("Val", !ConfigManager.isPropertiesVar, { ConfigManager.isPropertiesVar = false })
-                    jRadioButton("Var", ConfigManager.isPropertiesVar, { ConfigManager.isPropertiesVar = true })
+                    jRadioButton(
+                        "Val",
+                        !KotlinConfigManager.isPropertiesVar,
+                        { KotlinConfigManager.isPropertiesVar = false })
+                    jRadioButton(
+                        "Var",
+                        KotlinConfigManager.isPropertiesVar,
+                        { KotlinConfigManager.isPropertiesVar = true })
                 }
                 jLine()
                 jLabel("Type")
                 jButtonGroup {
-                    jRadioButton("Non-Nullable", ConfigManager.propertyTypeStrategy == PropertyTypeStrategy.NotNullable,
-                            { ConfigManager.propertyTypeStrategy = PropertyTypeStrategy.NotNullable })
-                    jRadioButton("Nullable", ConfigManager.propertyTypeStrategy == PropertyTypeStrategy.Nullable,
-                            { ConfigManager.propertyTypeStrategy = PropertyTypeStrategy.Nullable })
-                    jRadioButton("Auto Determine Nullable Or Not From JSON Value", ConfigManager.propertyTypeStrategy == PropertyTypeStrategy.AutoDeterMineNullableOrNot,
-                            { ConfigManager.propertyTypeStrategy = PropertyTypeStrategy.AutoDeterMineNullableOrNot })
+                    jRadioButton("Non-Nullable",
+                        KotlinConfigManager.propertyTypeStrategy == PropertyTypeStrategy.NotNullable,
+                        { KotlinConfigManager.propertyTypeStrategy = PropertyTypeStrategy.NotNullable })
+                    jRadioButton("Nullable", KotlinConfigManager.propertyTypeStrategy == PropertyTypeStrategy.Nullable,
+                        { KotlinConfigManager.propertyTypeStrategy = PropertyTypeStrategy.Nullable })
+                    jRadioButton("Auto Determine Nullable Or Not From JSON Value",
+                        KotlinConfigManager.propertyTypeStrategy == PropertyTypeStrategy.AutoDeterMineNullableOrNot,
+                        { KotlinConfigManager.propertyTypeStrategy = PropertyTypeStrategy.AutoDeterMineNullableOrNot })
                 }
                 jLine()
                 jLabel("Default Value Strategy")
                 jButtonGroup {
-                    jRadioButton("Don't Init With Default Value", ConfigManager.defaultValueStrategy == DefaultValueStrategy.None,
-                            { ConfigManager.defaultValueStrategy = DefaultValueStrategy.None })
-                    jRadioButton("Init With Non-Null Default Value (Avoid Null)", ConfigManager.defaultValueStrategy == DefaultValueStrategy.AvoidNull,
-                            { ConfigManager.defaultValueStrategy = DefaultValueStrategy.AvoidNull })
-                    jRadioButton("Init With Default Value Null When Property Is Nullable", ConfigManager.defaultValueStrategy == DefaultValueStrategy.AllowNull,
-                            { ConfigManager.defaultValueStrategy = DefaultValueStrategy.AllowNull })
+                    jRadioButton("Don't Init With Default Value",
+                        KotlinConfigManager.defaultValueStrategy == DefaultValueStrategy.None,
+                        { KotlinConfigManager.defaultValueStrategy = DefaultValueStrategy.None })
+                    jRadioButton("Init With Non-Null Default Value (Avoid Null)",
+                        KotlinConfigManager.defaultValueStrategy == DefaultValueStrategy.AvoidNull,
+                        { KotlinConfigManager.defaultValueStrategy = DefaultValueStrategy.AvoidNull })
+                    jRadioButton("Init With Default Value Null When Property Is Nullable",
+                        KotlinConfigManager.defaultValueStrategy == DefaultValueStrategy.AllowNull,
+                        { KotlinConfigManager.defaultValueStrategy = DefaultValueStrategy.AllowNull })
                 }
             }
         }

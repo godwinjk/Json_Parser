@@ -5,7 +5,7 @@ import com.godwin.jsonparser.generator_kt.jsontokotlin.model.classscodestruct.Da
 import com.godwin.jsonparser.generator_kt.jsontokotlin.model.classscodestruct.KotlinClass
 import com.godwin.jsonparser.generator_kt.jsontokotlin.ui.jCheckBox
 import com.godwin.jsonparser.generator_kt.jsontokotlin.ui.jHorizontalLinearLayout
-import com.godwin.jsonparser.generator_kt.jsontokotlin.ui.jLink
+import com.godwin.jsonparser.generator_kt.jsontokotlin.ui.jLabel
 import javax.swing.JPanel
 
 /**
@@ -40,9 +40,8 @@ object ReplaceConstructorParametersByMemberVariablesSupport : Extension() {
                 getConfig(configKey).toBoolean(),
                 { isSelected -> setConfig(configKey, isSelected.toString()) }
             )
-            jLink(
+            jLabel(
                 "Replace constructor parameters by member variables",
-                "https://github.com/wuseal/JsonToKotlinClass/blob/master/src/main/kotlin/extensions/nstd/ReplaceConstructorParametersByMemberVariablesSupport.kt"
             )
             fillSpace()
         }

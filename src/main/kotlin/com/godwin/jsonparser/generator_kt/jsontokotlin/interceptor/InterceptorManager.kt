@@ -17,7 +17,7 @@ import com.godwin.jsonparser.generator_kt.jsontokotlin.interceptor.annotations.m
 import com.godwin.jsonparser.generator_kt.jsontokotlin.interceptor.annotations.moshi.AddMoshiCodeGenClassImportDeclarationInterceptor
 import com.godwin.jsonparser.generator_kt.jsontokotlin.interceptor.annotations.serializable.AddSerializableAnnotationClassImportDeclarationInterceptor
 import com.godwin.jsonparser.generator_kt.jsontokotlin.interceptor.annotations.serializable.AddSerializableAnnotationInterceptor
-import com.godwin.jsonparser.generator_kt.jsontokotlin.model.ConfigManager
+import com.godwin.jsonparser.generator_kt.jsontokotlin.model.KotlinConfigManager
 import com.godwin.jsonparser.generator_kt.jsontokotlin.model.DefaultValueStrategy
 import com.godwin.jsonparser.generator_kt.jsontokotlin.model.TargetJsonConverter
 import com.godwin.jsonparser.generator_kt.jsontokotlin.model.classscodestruct.KotlinClass
@@ -28,19 +28,20 @@ object InterceptorManager {
 
         return mutableListOf<IKotlinClassInterceptor<KotlinClass>>().apply {
 
-            if (ConfigManager.isPropertiesVar) {
+            if (KotlinConfigManager.isPropertiesVar) {
                 add(ChangePropertyKeywordToVarInterceptor())
             }
 
             add(PropertyTypeNullableStrategyInterceptor())
 
-            if (ConfigManager.defaultValueStrategy != DefaultValueStrategy.None) {
+            if (KotlinConfigManager.defaultValueStrategy != DefaultValueStrategy.None) {
                 add(InitWithDefaultValueInterceptor())
             }
 
-            when (ConfigManager.targetJsonConverterLib) {
+            when (KotlinConfigManager.targetJsonConverterLib) {
                 TargetJsonConverter.None -> {
                 }
+
                 TargetJsonConverter.NoneWithCamelCase -> add(MakePropertiesNameToBeCamelCaseInterceptor())
                 TargetJsonConverter.Gson -> add(AddGsonAnnotationInterceptor())
                 TargetJsonConverter.FastJson -> add(AddFastJsonAnnotationInterceptor())
@@ -50,19 +51,18 @@ object InterceptorManager {
                 TargetJsonConverter.LoganSquare -> add(AddLoganSquareAnnotationInterceptor())
                 TargetJsonConverter.Custom -> add(AddCustomAnnotationInterceptor())
                 TargetJsonConverter.Serializable -> add(AddSerializableAnnotationInterceptor())
-                TargetJsonConverter.Freezed -> TODO()
-                TargetJsonConverter.JsonSerializable -> TODO()
+                else -> {}
             }
 
-            if (ConfigManager.parenClassTemplate.isNotBlank()) {
+            if (KotlinConfigManager.parenClassTemplate.isNotBlank()) {
                 add(ParentClassTemplateKotlinClassInterceptor())
             }
 
-            if (ConfigManager.isCommentOff) {
+            if (KotlinConfigManager.isCommentOff) {
                 add(CommentOffInterceptor)
             }
 
-            if (ConfigManager.isOrderByAlphabetical) {
+            if (KotlinConfigManager.isOrderByAlphabetical) {
                 add(OrderPropertyByAlphabeticalInterceptor())
             }
 
@@ -70,7 +70,7 @@ object InterceptorManager {
             //add extensions's interceptor
             addAll(ExtensionsCollector.extensions)
         }.apply {
-            if (ConfigManager.enableMinimalAnnotation) {
+            if (KotlinConfigManager.enableMinimalAnnotation) {
                 add(MinimalAnnotationKotlinClassInterceptor())
             }
             add(FinalKotlinClassWrapperInterceptor())
@@ -81,21 +81,19 @@ object InterceptorManager {
     fun getEnabledImportClassDeclarationInterceptors(): List<IImportClassDeclarationInterceptor> {
 
         return mutableListOf<IImportClassDeclarationInterceptor>().apply {
-
-
-            when (ConfigManager.targetJsonConverterLib) {
-                TargetJsonConverter.Gson->add(AddGsonAnnotationClassImportDeclarationInterceptor())
-                TargetJsonConverter.FastJson-> add(AddFastjsonAnnotationClassImportDeclarationInterceptor())
-                TargetJsonConverter.Jackson-> add(AddJacksonAnnotationClassImportDeclarationInterceptor())
-                TargetJsonConverter.MoShi->add(AddMoshiAnnotationClassImportDeclarationInterceptor())
-                TargetJsonConverter.MoshiCodeGen->add(AddMoshiCodeGenClassImportDeclarationInterceptor())
-                TargetJsonConverter.LoganSquare->add(AddLoganSquareAnnotationClassImportDeclarationInterceptor())
-                TargetJsonConverter.Custom->add(AddCustomAnnotationClassImportDeclarationInterceptor())
-                TargetJsonConverter.Serializable->add(AddSerializableAnnotationClassImportDeclarationInterceptor())
-                else->{}
+            when (KotlinConfigManager.targetJsonConverterLib) {
+                TargetJsonConverter.Gson -> add(AddGsonAnnotationClassImportDeclarationInterceptor())
+                TargetJsonConverter.FastJson -> add(AddFastjsonAnnotationClassImportDeclarationInterceptor())
+                TargetJsonConverter.Jackson -> add(AddJacksonAnnotationClassImportDeclarationInterceptor())
+                TargetJsonConverter.MoShi -> add(AddMoshiAnnotationClassImportDeclarationInterceptor())
+                TargetJsonConverter.MoshiCodeGen -> add(AddMoshiCodeGenClassImportDeclarationInterceptor())
+                TargetJsonConverter.LoganSquare -> add(AddLoganSquareAnnotationClassImportDeclarationInterceptor())
+                TargetJsonConverter.Custom -> add(AddCustomAnnotationClassImportDeclarationInterceptor())
+                TargetJsonConverter.Serializable -> add(AddSerializableAnnotationClassImportDeclarationInterceptor())
+                else -> {}
             }
 
-            if (ConfigManager.parenClassTemplate.isNotBlank()) {
+            if (KotlinConfigManager.parenClassTemplate.isNotBlank()) {
 
                 add(ParentClassClassImportDeclarationInterceptor())
             }

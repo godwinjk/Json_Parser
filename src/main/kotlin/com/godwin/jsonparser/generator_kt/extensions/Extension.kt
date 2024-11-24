@@ -2,7 +2,7 @@ package com.godwin.jsonparser.generator_kt.extensions
 
 import com.godwin.jsonparser.generator_kt.jsontokotlin.interceptor.IImportClassDeclarationInterceptor
 import com.godwin.jsonparser.generator_kt.jsontokotlin.interceptor.IKotlinClassInterceptor
-import com.godwin.jsonparser.generator_kt.jsontokotlin.model.ConfigManager
+import com.godwin.jsonparser.generator_kt.jsontokotlin.model.KotlinConfigManager
 import com.godwin.jsonparser.generator_kt.jsontokotlin.model.classscodestruct.KotlinClass
 import com.google.gson.Gson
 import com.google.gson.JsonObject
@@ -27,9 +27,9 @@ abstract class Extension : IImportClassDeclarationInterceptor, IKotlinClassInter
      * to keep the key primary, we could define it like : wu.seal.xxx using domain before the real config
      */
     protected fun setConfig(key: String, value: String) {
-        val configs = gson.fromJson(ConfigManager.extensionsConfig, JsonObject::class.java) ?: JsonObject()
+        val configs = gson.fromJson(KotlinConfigManager.extensionsConfig, JsonObject::class.java) ?: JsonObject()
         configs.addProperty(key, value)
-        ConfigManager.extensionsConfig = gson.toJson(configs)
+        KotlinConfigManager.extensionsConfig = gson.toJson(configs)
     }
 
     /**
@@ -37,7 +37,7 @@ abstract class Extension : IImportClassDeclarationInterceptor, IKotlinClassInter
      * to keep the key primary, we could define it like : wu.seal.xxx  using domain before the real config
      */
     protected fun getConfig(key: String): String {
-        val configs = gson.fromJson(ConfigManager.extensionsConfig, JsonObject::class.java) ?: JsonObject()
+        val configs = gson.fromJson(KotlinConfigManager.extensionsConfig, JsonObject::class.java) ?: JsonObject()
         return configs[key]?.asString ?: ""
     }
 
@@ -50,6 +50,7 @@ abstract class Extension : IImportClassDeclarationInterceptor, IKotlinClassInter
     fun getTestHelper() = TestHelper(this)
 
     val testHelper = TestHelper(this)
+
     /**
      * Test helper for test config settings
      */

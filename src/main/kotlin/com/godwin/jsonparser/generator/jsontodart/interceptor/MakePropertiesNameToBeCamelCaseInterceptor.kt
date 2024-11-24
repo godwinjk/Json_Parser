@@ -1,20 +1,20 @@
 package com.godwin.jsonparser.generator.jsontodart.interceptor
 
-import com.godwin.jsonparser.generator.jsontodart.classscodestruct.KotlinDataClass
+import com.godwin.jsonparser.generator.jsontodart.classscodestruct.DartClass
 import com.godwin.jsonparser.generator.jsontodart.codeelements.KPropertyName
 
-class MakePropertiesNameToBeCamelCaseInterceptor : IKotlinDataClassInterceptor {
+class MakePropertiesNameToBeCamelCaseInterceptor : IDartClassInterceptor {
 
-    override fun intercept(kotlinDataClass: KotlinDataClass): KotlinDataClass {
+    override fun intercept(dartClass: DartClass): DartClass {
 
-        val camelCaseNameProperties = kotlinDataClass.properties.map {
+        val camelCaseNameProperties = dartClass.properties.map {
 
             val camelCaseName = KPropertyName.makeLowerCamelCaseLegalNameOrEmptyName(it.originName)
 
             it.copy(name = camelCaseName)
         }
 
-        return kotlinDataClass.copy(properties = camelCaseNameProperties)
+        return dartClass.copy(properties = camelCaseNameProperties)
     }
 
 }

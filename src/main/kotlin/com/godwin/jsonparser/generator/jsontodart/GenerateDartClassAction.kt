@@ -1,6 +1,8 @@
 package com.godwin.jsonparser.generator.jsontodart
 
-import com.godwin.jsonparser.generator.jsontodart.filetype.GenFileType
+import com.godwin.jsonparser.generator.jsontodart.ui.JsonInputDialog
+import com.godwin.jsonparser.generator.jsontodart.utils.ClassCodeFilter
+import com.godwin.jsonparser.generator.jsontodart.utils.DartClassFileGenerator
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.LangDataKeys
@@ -13,9 +15,6 @@ import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiFileFactory
 import com.intellij.psi.PsiManager
 import com.intellij.psi.impl.file.PsiDirectoryFactory
-import com.godwin.jsonparser.generator.jsontodart.ui.JsonInputDialog
-import com.godwin.jsonparser.generator.jsontodart.utils.ClassCodeFilter
-import com.godwin.jsonparser.generator.jsontodart.utils.KotlinDataClassFileGenerator
 
 
 /**
@@ -61,7 +60,6 @@ class GenerateDartClassAction : AnAction("Dart Class from JSON") {
                 project,
                 psiFileFactory,
                 directory,
-                fileType
             )
         } catch (e: UnSupportJsonException) {
             val advice = e.advice
@@ -79,19 +77,19 @@ class GenerateDartClassAction : AnAction("Dart Class from JSON") {
         packageDeclare: String,
         project: Project?,
         psiFileFactory: PsiFileFactory,
-        directory: PsiDirectory,
-        fileType: GenFileType
+        directory: PsiDirectory
     ) {
-        val generatedClassesString = KotlinCodeMaker(className, json).makeKotlinData()
+        val generatedClassesString = DartCodeMaker(className, json).makeDartClassData()
 
         val removeDuplicateClassCode = ClassCodeFilter.removeDuplicateClassCode(generatedClassesString)
 
-        KotlinDataClassFileGenerator().generateMultipleDataClassFiles(
+        DartClassFileGenerator().generateMultipleDataClassFiles(
             removeDuplicateClassCode,
             packageDeclare,
             project,
             psiFileFactory,
-            directory, fileType
+            directory,
+            json
         )
     }
 }

@@ -1,72 +1,81 @@
 package com.godwin.jsonparser.generator.jsontodart.interceptor
 
 import com.godwin.jsonparser.generator.extensions.ExtensionsCollector
-import com.godwin.jsonparser.generator.jsontodart.ConfigManager
-import com.godwin.jsonparser.generator.jsontodart.DefaultValueStrategy
-import com.godwin.jsonparser.generator.jsontodart.TargetJsonConverter
 import com.godwin.jsonparser.generator.jsontodart.interceptor.annotations.custom.AddCustomAnnotationClassImportDeclarationInterceptor
 import com.godwin.jsonparser.generator.jsontodart.interceptor.annotations.custom.AddCustomAnnotationInterceptor
+import com.godwin.jsonparser.generator.jsontodart.interceptor.annotations.freezed.FreezedAnnotationClassImportDeclarationInterceptor
+import com.godwin.jsonparser.generator.jsontodart.interceptor.annotations.jsonserializable.JsonSerializableAnnotationClassImportDeclarationInterceptor
+import com.godwin.jsonparser.generator.jsontodart.interceptor.annotations.jsonserializable.JsonSerializableInterceptor
+import com.godwin.jsonparser.generator_kt.jsontokotlin.model.DartConfigManager
+import com.godwin.jsonparser.generator_kt.jsontokotlin.model.DefaultValueStrategy
+import com.godwin.jsonparser.generator_kt.jsontokotlin.model.TargetJsonConverter
 
 object InterceptorManager {
 
-    fun getEnabledKotlinDataClassInterceptors(): List<IKotlinDataClassInterceptor> {
+    fun getEnabledDartDataClassInterceptors(): List<IDartClassInterceptor> {
 
-        return mutableListOf<IKotlinDataClassInterceptor>().apply {
-
-            if (ConfigManager.isPropertiesFinal) {
+        return mutableListOf<IDartClassInterceptor>().apply {
+            if (DartConfigManager.isPropertyFinal) {
                 add(ChangePropertyKeywordToFinalInterceptor())
             }
 
-            if (ConfigManager.defaultValueStrategy != DefaultValueStrategy.None) {
+            if (DartConfigManager.defaultValueStrategy != DefaultValueStrategy.None) {
                 add(InitWithDefaultValueInterceptor())
             }
 
-            when (ConfigManager.targetJsonConverterLib) {
+            when (DartConfigManager.targetJsonConverterLib) {
                 TargetJsonConverter.None -> {
                 }
-                TargetJsonConverter.NoneWithCamelCase -> add(MakePropertiesNameToBeCamelCaseInterceptor())
+
+                TargetJsonConverter.DartPackage -> {
+                    if (DartConfigManager.isJsonSerializationAnnotation) {
+                        add(JsonSerializableInterceptor())
+                    }
+
+                }
+
                 TargetJsonConverter.Custom -> add(AddCustomAnnotationInterceptor())
                 else -> {}
             }
-            if (ConfigManager.enableMinimalAnnotation) {
-                add(MinimalAnnotationKotlinDataClassInterceptor())
+            if (DartConfigManager.enableMinimalAnnotation) {
+                add(MinimalAnnotationDartClassInterceptor())
             }
 
-            if (ConfigManager.parenClassTemplate.isNotBlank()) {
-                add(ParentClassTemplateKotlinDataClassInterceptor())
+            if (DartConfigManager.parenClassTemplate.isNotBlank()) {
+                add(ParentClassTemplateDartClassInterceptor())
             }
 
-            if (ConfigManager.keywordPropertyValid) {
-                add(MakeKeywordNamedPropertyValidInterceptor())
-            }
-
-            if (ConfigManager.isCommentOff) {
+            if (DartConfigManager.isCommentOff) {
                 add(CommentOffInterceptor)
             }
 
-            if (ConfigManager.isOrderByAlphabetical) {
+            if (DartConfigManager.isOrderByAlphabetical) {
                 add(OrderPropertyByAlphabeticalInterceptor())
             }
-
         }.apply {
             //add extensions's interceptor
             addAll(ExtensionsCollector.extensions)
         }
     }
 
-
     fun getEnabledImportClassDeclarationInterceptors(): List<IImportClassDeclarationInterceptor> {
 
         return mutableListOf<IImportClassDeclarationInterceptor>().apply {
+            when (DartConfigManager.targetJsonConverterLib) {
+                TargetJsonConverter.Custom -> add(AddCustomAnnotationClassImportDeclarationInterceptor())
+                TargetJsonConverter.DartPackage -> {
+                    if (DartConfigManager.isJsonSerializationAnnotation) {
+                        add(JsonSerializableAnnotationClassImportDeclarationInterceptor())
+                    }
+                    if (DartConfigManager.isFreezedAnnotation) {
+                        add(FreezedAnnotationClassImportDeclarationInterceptor())
+                    }
+                }
 
-
-            when (ConfigManager.targetJsonConverterLib) {
-                TargetJsonConverter.Custom->add(AddCustomAnnotationClassImportDeclarationInterceptor())
-                else->{}
+                else -> {}
             }
 
-            if (ConfigManager.parenClassTemplate.isNotBlank()) {
-
+            if (DartConfigManager.parenClassTemplate.isNotBlank()) {
                 add(ParentClassClassImportDeclarationInterceptor())
             }
         }.apply {

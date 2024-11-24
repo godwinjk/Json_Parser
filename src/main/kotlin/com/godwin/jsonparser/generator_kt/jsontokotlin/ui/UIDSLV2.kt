@@ -5,6 +5,7 @@ import com.intellij.openapi.editor.Document
 import com.intellij.openapi.editor.EditorFactory
 import com.intellij.openapi.fileTypes.LanguageFileType
 import com.intellij.openapi.fileTypes.PlainTextFileType
+import com.intellij.ui.JBColor
 import com.intellij.ui.components.JBCheckBox
 import com.intellij.ui.components.JBLabel
 import com.intellij.ui.components.JBScrollPane
@@ -26,6 +27,7 @@ fun checkAddView(parent: Any, vararg children: Component) {
                 parent.addComponent(child)
             }
         }
+
         is Container -> {
             for (child in children) {
                 parent.add(child)
@@ -42,6 +44,7 @@ fun checkAddView(parent: Any, child: Component, constraintsInParent: Any?) {
         is AuxLayout -> {
             parent.addComponent(child)
         }
+
         is Container -> {
             parent.add(child, constraintsInParent)
         }
@@ -213,7 +216,7 @@ fun Any.jScrollPanel(
 fun Any.jLine(): JSeparator {
     val jLine = JSeparator(SwingConstants.CENTER).apply {
         maximumSize = JBDimension(10000, 10)
-        background = Color.GRAY
+        background = JBColor.GRAY
     }
     checkAddView(this, jLine)
     return jLine
@@ -307,7 +310,7 @@ fun Any.jGridLayout(rows: Int, columns: Int, init: JPanel.() -> Unit = {}): JPan
 /**
  * generate a icon component
  */
-fun Any.jIcon(icon:Icon, init: JLabel.() -> Unit = {}): JLabel {
+fun Any.jIcon(icon: Icon, init: JLabel.() -> Unit = {}): JLabel {
     return JBLabel(icon).also {
         it.init()
         checkAddView(this, it)

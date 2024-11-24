@@ -1,7 +1,7 @@
 package com.godwin.jsonparser.generator_kt.extensions.xu.rui
 
 import com.godwin.jsonparser.generator_kt.extensions.Extension
-import com.godwin.jsonparser.generator_kt.jsontokotlin.model.ConfigManager
+import com.godwin.jsonparser.generator_kt.jsontokotlin.model.KotlinConfigManager
 import com.godwin.jsonparser.generator_kt.jsontokotlin.model.DefaultValueStrategy
 import com.godwin.jsonparser.generator_kt.jsontokotlin.model.classscodestruct.DataClass
 import com.godwin.jsonparser.generator_kt.jsontokotlin.model.classscodestruct.KotlinClass
@@ -32,7 +32,7 @@ object PrimitiveTypeNonNullableSupport : Extension() {
             val primitiveTypeNonNullableProperties = kotlinClass.properties.map {
                 if (it.type in NULLABLE_PRIMITIVE_TYPES) {
                     val newType = getNonNullPrimitiveType(it.type)
-                    if (ConfigManager.defaultValueStrategy != DefaultValueStrategy.None) {
+                    if (KotlinConfigManager.defaultValueStrategy != DefaultValueStrategy.None) {
                         it.copy(type = newType, value = getDefaultValue(newType))
                     } else {
                         it.copy(type = newType)
@@ -50,8 +50,11 @@ object PrimitiveTypeNonNullableSupport : Extension() {
 
     override fun createUI(): JPanel {
         return jHorizontalLinearLayout {
-            jCheckBox("Force Primitive Type Property Non-Nullable", getConfig(configKey).toBoolean(), { isSelected -> setConfig(
-                configKey, isSelected.toString()) })
+            jCheckBox("Force Primitive Type Property Non-Nullable", getConfig(configKey).toBoolean(), { isSelected ->
+                setConfig(
+                    configKey, isSelected.toString()
+                )
+            })
             fillSpace()
         }
     }

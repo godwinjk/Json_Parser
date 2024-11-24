@@ -1,8 +1,11 @@
 package com.godwin.jsonparser.generator_kt.jsontokotlin
 
-import com.godwin.jsonparser.generator_kt.jsontokotlin.feedback.dealWithException
+import com.godwin.jsonparser.generator.jsontodart.DartCodeMaker
+import com.godwin.jsonparser.generator.jsontodart.filetype.GenFileType
+import com.godwin.jsonparser.generator.jsontodart.utils.ClassCodeFilter
+import com.godwin.jsonparser.generator.jsontodart.utils.DartClassFileGenerator
 import com.godwin.jsonparser.generator_kt.jsontokotlin.interceptor.InterceptorManager
-import com.godwin.jsonparser.generator_kt.jsontokotlin.model.ConfigManager
+import com.godwin.jsonparser.generator_kt.jsontokotlin.model.KotlinConfigManager
 import com.godwin.jsonparser.generator_kt.jsontokotlin.model.UnSupportJsonException
 import com.godwin.jsonparser.generator_kt.jsontokotlin.ui.JsonInputDialog
 import com.godwin.jsonparser.generator_kt.jsontokotlin.utils.KotlinClassFileGenerator
@@ -25,10 +28,9 @@ import com.intellij.psi.impl.file.PsiDirectoryFactory
 /**
  * Created by Seal.Wu on 2018/4/18.
  */
-class GenerateKotlinFileAction : AnAction("Kotlin Class from JSON") {
+class GenerateKotlinFileAction : AnAction("Kotlin/Dart from JSON") {
 
     override fun actionPerformed(event: AnActionEvent) {
-        var jsonString = ""
         try {
             val project = event.getData(PlatformDataKeys.PROJECT) ?: return
 
@@ -40,11 +42,9 @@ class GenerateKotlinFileAction : AnAction("Kotlin Class from JSON") {
                 is PsiFile -> navigatable.containingDirectory
                 else -> {
                     val root = ModuleRootManager.getInstance(module)
-                    root.sourceRoots
-                        .asSequence()
-                        .mapNotNull {
-                            PsiManager.getInstance(project).findDirectory(it)
-                        }.firstOrNull()
+                    root.sourceRoots.asSequence().mapNotNull {
+                        PsiManager.getInstance(project).findDirectory(it)
+                    }.firstOrNull()
                 }
             } ?: return
 
@@ -57,25 +57,57 @@ class GenerateKotlinFileAction : AnAction("Kotlin Class from JSON") {
             val className = inputDialog.getClassName()
             val inputString = inputDialog.inputString.takeIf { it.isNotEmpty() } ?: return
 
-            jsonString = inputString
-            doGenerateKotlinDataClassFileAction(
-                className,
-                inputString,
-                packageDeclare,
-                project,
-                psiFileFactory,
-                directory
+            val fileType = inputDialog.getFileType()
+            generate(
+                className, inputString, packageDeclare, project, psiFileFactory, directory, fileType
             )
         } catch (e: UnSupportJsonException) {
             val advice = e.advice
             Messages.showInfoMessage(dealWithHtmlConvert(advice), "Tip")
         } catch (e: Throwable) {
-            dealWithException(jsonString, e)
+//            dealWithException(jsonString, e)
             throw e
         }
     }
 
     private fun dealWithHtmlConvert(advice: String) = advice.replace("<", "&lt;").replace(">", "&gt;")
+
+    private fun generate(
+        className: String,
+        json: String,
+        packageDeclare: String,
+        project: Project?,
+        psiFileFactory: PsiFileFactory,
+        directory: PsiDirectory,
+        fileType: GenFileType
+    ) {
+        if (fileType == GenFileType.Kotlin) {
+            doGenerateKotlinDataClassFileAction(
+                className, json, packageDeclare, project, psiFileFactory, directory
+            )
+        } else {
+            doGenerateDartClass(
+                className, json, packageDeclare, project, psiFileFactory, directory
+            )
+        }
+    }
+
+    private fun doGenerateDartClass(
+        className: String,
+        json: String,
+        packageDeclare: String,
+        project: Project?,
+        psiFileFactory: PsiFileFactory,
+        directory: PsiDirectory,
+    ) {
+        val generatedClassesString = DartCodeMaker(className, json).makeDartClassData()
+
+        val removeDuplicateClassCode = ClassCodeFilter.removeDuplicateClassCode(generatedClassesString)
+
+        DartClassFileGenerator().generateMultipleDataClassFiles(
+            removeDuplicateClassCode, packageDeclare, project, psiFileFactory, directory, json
+        )
+    }
 
     private fun doGenerateKotlinDataClassFileAction(
         className: String,
@@ -83,20 +115,14 @@ class GenerateKotlinFileAction : AnAction("Kotlin Class from JSON") {
         packageDeclare: String,
         project: Project?,
         psiFileFactory: PsiFileFactory,
-        directory: PsiDirectory
+        directory: PsiDirectory,
     ) {
         val kotlinClass = KotlinClassMaker(className, json).makeKotlinClass()
         val dataClassAfterApplyInterceptor =
             kotlinClass.applyInterceptors(InterceptorManager.getEnabledKotlinDataClassInterceptors())
-        if (ConfigManager.isInnerClassModel) {
-
+        if (KotlinConfigManager.isInnerClassModel) {
             KotlinClassFileGenerator().generateSingleKotlinClassFile(
-                packageDeclare,
-                dataClassAfterApplyInterceptor,
-                project,
-                psiFileFactory,
-                directory,
-                json
+                packageDeclare, dataClassAfterApplyInterceptor, project, psiFileFactory, directory, json
             )
         } else {
             KotlinClassFileGenerator().generateMultipleKotlinClassFiles(

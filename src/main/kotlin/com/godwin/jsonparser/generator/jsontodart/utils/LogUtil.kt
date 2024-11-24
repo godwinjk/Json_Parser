@@ -1,8 +1,8 @@
 package com.godwin.jsonparser.generator.jsontodart.utils
 
-import com.intellij.openapi.diagnostic.LoggerRt
+import com.godwin.jsonparser.constants.PLUGIN_NAME
 import com.godwin.jsonparser.generator.jsontodart.test.TestConfig
-import java.io.File
+import com.intellij.openapi.diagnostic.LoggerRt
 import java.util.logging.Logger
 
 /**
@@ -30,7 +30,7 @@ object LogUtil {
         if (TestConfig.isTestModel) {
             e.printStackTrace()
         } else {
-            LoggerRt.getInstance(PLUGIN_NAME).error(message,e)
+            LoggerRt.getInstance(PLUGIN_NAME).error(message, e)
         }
     }
 }

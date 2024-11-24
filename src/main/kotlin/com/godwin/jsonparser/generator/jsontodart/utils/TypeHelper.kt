@@ -1,10 +1,10 @@
 package com.godwin.jsonparser.generator.jsontodart.utils
 
+import com.godwin.jsonparser.generator.jsontodart.codeelements.KClassName
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import com.google.gson.JsonPrimitive
-import com.godwin.jsonparser.generator.jsontodart.codeelements.KClassName
 import java.util.*
 
 /**
@@ -37,13 +37,14 @@ fun getPrimitiveType(jsonPrimitive: JsonPrimitive): String {
             jsonPrimitive.asLong > Integer.MAX_VALUE -> TYPE_LONG
             else -> TYPE_INT
         }
+
         jsonPrimitive.isString -> TYPE_STRING
         else -> TYPE_STRING
     }
 }
 
 fun String.isPrimitiveType(): Boolean {
-    return this == TYPE_STRING || this == TYPE_STRING || this == TYPE_INT || this == TYPE_LONG || this == TYPE_DOUBLE || this == TYPE_BOOLEAN
+    return this == TYPE_STRING || this == TYPE_LONG || this == TYPE_INT || this == TYPE_DOUBLE || this == TYPE_BOOLEAN
 }
 
 fun String.isListType(): Boolean {
@@ -75,7 +76,7 @@ fun getArrayType(propertyName: String, jsonElementValue: JsonArray): String {
         val next = iterator.next()
         subType = when {
             next.isJsonPrimitive -> getPrimitiveType(next.asJsonPrimitive)
-            next.isJsonObject ->  getJsonObjectType(preSubType)
+            next.isJsonObject -> getJsonObjectType(preSubType)
             next.isJsonArray && jsonElementValue.size() == 1 -> getArrayType(preSubType, next.asJsonArray)
             else -> DEFAULT_TYPE
         }

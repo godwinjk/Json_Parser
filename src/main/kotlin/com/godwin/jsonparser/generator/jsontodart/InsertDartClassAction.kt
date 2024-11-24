@@ -1,6 +1,10 @@
 package com.godwin.jsonparser.generator.jsontodart
 
+import com.godwin.jsonparser.generator.jsontodart.ui.JsonInputDialog
 import com.godwin.jsonparser.generator.jsontodart.utils.ClassCodeFilter
+import com.godwin.jsonparser.generator.jsontodart.utils.containsAnyOf
+import com.godwin.jsonparser.generator.jsontodart.utils.executeCouldRollBackAction
+import com.godwin.jsonparser.generator.jsontodart.utils.numberOf
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.PlatformDataKeys
@@ -9,8 +13,6 @@ import com.intellij.openapi.editor.Document
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.Messages
-import com.godwin.jsonparser.generator.jsontodart.ui.JsonInputDialog
-import com.godwin.jsonparser.generator.jsontodart.utils.*
 import java.net.URL
 import java.util.*
 
@@ -29,12 +31,13 @@ class InsertDartClassAction : AnAction("Dart Class from JSON") {
             if (couldNotInsertCode(editor)) return
             val document = editor?.document ?: return
             val editorText = document.text
+
             /**
              *  temp class name for insert
              */
             var tempClassName = ""
             val couldGetAndReuseClassNameInCurrentEditFileForInsertCode =
-                    couldGetAndReuseClassNameInCurrentEditFileForInsertCode(editorText)
+                couldGetAndReuseClassNameInCurrentEditFileForInsertCode(editorText)
 
             if (couldGetAndReuseClassNameInCurrentEditFileForInsertCode) {
                 /**
@@ -74,39 +77,42 @@ class InsertDartClassAction : AnAction("Dart Class from JSON") {
     private fun dealWithHtmlConvert(advice: String) = advice.replace("<", "&lt;").replace(">", "&gt;")
 
     private fun reuseClassName(
-            couldGetAndReuseClassNameInCurrentEditFileForInserCode: Boolean,
-            className: String,
-            tempClassName: String
+        couldGetAndReuseClassNameInCurrentEditFileForInserCode: Boolean,
+        className: String,
+        tempClassName: String
     ) = couldGetAndReuseClassNameInCurrentEditFileForInserCode && className == tempClassName
 
     private fun couldNotInsertCode(editor: Editor?): Boolean {
         if (editor == null || editor.document.isWritable.not()) {
-            Messages.showWarningDialog("Please open a file in edited state for inserting Kotlin code!", "No Edited File")
+            Messages.showWarningDialog(
+                "Please open a file in edited state for inserting Kotlin code!",
+                "No Edited File"
+            )
             return true
         }
         return false
     }
 
     private fun insertKotlinCode(
-            project: Project?,
-            document: Document,
-            className: String,
-            jsonString: String,
-            caret: Caret?
+        project: Project?,
+        document: Document,
+        className: String,
+        jsonString: String,
+        caret: Caret?
     ): Boolean {
-        ClassImportDeclarationWriter.insertImportClassCode(project, document)
+        ClassImportDeclarationWriter.insertImportClassCode(project, document, className)
 
-        val codeMaker: KotlinDataClassCodeMaker
+        val codeMaker: DartDataClassCodeMaker
         try {
             //passing current file directory along with className and json
-            codeMaker = KotlinDataClassCodeMaker(className, jsonString)
+            codeMaker = DartDataClassCodeMaker(className, jsonString)
         } catch (e: IllegalFormatFlagsException) {
             e.printStackTrace()
             Messages.showErrorDialog(e.message, "UnSupport Json")
             return false
         }
 
-        val generateClassesString = codeMaker.makeKotlinDataClassCode()
+        val generateClassesString = codeMaker.makeDartDataClassCode()
 
         executeCouldRollBackAction(project) {
             var offset: Int
@@ -118,12 +124,14 @@ class InsertDartClassAction : AnAction("Dart Class from JSON") {
                     offset = document.textLength
                 }
                 val lastPackageKeywordLineEndIndex = try {
-                    "^[\\s]*package\\s.+\n$".toRegex(RegexOption.MULTILINE).findAll(document.text).last().range.endInclusive
+                    "^[\\s]*package\\s.+\n$".toRegex(RegexOption.MULTILINE).findAll(document.text)
+                        .last().range.endInclusive
                 } catch (e: Exception) {
                     -1
                 }
                 val lastImportKeywordLineEndIndex = try {
-                    "^[\\s]*import\\s.+\n$".toRegex(RegexOption.MULTILINE).findAll(document.text).last().range.endInclusive
+                    "^[\\s]*import\\s.+\n$".toRegex(RegexOption.MULTILINE).findAll(document.text)
+                        .last().range.endInclusive
                 } catch (e: Exception) {
                     -1
                 }
@@ -138,8 +146,8 @@ class InsertDartClassAction : AnAction("Dart Class from JSON") {
                 offset = document.textLength
             }
             document.insertString(
-                    Math.max(offset, 0),
-                    ClassCodeFilter.removeDuplicateClassCode(generateClassesString)
+                Math.max(offset, 0),
+                ClassCodeFilter.removeDuplicateClassCode(generateClassesString)
             )
         }
         return true
@@ -156,7 +164,7 @@ class InsertDartClassAction : AnAction("Dart Class from JSON") {
     }
 
     fun getCurrentEditFileTemClassName(editorText: String) = editorText.substringAfterLast("class")
-            .substringBefore("(").substringBefore("{").trim()
+        .substringBefore("(").substringBefore("{").trim()
 
     /**
      * whether we could reuse current class name declared in the edit file for inserting data class code

@@ -3,13 +3,18 @@ package com.godwin.jsonparser.generator.jsontodart.utils.classblockparse
 import com.godwin.jsonparser.generator.jsontodart.utils.getCommentCode
 import com.godwin.jsonparser.generator.jsontodart.utils.getIndent
 
-data class ParsedKotlinDataClass(val annotations: List<String>, val name: String, val properties: List<Property>) {
+data class ParsedDartDataClass(
+    val annotations: List<String>,
+    val name: String,
+    val fileName: String,
+    val properties: List<Property>
+) {
 
     companion object {
         /**
          * Represent this is Not a ParsedKotlinDataClass Type
          */
-        val NONE = ParsedKotlinDataClass(listOf(), "", listOf())
+        val NONE = ParsedDartDataClass(listOf(), "", "", listOf())
     }
 
     override fun toString(): String {
@@ -38,7 +43,7 @@ data class ParsedKotlinDataClass(val annotations: List<String>, val name: String
         val propertyValue: String,
         val propertyComment: String,
         val isLastProperty: Boolean,
-        var kotlinDataClassPropertyTypeRef: ParsedKotlinDataClass = NONE
+        var kotlinDataClassPropertyTypeRef: ParsedDartDataClass = NONE
     ) {
         override fun toString(): String {
             val indent = getIndent()
@@ -82,6 +87,5 @@ data class ParsedKotlinDataClass(val annotations: List<String>, val name: String
 
             }
         }
-
     }
 }

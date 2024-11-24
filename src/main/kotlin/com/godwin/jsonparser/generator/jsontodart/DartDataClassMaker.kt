@@ -1,59 +1,64 @@
 package com.godwin.jsonparser.generator.jsontodart
 
 
-import com.godwin.jsonparser.generator.jsontodart.classscodestruct.KotlinDataClass
-import com.godwin.jsonparser.generator.jsontodart.utils.ClassCodeFilter
+import com.godwin.jsonparser.generator.jsontodart.classscodestruct.DartClass
 import com.godwin.jsonparser.generator.jsontodart.codeelements.getDefaultValue
 import com.godwin.jsonparser.generator.jsontodart.utils.*
 import com.godwin.jsonparser.generator.jsontodart.utils.classblockparse.ClassCodeParser
-import com.godwin.jsonparser.generator.jsontodart.utils.classblockparse.ParsedKotlinDataClass
+import com.godwin.jsonparser.generator.jsontodart.utils.classblockparse.ParsedDartDataClass
 
-class KotlinDataClassMaker(private val rootClassName: String, private val json: String) {
+class DartDataClassMaker(private val rootClassName: String, private val json: String) {
 
     private val renamedClassNames = mutableListOf<Pair<String, String>>()
 
-    fun makeKotlinDataClasses(): List<KotlinDataClass> {
+    fun makeDartDataClasses(): List<DartClass> {
 
-        val codeMaker = KotlinCodeMaker(rootClassName, json)
+        val codeMaker = DartCodeMaker(rootClassName, json)
 
         //code string after removing duplicate class structure code
-        val code = ClassCodeFilter.removeDuplicateClassCode(codeMaker.makeKotlinData())
+        val code = ClassCodeFilter.removeDuplicateClassCode(codeMaker.makeDartClassData())
 
         // create the list of non duplicate classes
-        val parsedKotlinClasses: List<ParsedKotlinDataClass> =
-                makeKotlinDataClasses(code)
+        val parsedClasses: List<ParsedDartDataClass> =
+            makeDartDataClasses(code)
 
-        return parsedKotlinClasses.map {
-            KotlinDataClass.fromParsedKotlinDataClass(it)
+        return parsedClasses.map {
+            DartClass.fromParsedDartClass(it)
         }
     }
 
     // method to make in class data classes for JsonToKotlinClass, renames same class name to different
-    private fun makeKotlinDataClasses(
-            removeDuplicateClassCode: String): List<ParsedKotlinDataClass> {
+    private fun makeDartDataClasses(
+        removeDuplicateClassCode: String
+    ): List<ParsedDartDataClass> {
 
-        val kotlinClasses = generateKotlinDataClassesWithNonConflictNames(removeDuplicateClassCode = removeDuplicateClassCode)
+        val classes =
+            generateClassesWithNonConflictNames(removeDuplicateClassCode = removeDuplicateClassCode)
 
         val notifyMessage = buildString {
-            append("${kotlinClasses.size} Dart Classes generated successful")
+            append("${classes.size} Dart Classes generated successful")
             if (renamedClassNames.isNotEmpty()) {
                 append("\n")
-                append("These class names has been auto renamed to new names:\n ${renamedClassNames.map { it.first + " -> " + it.second }.toList()}")
+                append(
+                    "These class names has been auto renamed to new names:\n ${
+                        renamedClassNames.map { it.first + " -> " + it.second }.toList()
+                    }"
+                )
             }
         }
         showNotify(notifyMessage, null)
 
 
-        return kotlinClasses
+        return classes
     }
 
 
     /**
      * generates Dart classes without having any class name conflicts
      */
-    fun generateKotlinDataClassesWithNonConflictNames(removeDuplicateClassCode: String): List<ParsedKotlinDataClass> {
+    fun generateClassesWithNonConflictNames(removeDuplicateClassCode: String): List<ParsedDartDataClass> {
         val classes =
-                getClassesStringList(removeDuplicateClassCode).map { ClassCodeParser(it).getKotlinDataClass() }
+            getClassesStringList(removeDuplicateClassCode).map { ClassCodeParser(it).getDartDataClass() }
 
         /**
          * Build Property Type reference to ParsedKotlinDataClass
@@ -63,10 +68,10 @@ class KotlinDataClassMaker(private val rootClassName: String, private val json: 
 
         val newClassNames = getNoneConflictClassNames(buildRefClasses)
 
-        val newKotlinClasses = updateClassNames(buildRefClasses, newClassNames)
+        val newClass = updateClassNames(buildRefClasses, newClassNames)
 
 
-        return synchronizedPropertyTypeWithTypeRef(newKotlinClasses)
+        return synchronizedPropertyTypeWithTypeRef(newClass)
 
     }
 
@@ -75,7 +80,8 @@ class KotlinDataClassMaker(private val rootClassName: String, private val json: 
      * gets the list of non conflicting class names by appending extra character
      */
     fun getNoneConflictClassNames(
-            buildRefClasses: List<ParsedKotlinDataClass>): List<String> {
+        buildRefClasses: List<ParsedDartDataClass>
+    ): List<String> {
 
         val resolveSameConflictClassesNames = mutableListOf<String>()
         buildRefClasses.forEach {
@@ -92,9 +98,9 @@ class KotlinDataClassMaker(private val rootClassName: String, private val json: 
      * updates the class names with renamed class names
      */
     fun updateClassNames(
-            dataClasses: List<ParsedKotlinDataClass>,
-            newClassNames: List<String>
-    ): List<ParsedKotlinDataClass> {
+        dataClasses: List<ParsedDartDataClass>,
+        newClassNames: List<String>
+    ): List<ParsedDartDataClass> {
 
         val newKotlinClasses = dataClasses.toMutableList()
 
@@ -115,9 +121,9 @@ class KotlinDataClassMaker(private val rootClassName: String, private val json: 
     }
 
     private fun updateTypeRef(
-            classes: List<ParsedKotlinDataClass>,
-            originDataClass: ParsedKotlinDataClass,
-            newKotlinDataClass: ParsedKotlinDataClass
+        classes: List<ParsedDartDataClass>,
+        originDataClass: ParsedDartDataClass,
+        newKotlinDataClass: ParsedDartDataClass
     ) {
         classes.forEach {
             it.properties.forEach { p ->
@@ -131,16 +137,22 @@ class KotlinDataClassMaker(private val rootClassName: String, private val json: 
     /**
      * Returns list of Classes with synchronized property based on renamed classes
      */
-    fun synchronizedPropertyTypeWithTypeRef(unSynchronizedTypeClasses: List<ParsedKotlinDataClass>): List<ParsedKotlinDataClass> {
-        return unSynchronizedTypeClasses.map { dataClass: ParsedKotlinDataClass ->
+    fun synchronizedPropertyTypeWithTypeRef(unSynchronizedTypeClasses: List<ParsedDartDataClass>): List<ParsedDartDataClass> {
+        return unSynchronizedTypeClasses.map { dataClass: ParsedDartDataClass ->
 
             val newProperties = dataClass.properties.map { property ->
-                if (property.kotlinDataClassPropertyTypeRef != ParsedKotlinDataClass.NONE) {
+                if (property.kotlinDataClassPropertyTypeRef != ParsedDartDataClass.NONE) {
                     val rawPropertyReferenceType = getRawType(getChildType(property.propertyType))
                     val tobeReplaceNewType =
-                            property.propertyType.replace(rawPropertyReferenceType, property.kotlinDataClassPropertyTypeRef.name)
+                        property.propertyType.replace(
+                            rawPropertyReferenceType,
+                            property.kotlinDataClassPropertyTypeRef.name
+                        )
                     if (property.propertyValue.isNotBlank()) {
-                        property.copy(propertyType = tobeReplaceNewType, propertyValue = getDefaultValue(tobeReplaceNewType))
+                        property.copy(
+                            propertyType = tobeReplaceNewType,
+                            propertyValue = getDefaultValue(tobeReplaceNewType)
+                        )
                     } else
                         property.copy(propertyType = tobeReplaceNewType)
                 } else {
@@ -154,9 +166,9 @@ class KotlinDataClassMaker(private val rootClassName: String, private val json: 
     /**
      * builds the reference for each property in the data classes
      */
-    fun buildTypeReference(classes: List<ParsedKotlinDataClass>): List<ParsedKotlinDataClass> {
+    fun buildTypeReference(classes: List<ParsedDartDataClass>): List<ParsedDartDataClass> {
 
-        val notBeenReferencedClass = mutableListOf<ParsedKotlinDataClass>().apply {
+        val notBeenReferencedClass = mutableListOf<ParsedDartDataClass>().apply {
             addAll(classes)
             removeAt(0)
         }
@@ -170,10 +182,14 @@ class KotlinDataClassMaker(private val rootClassName: String, private val json: 
         return classes
     }
 
-    private fun buildClassTypeReference(tobeBuildTypeReferenceClass: ParsedKotlinDataClass, classNameList: MutableList<String>, notBeenReferencedClass: MutableList<ParsedKotlinDataClass>) {
+    private fun buildClassTypeReference(
+        tobeBuildTypeReferenceClass: ParsedDartDataClass,
+        classNameList: MutableList<String>,
+        notBeenReferencedClass: MutableList<ParsedDartDataClass>
+    ) {
         tobeBuildTypeReferenceClass.properties.forEach { property ->
             val indexOfClassName =
-                    classNameList.indexOf(getRawType(getChildType(property.propertyType)))
+                classNameList.indexOf(getRawType(getChildType(property.propertyType)))
             if (indexOfClassName != -1) {
                 val referencedClass = notBeenReferencedClass[indexOfClassName]
                 notBeenReferencedClass.remove(referencedClass)
@@ -181,7 +197,7 @@ class KotlinDataClassMaker(private val rootClassName: String, private val json: 
                 notBeenReferencedClass.remove(referencedClass)
                 property.kotlinDataClassPropertyTypeRef = referencedClass
 
-                buildClassTypeReference(referencedClass,classNameList,notBeenReferencedClass)
+                buildClassTypeReference(referencedClass, classNameList, notBeenReferencedClass)
 
             }
         }

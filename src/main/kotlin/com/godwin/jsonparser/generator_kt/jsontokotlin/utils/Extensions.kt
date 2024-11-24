@@ -3,8 +3,6 @@ package com.godwin.jsonparser.generator_kt.jsontokotlin.utils
 import com.godwin.jsonparser.generator_kt.jsontokotlin.model.classscodestruct.DataClass
 import com.godwin.jsonparser.generator_kt.jsontokotlin.model.classscodestruct.KotlinClass
 import com.google.gson.*
-
-import java.lang.StringBuilder
 import java.util.regex.Pattern
 
 /**
@@ -223,6 +221,7 @@ fun JsonPrimitive.toKotlinClass(): KotlinClass {
             asLong > Integer.MAX_VALUE || asLong < Integer.MIN_VALUE -> KotlinClass.LONG
             else -> KotlinClass.INT
         }
+
         isString -> KotlinClass.STRING
         else -> KotlinClass.STRING
     }
@@ -245,8 +244,18 @@ fun String.toJavaDocMultilineComment(): String {
         ""
     } else {
         "/**\n" +
-            "$this\n" +
-            "*/\n"
+                "$this\n" +
+                "*/\n"
+    }
+}
+
+fun String.toDartDocMultilineComment(): String {
+    return if (this.isBlank()) {
+        ""
+    } else {
+        "/*\n" +
+                "$this\n" +
+                "*/\n"
     }
 }
 

@@ -1,9 +1,9 @@
 package com.godwin.jsonparser.generator.jsontodart.ui
 
+import com.godwin.jsonparser.generator.jsontodart.utils.addComponentIntoVerticalBoxAlignmentLeft
+import com.godwin.jsonparser.generator_kt.jsontokotlin.model.DartConfigManager
 import com.intellij.util.ui.JBDimension
 import com.intellij.util.ui.JBUI
-import com.godwin.jsonparser.generator.jsontodart.ConfigManager
-import com.godwin.jsonparser.generator.jsontodart.utils.addComponentIntoVerticalBoxAlignmentLeft
 import java.awt.FlowLayout
 import java.awt.LayoutManager
 import javax.swing.*
@@ -32,15 +32,15 @@ class AdvancedPropertyTab(layout: LayoutManager?, isDoubleBuffered: Boolean) : J
         val radioButtonNone = JRadioButton("None")
 
         radioButtonNone.addActionListener {
-            ConfigManager.isPropertiesFinal = false
+            DartConfigManager.isPropertyFinal = false
         }
         val radioButtonFinal = JRadioButton("final")
 
         radioButtonFinal.addActionListener {
-            ConfigManager.isPropertiesFinal = true
+            DartConfigManager.isPropertyFinal = true
         }
 
-        if (ConfigManager.isPropertiesFinal) {
+        if (DartConfigManager.isPropertyFinal) {
 
             radioButtonFinal.isSelected = true
         } else {

@@ -1,13 +1,13 @@
 package com.godwin.jsonparser.generator.jsontodart.utils.classblockparse
 
-import com.godwin.jsonparser.generator.jsontodart.classscodestruct.KotlinDataClass
+import com.godwin.jsonparser.generator.jsontodart.classscodestruct.DartClass
 import com.godwin.jsonparser.generator.jsontodart.utils.getClassesStringList
 
 class NormalClassesCodeParser(private val classesCode: String) {
-    fun parse(): List<KotlinDataClass> {
+    fun parse(): List<DartClass> {
         return getClassesStringList(classesCode)
             .map {
-                KotlinDataClass.fromParsedKotlinDataClass(ClassCodeParser(it).getKotlinDataClass())
+                DartClass.fromParsedDartClass(ClassCodeParser(it).getDartDataClass())
             }
     }
 }

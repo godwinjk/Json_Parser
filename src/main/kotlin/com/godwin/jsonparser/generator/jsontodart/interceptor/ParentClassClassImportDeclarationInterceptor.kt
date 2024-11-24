@@ -1,6 +1,6 @@
 package com.godwin.jsonparser.generator.jsontodart.interceptor
 
-import com.godwin.jsonparser.generator.jsontodart.ConfigManager
+import com.godwin.jsonparser.generator_kt.jsontokotlin.model.DartConfigManager
 
 
 /**
@@ -8,10 +8,9 @@ import com.godwin.jsonparser.generator.jsontodart.ConfigManager
  */
 class ParentClassClassImportDeclarationInterceptor : IImportClassDeclarationInterceptor {
 
-    override fun intercept(originClassImportDeclaration: String): String {
-
-        val parentClassImportDeclaration = "import ${ConfigManager.parenClassTemplate.substringBeforeLast("(").trim()}"
-
+    override fun intercept(originClassImportDeclaration: String, fileName: String): String {
+        val parentClassImportDeclaration =
+            "import ${DartConfigManager.parenClassTemplate.substringBeforeLast("(").trim()}"
         return "$originClassImportDeclaration\n$parentClassImportDeclaration".trim()
     }
 }

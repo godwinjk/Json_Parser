@@ -1,11 +1,10 @@
 package com.godwin.jsonparser.generator.jsontodart
 
 import com.godwin.jsonparser.generator.jsontodart.interceptor.InterceptorManager
-import com.intellij.openapi.editor.Document
-import com.intellij.openapi.project.Project
 import com.godwin.jsonparser.generator.jsontodart.utils.ClassImportDeclaration
 import com.godwin.jsonparser.generator.jsontodart.utils.executeCouldRollBackAction
-import com.godwin.jsonparser.generatorjsontodart.IClassImportDeclarationWriter
+import com.intellij.openapi.editor.Document
+import com.intellij.openapi.project.Project
 
 /**
  * to be a helper to insert Import class declare code
@@ -16,12 +15,11 @@ import com.godwin.jsonparser.generatorjsontodart.IClassImportDeclarationWriter
 object ClassImportDeclarationWriter : IClassImportDeclarationWriter {
 
 
-    override fun insertImportClassCode(project: Project?, editFile: Document) {
-
+    override fun insertImportClassCode(project: Project?, editFile: Document, className: String) {
         val text = editFile.text
 
         val interceptedImportClassDeclaration = ClassImportDeclaration.applyImportClassDeclarationInterceptors(
-                InterceptorManager.getEnabledImportClassDeclarationInterceptors()
+            InterceptorManager.getEnabledImportClassDeclarationInterceptors(), className
         )
 
         interceptedImportClassDeclaration.split("\n").forEach { importClassLineString ->
@@ -40,7 +38,7 @@ object ClassImportDeclarationWriter : IClassImportDeclarationWriter {
                 }
                 val index = Math.max(lastImportKeywordIndex, packageIndex)
                 val insertIndex =
-                        if (index == -1) 0 else editFile.getLineEndOffset(editFile.getLineNumber(index))
+                    if (index == -1) 0 else editFile.getLineEndOffset(editFile.getLineNumber(index))
 
                 executeCouldRollBackAction(project) {
                     editFile.insertString(insertIndex, "\n" + importClassLineString + "\n")

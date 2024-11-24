@@ -1,6 +1,6 @@
 package com.godwin.jsonparser.generator_kt.jsontokotlin.interceptor
 
-import com.godwin.jsonparser.generator_kt.jsontokotlin.model.ConfigManager
+import com.godwin.jsonparser.generator_kt.jsontokotlin.model.KotlinConfigManager
 import com.godwin.jsonparser.generator_kt.jsontokotlin.model.DefaultValueStrategy
 import com.godwin.jsonparser.generator_kt.jsontokotlin.model.classscodestruct.DataClass
 import com.godwin.jsonparser.generator_kt.jsontokotlin.model.classscodestruct.KotlinClass
@@ -14,8 +14,9 @@ class InitWithDefaultValueInterceptor : IKotlinClassInterceptor<KotlinClass> {
 
             val initWithDefaultValueProperties = dataClass.properties.map {
 
-                val initDefaultValue = if (ConfigManager.defaultValueStrategy == DefaultValueStrategy.AvoidNull) getDefaultValue(it.type)
-                else getDefaultValueAllowNull(it.type)
+                val initDefaultValue =
+                    if (KotlinConfigManager.defaultValueStrategy == DefaultValueStrategy.AvoidNull) getDefaultValue(it.type)
+                    else getDefaultValueAllowNull(it.type)
                 it.copy(value = initDefaultValue)
             }
 

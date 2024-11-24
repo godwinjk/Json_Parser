@@ -2,7 +2,7 @@ package com.godwin.jsonparser.generator_kt.jsontokotlin.utils
 
 import com.godwin.jsonparser.generator_kt.jsontokotlin.interceptor.IKotlinClassInterceptor
 import com.godwin.jsonparser.generator_kt.jsontokotlin.interceptor.InterceptorManager
-import com.godwin.jsonparser.generator_kt.jsontokotlin.model.ConfigManager
+import com.godwin.jsonparser.generator_kt.jsontokotlin.model.KotlinConfigManager
 import com.godwin.jsonparser.generator_kt.jsontokotlin.model.classscodestruct.KotlinClass
 
 
@@ -16,7 +16,7 @@ class KotlinClassCodeMaker(private val kotlinClass: KotlinClass, private val gen
     private fun makeKotlinClassCode(interceptors: List<IKotlinClassInterceptor<KotlinClass>>): String {
         var kotlinClassForCodeGenerate = kotlinClass
         kotlinClassForCodeGenerate = kotlinClassForCodeGenerate.applyInterceptors(interceptors)
-        return if (ConfigManager.isInnerClassModel) {
+        return if (KotlinConfigManager.isInnerClassModel) {
             kotlinClassForCodeGenerate.getCode()
         } else {
             val resolveNameConflicts = kotlinClassForCodeGenerate.resolveNameConflicts()

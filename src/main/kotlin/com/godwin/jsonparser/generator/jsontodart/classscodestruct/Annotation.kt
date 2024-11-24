@@ -1,7 +1,7 @@
 package com.godwin.jsonparser.generator.jsontodart.classscodestruct
 
-import com.godwin.jsonparser.generator.jsontodart.ConfigManager
 import com.godwin.jsonparser.generator.jsontodart.utils.numberOf
+import com.godwin.jsonparser.generator_kt.jsontokotlin.model.DartConfigManager
 
 data class Annotation(val annotationTemplate: String, val rawName: String) {
 
@@ -28,7 +28,7 @@ data class Annotation(val annotationTemplate: String, val rawName: String) {
                 }
                 val rawName = annotationString.substringAfter("\"").substringBefore("\"")
                 val annotationTemplate =
-                        annotationString.substringBefore("\"") + "\"%s\"" + annotationString.substringAfterLast("\"")
+                    annotationString.substringBefore("\"") + "\"%s\"" + annotationString.substringAfterLast("\"")
                 Annotation(annotationTemplate, rawName)
             } else {
                 Annotation(annotationString, "")
@@ -51,7 +51,7 @@ data class Annotation(val annotationTemplate: String, val rawName: String) {
                     fromMultipleLineAnnotationString(annotationString)
                 }
             } catch (e: IllegalArgumentException) {
-                val annotationTemplate = ConfigManager.customPropertyAnnotationFormatString
+                val annotationTemplate = DartConfigManager.customPropertyAnnotationFormatString
                 if (annotationTemplate.contains("%s").not()) {
                     Annotation(annotationTemplate, "")
                 } else {

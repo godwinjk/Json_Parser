@@ -1,6 +1,6 @@
 package com.godwin.jsonparser.generator_kt.jsontokotlin.utils
 
-import com.godwin.jsonparser.generator_kt.jsontokotlin.model.ConfigManager
+import com.godwin.jsonparser.generator_kt.jsontokotlin.model.KotlinConfigManager
 import com.godwin.jsonparser.generator_kt.jsontokotlin.model.PropertyTypeStrategy
 import com.godwin.jsonparser.generator_kt.jsontokotlin.model.codeelements.KClassName
 import com.google.gson.JsonArray
@@ -42,6 +42,7 @@ fun getPrimitiveType(jsonPrimitive: JsonPrimitive): String {
             jsonPrimitive.asLong > Integer.MAX_VALUE -> TYPE_LONG
             else -> TYPE_INT
         }
+
         jsonPrimitive.isString -> TYPE_STRING
         else -> TYPE_STRING
     }
@@ -65,11 +66,12 @@ fun getChildType(arrayType: String): String = arrayType.replace(Regex("List<|>")
 fun getOutType(rawType: String, value: Any?): String {
 
 
-    return when (ConfigManager.propertyTypeStrategy) {
+    return when (KotlinConfigManager.propertyTypeStrategy) {
         PropertyTypeStrategy.Nullable -> {
             val innerRawType = rawType.replace("?", "").replace(">", "?>")
             innerRawType.plus("?")
         }
+
         (PropertyTypeStrategy.AutoDeterMineNullableOrNot) -> {
             if (value == null) {
                 rawType.plus("?")
@@ -77,6 +79,7 @@ fun getOutType(rawType: String, value: Any?): String {
                 rawType
             }
         }
+
         else -> {
             rawType.replace("?", "")
         }
@@ -98,7 +101,7 @@ fun getArrayType(propertyName: String, jsonElementValue: JsonArray): String {
         val next = iterator.next()
         subType = when {
             next.isJsonPrimitive -> getPrimitiveType(next.asJsonPrimitive)
-            next.isJsonObject ->  getJsonObjectType(preSubType)
+            next.isJsonObject -> getJsonObjectType(preSubType)
             next.isJsonArray && jsonElementValue.size() == 1 -> getArrayType(preSubType, next.asJsonArray)
             else -> DEFAULT_TYPE
         }

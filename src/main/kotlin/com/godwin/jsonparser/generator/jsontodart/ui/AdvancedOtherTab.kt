@@ -1,5 +1,7 @@
 package com.godwin.jsonparser.generator.jsontodart.ui
 
+import com.godwin.jsonparser.generator.jsontodart.utils.addComponentIntoVerticalBoxAlignmentLeft
+import com.godwin.jsonparser.generator_kt.jsontokotlin.model.DartConfigManager
 import com.intellij.ui.components.JBCheckBox
 import com.intellij.ui.components.JBLabel
 import com.intellij.ui.components.JBScrollPane
@@ -7,8 +9,6 @@ import com.intellij.ui.components.JBTextField
 import com.intellij.util.ui.JBDimension
 import com.intellij.util.ui.JBEmptyBorder
 import com.intellij.util.ui.JBUI
-import com.godwin.jsonparser.generator.jsontodart.ConfigManager
-import com.godwin.jsonparser.generator.jsontodart.utils.addComponentIntoVerticalBoxAlignmentLeft
 import java.awt.FlowLayout
 import java.awt.LayoutManager
 import java.awt.event.FocusEvent
@@ -47,17 +47,18 @@ class AdvancedOtherTab(layout: LayoutManager?, isDoubleBuffered: Boolean) : JPan
         addComponentIntoVerticalBoxAlignmentLeft(jbScrollPane)
 
 
-
         val bordWidth = JBUI.scale(10)
         border = EmptyBorder(bordWidth, bordWidth, bordWidth, bordWidth)
 
         val enableComment = JBCheckBox("Enable Comment")
-        enableComment.isSelected = ConfigManager.isCommentOff.not()
-        enableComment.addActionListener { ConfigManager.isCommentOff = enableComment.isSelected.not() }
+        enableComment.isSelected = DartConfigManager.isCommentOff.not()
+        enableComment.addActionListener { DartConfigManager.isCommentOff = enableComment.isSelected.not() }
 
         val enableOrderByAlphabetical = JBCheckBox("Enable Order By Alphabetical")
-        enableOrderByAlphabetical.isSelected = ConfigManager.isOrderByAlphabetical
-        enableOrderByAlphabetical.addActionListener { ConfigManager.isOrderByAlphabetical = enableOrderByAlphabetical.isSelected }
+        enableOrderByAlphabetical.isSelected = DartConfigManager.isOrderByAlphabetical
+        enableOrderByAlphabetical.addActionListener {
+            DartConfigManager.isOrderByAlphabetical = enableOrderByAlphabetical.isSelected
+        }
 
 //        val enableMapType = JBCheckBox("Enable Map Type when JSON Field Key Is Primitive Type")
 //        enableMapType.isSelected = ConfigManager.enableMapType
@@ -84,10 +85,10 @@ class AdvancedOtherTab(layout: LayoutManager?, isDoubleBuffered: Boolean) : JPan
                 val number = try {
                     indentField.text.toInt()
                 } catch (e: Exception) {
-                    indentField.text = ConfigManager.indent.toString()
-                    ConfigManager.indent
+                    indentField.text = DartConfigManager.indent.toString()
+                    DartConfigManager.indent
                 }
-                ConfigManager.indent = number
+                DartConfigManager.indent = number
             }
 
         })
@@ -101,7 +102,7 @@ class AdvancedOtherTab(layout: LayoutManager?, isDoubleBuffered: Boolean) : JPan
                 }
             }
         })
-        indentField.text = ConfigManager.indent.toString()
+        indentField.text = DartConfigManager.indent.toString()
         indentJPanel.add(indentField)
 
         val parentClassPanel = JPanel()
@@ -110,13 +111,13 @@ class AdvancedOtherTab(layout: LayoutManager?, isDoubleBuffered: Boolean) : JPan
         parentClassPanel.layout = FlowLayout(FlowLayout.LEFT)
         parentClassPanel.add(JBLabel("Parent Class Template: "))
         val parentClassField = JBTextField(20)
-        parentClassField.text = ConfigManager.parenClassTemplate
+        parentClassField.text = DartConfigManager.parenClassTemplate
         parentClassField.addFocusListener(object : FocusListener {
             override fun focusGained(e: FocusEvent?) {
             }
 
             override fun focusLost(e: FocusEvent?) {
-                ConfigManager.parenClassTemplate = parentClassField.text
+                DartConfigManager.parenClassTemplate = parentClassField.text
             }
 
         })
@@ -124,8 +125,8 @@ class AdvancedOtherTab(layout: LayoutManager?, isDoubleBuffered: Boolean) : JPan
 
 
         val keywordPropertyValid = JBCheckBox("Make keyword property names valid")
-        keywordPropertyValid.isSelected = ConfigManager.keywordPropertyValid
-        keywordPropertyValid.addActionListener { ConfigManager.keywordPropertyValid = keywordPropertyValid.isSelected }
+//        keywordPropertyValid.isSelected = DartConfigManager.keywordPropertyValid
+//        keywordPropertyValid.addActionListener { DartConfigManager.keywordPropertyValid = keywordPropertyValid.isSelected }
 
 
         boxPanel.add(Box.createVerticalStrut(JBUI.scale(10)))
@@ -138,7 +139,7 @@ class AdvancedOtherTab(layout: LayoutManager?, isDoubleBuffered: Boolean) : JPan
 
         boxPanel.add(Box.createVerticalStrut(JBUI.scale(20)))
 
-       // boxPanel.add(Box.createVerticalStrut(JBUI.scale(20)))
+        // boxPanel.add(Box.createVerticalStrut(JBUI.scale(20)))
 
 //        boxPanel.addComponentIntoVerticalBoxAlignmentLeft(enableMapType)
 //

@@ -1,13 +1,13 @@
 package com.godwin.jsonparser.generator.jsontodart.ui
 
+import com.godwin.jsonparser.generator.jsontodart.utils.addComponentIntoVerticalBoxAlignmentLeft
+import com.godwin.jsonparser.generator_kt.jsontokotlin.model.DartConfigManager
+import com.godwin.jsonparser.generator_kt.jsontokotlin.model.TargetJsonConverter
 import com.intellij.ui.components.JBLabel
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.util.ui.JBDimension
 import com.intellij.util.ui.JBEmptyBorder
 import com.intellij.util.ui.JBUI
-import com.godwin.jsonparser.generator.jsontodart.ConfigManager
-import com.godwin.jsonparser.generator.jsontodart.TargetJsonConverter
-import com.godwin.jsonparser.generator.jsontodart.utils.addComponentIntoVerticalBoxAlignmentLeft
 import java.awt.FlowLayout
 import java.awt.GridLayout
 import java.awt.LayoutManager
@@ -61,7 +61,7 @@ class AdvancedAnnotationTab(layout: LayoutManager?, isDoubleBuffered: Boolean) :
             }
 
 
-        subBoxPanel.isVisible = ConfigManager.targetJsonConverterLib == TargetJsonConverter.Custom
+        subBoxPanel.isVisible = DartConfigManager.targetJsonConverterLib == TargetJsonConverter.Custom
 
 
         setLayout(BoxLayout(this, BoxLayout.PAGE_AXIS))
@@ -83,12 +83,12 @@ class AdvancedAnnotationTab(layout: LayoutManager?, isDoubleBuffered: Boolean) :
 
     private fun addAnnotationClassImportCodeSettingPanel(subBoxPanel: JPanel): JPanel {
 
-        val annotationImportClassTextArea = JTextArea(ConfigManager.customAnnotationClassImportdeclarationString)
+        val annotationImportClassTextArea = JTextArea(DartConfigManager.customAnnotationClassImportdeclarationString)
             .apply {
                 minimumSize = JBDimension(460, 40)
                 addFocusListener(object : FocusListener {
                     override fun focusLost(e: FocusEvent?) {
-                        ConfigManager.customAnnotationClassImportdeclarationString = text
+                        DartConfigManager.customAnnotationClassImportdeclarationString = text
                     }
 
                     override fun focusGained(e: FocusEvent?) {
@@ -121,12 +121,12 @@ class AdvancedAnnotationTab(layout: LayoutManager?, isDoubleBuffered: Boolean) :
 
     private fun addPropertyAnnotationFormatSettingPanel(subBoxPanel: JPanel) {
 
-        val annotationFormatField = JTextArea(ConfigManager.customPropertyAnnotationFormatString)
+        val annotationFormatField = JTextArea(DartConfigManager.customPropertyAnnotationFormatString)
             .apply {
                 minimumSize = JBDimension(460, 40)
                 addFocusListener(object : FocusListener {
                     override fun focusLost(e: FocusEvent?) {
-                        ConfigManager.customPropertyAnnotationFormatString = text
+                        DartConfigManager.customPropertyAnnotationFormatString = text
                     }
 
                     override fun focusGained(e: FocusEvent?) {
@@ -158,12 +158,12 @@ class AdvancedAnnotationTab(layout: LayoutManager?, isDoubleBuffered: Boolean) :
 
     private fun addClassAnnotationFormatSettingPanel(subBoxPanel: JPanel) {
 
-        val annotationClassFormatField = JTextArea(ConfigManager.customClassAnnotationFormatString)
+        val annotationClassFormatField = JTextArea(DartConfigManager.customClassAnnotationFormatString)
             .apply {
                 minimumSize = JBDimension(460, 40)
                 addFocusListener(object : FocusListener {
                     override fun focusLost(e: FocusEvent?) {
-                        ConfigManager.customClassAnnotationFormatString = text
+                        DartConfigManager.customClassAnnotationFormatString = text
                     }
 
                     override fun focusGained(e: FocusEvent?) {
@@ -231,53 +231,53 @@ class AdvancedAnnotationTab(layout: LayoutManager?, isDoubleBuffered: Boolean) :
             var radioButtonSerilizable = JRadioButton("kotlinx.serialization")
 
             radioButtonNone.addActionListener {
-                ConfigManager.targetJsonConverterLib = TargetJsonConverter.None
-                callBack(ConfigManager.targetJsonConverterLib == TargetJsonConverter.Custom)
+                DartConfigManager.targetJsonConverterLib = TargetJsonConverter.None
+                callBack(DartConfigManager.targetJsonConverterLib == TargetJsonConverter.Custom)
 
             }
             radioButtonNoneWithCamelCase.addActionListener {
-                ConfigManager.targetJsonConverterLib = TargetJsonConverter.NoneWithCamelCase
-                callBack(ConfigManager.targetJsonConverterLib == TargetJsonConverter.Custom)
+                DartConfigManager.targetJsonConverterLib = TargetJsonConverter.NoneWithCamelCase
+                callBack(DartConfigManager.targetJsonConverterLib == TargetJsonConverter.Custom)
 
             }
             radioButtonGson.addActionListener {
-                ConfigManager.targetJsonConverterLib = TargetJsonConverter.Gson
-                callBack(ConfigManager.targetJsonConverterLib == TargetJsonConverter.Custom)
+                DartConfigManager.targetJsonConverterLib = TargetJsonConverter.Gson
+                callBack(DartConfigManager.targetJsonConverterLib == TargetJsonConverter.Custom)
 
             }
             radioButtonJackson.addActionListener {
-                ConfigManager.targetJsonConverterLib = TargetJsonConverter.Jackson
-                callBack(ConfigManager.targetJsonConverterLib == TargetJsonConverter.Custom)
+                DartConfigManager.targetJsonConverterLib = TargetJsonConverter.Jackson
+                callBack(DartConfigManager.targetJsonConverterLib == TargetJsonConverter.Custom)
             }
             radioButtonFastjson.addActionListener {
-                ConfigManager.targetJsonConverterLib = TargetJsonConverter.FastJson
-                callBack(ConfigManager.targetJsonConverterLib == TargetJsonConverter.Custom)
+                DartConfigManager.targetJsonConverterLib = TargetJsonConverter.FastJson
+                callBack(DartConfigManager.targetJsonConverterLib == TargetJsonConverter.Custom)
             }
 
             radioButtonMoShi.addActionListener {
-                ConfigManager.targetJsonConverterLib = TargetJsonConverter.MoShi
-                callBack(ConfigManager.targetJsonConverterLib == TargetJsonConverter.Custom)
+                DartConfigManager.targetJsonConverterLib = TargetJsonConverter.MoShi
+                callBack(DartConfigManager.targetJsonConverterLib == TargetJsonConverter.Custom)
             }
 
             radioButtonMoShiCodeGen.addActionListener {
-                ConfigManager.targetJsonConverterLib = TargetJsonConverter.MoshiCodeGen
-                callBack(ConfigManager.targetJsonConverterLib == TargetJsonConverter.Custom)
+                DartConfigManager.targetJsonConverterLib = TargetJsonConverter.MoshiCodeGen
+                callBack(DartConfigManager.targetJsonConverterLib == TargetJsonConverter.Custom)
             }
 
             radioButtonLoganSquare.addActionListener {
-                ConfigManager.targetJsonConverterLib = TargetJsonConverter.LoganSquare
-                callBack(ConfigManager.targetJsonConverterLib == TargetJsonConverter.Custom)
+                DartConfigManager.targetJsonConverterLib = TargetJsonConverter.LoganSquare
+                callBack(DartConfigManager.targetJsonConverterLib == TargetJsonConverter.Custom)
             }
             radioButtonCustom.addActionListener {
-                ConfigManager.targetJsonConverterLib = TargetJsonConverter.Custom
-                callBack(ConfigManager.targetJsonConverterLib == TargetJsonConverter.Custom)
+                DartConfigManager.targetJsonConverterLib = TargetJsonConverter.Custom
+                callBack(DartConfigManager.targetJsonConverterLib == TargetJsonConverter.Custom)
             }
             radioButtonSerilizable.addActionListener {
-                ConfigManager.targetJsonConverterLib = TargetJsonConverter.Serilizable
-                callBack(ConfigManager.targetJsonConverterLib == TargetJsonConverter.Custom)
+                DartConfigManager.targetJsonConverterLib = TargetJsonConverter.DartPackage
+                callBack(DartConfigManager.targetJsonConverterLib == TargetJsonConverter.Custom)
             }
 
-            when(ConfigManager.targetJsonConverterLib ) {
+            when (DartConfigManager.targetJsonConverterLib) {
                 TargetJsonConverter.None -> radioButtonNone.isSelected = true
                 TargetJsonConverter.NoneWithCamelCase -> radioButtonNoneWithCamelCase.isSelected = true
                 TargetJsonConverter.Gson -> radioButtonGson.isSelected = true
@@ -287,7 +287,8 @@ class AdvancedAnnotationTab(layout: LayoutManager?, isDoubleBuffered: Boolean) :
                 TargetJsonConverter.MoShi -> radioButtonMoShi.isSelected = true
                 TargetJsonConverter.MoshiCodeGen -> radioButtonMoShiCodeGen.isSelected = true
                 TargetJsonConverter.Custom -> radioButtonCustom.isSelected = true
-                TargetJsonConverter.Serilizable -> radioButtonSerilizable.isSelected = true
+                TargetJsonConverter.DartPackage -> radioButtonSerilizable.isSelected = true
+                else -> {}
             }
 
             val buttonGroupProperty = ButtonGroup()

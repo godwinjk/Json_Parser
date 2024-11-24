@@ -1,7 +1,6 @@
 package com.godwin.jsonparser.generator_kt.jsontokotlin.ui.dart
 
-import com.godwin.jsonparser.generator.jsontodart.filetype.GenFileType
-import com.godwin.jsonparser.generator_kt.jsontokotlin.model.ConfigManager
+import com.godwin.jsonparser.generator_kt.jsontokotlin.model.DartConfigManager
 import com.godwin.jsonparser.generator_kt.jsontokotlin.ui.*
 import com.intellij.util.ui.JBDimension
 import java.awt.BorderLayout
@@ -11,28 +10,43 @@ import javax.swing.JPanel
  * others settings tab in config settings dialog
  * Created by Seal.Wu on 2018/2/6.
  */
-class AdvancedDartOtherTab( isDoubleBuffered: Boolean) : JPanel(BorderLayout(), isDoubleBuffered) {
+class AdvancedDartOtherTab(isDoubleBuffered: Boolean) : JPanel(BorderLayout(), isDoubleBuffered) {
     init {
         jVerticalLinearLayout {
-
             alignLeftComponent {
+                jCheckBox(
+                    "Append original JSON",
+                    DartConfigManager.isAppendOriginalJson,
+                    { isSelected -> DartConfigManager.isAppendOriginalJson = isSelected })
 
-                jCheckBox("Append original JSON", ConfigManager.isAppendOriginalJson, { isSelected -> ConfigManager.isAppendOriginalJson = isSelected })
+                jCheckBox(
+                    "Enable Comment",
+                    DartConfigManager.isCommentOff.not(),
+                    { isSelected -> DartConfigManager.isCommentOff = isSelected.not() })
 
-                jCheckBox("Enable Comment", ConfigManager.isCommentOff.not(), { isSelected -> ConfigManager.isCommentOff = isSelected.not() })
-
-                jCheckBox("Enable Order By Alphabetical", ConfigManager.isOrderByAlphabetical, { isSelected -> ConfigManager.isOrderByAlphabetical = isSelected })
+                jCheckBox(
+                    "Enable Order By Alphabetical",
+                    DartConfigManager.isOrderByAlphabetical,
+                    { isSelected -> DartConfigManager.isOrderByAlphabetical = isSelected })
+                jCheckBox(
+                    "Enable dart file name convention",
+                    DartConfigManager.isDartModelClassName,
+                    { isSelected -> DartConfigManager.isDartModelClassName = isSelected })
+                jCheckBox(
+                    "Enable inner class generation",
+                    DartConfigManager.isInnerClassModel,
+                    { isSelected -> DartConfigManager.isInnerClassModel = isSelected })
 
                 jHorizontalLinearLayout {
                     jLabel("Indent (number of space): ")
-                    jTextInput(ConfigManager.indent.toString()) {
+                    jTextInput(DartConfigManager.indent.toString()) {
                         columns = 2
                         addFocusLostListener {
-                            ConfigManager.indent = try {
+                            DartConfigManager.indent = try {
                                 text.toInt()
                             } catch (e: Exception) {
-                                text = ConfigManager.indent.toString()
-                                ConfigManager.indent
+                                text = DartConfigManager.indent.toString()
+                                DartConfigManager.indent
                             }
                         }
                     }
@@ -41,9 +55,9 @@ class AdvancedDartOtherTab( isDoubleBuffered: Boolean) : JPanel(BorderLayout(), 
 
             jHorizontalLinearLayout {
                 jLabel("Parent Class Template: ")
-                jTextInput(ConfigManager.parenClassTemplateDart) {
+                jTextInput(DartConfigManager.parenClassTemplateDart) {
                     addFocusLostListener {
-                        ConfigManager.parenClassTemplateDart = text
+                        DartConfigManager.parenClassTemplateDart = text
                     }
                     maximumSize = JBDimension(400, 30)
                 }

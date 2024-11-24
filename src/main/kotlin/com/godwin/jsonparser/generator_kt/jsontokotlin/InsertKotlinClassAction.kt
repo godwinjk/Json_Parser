@@ -1,10 +1,7 @@
 package com.godwin.jsonparser.generator_kt.jsontokotlin
 
-import com.godwin.jsonparser.generator_kt.jsontokotlin.feedback.StartAction
-import com.godwin.jsonparser.generator_kt.jsontokotlin.feedback.SuccessCompleteAction
 import com.godwin.jsonparser.generator_kt.jsontokotlin.feedback.dealWithException
-import com.godwin.jsonparser.generator_kt.jsontokotlin.feedback.sendActionInfo
-import com.godwin.jsonparser.generator_kt.jsontokotlin.model.ConfigManager
+import com.godwin.jsonparser.generator_kt.jsontokotlin.model.KotlinConfigManager
 import com.godwin.jsonparser.generator_kt.jsontokotlin.model.UnSupportJsonException
 import com.godwin.jsonparser.generator_kt.jsontokotlin.ui.JsonInputDialog
 import com.godwin.jsonparser.generator_kt.jsontokotlin.utils.*
@@ -32,7 +29,6 @@ class InsertKotlinClassAction : AnAction("Kotlin Class from JSON") {
     override fun actionPerformed(event: AnActionEvent) {
         var jsonString = ""
         try {
-            actionStart()
             val project = event.getData(PlatformDataKeys.PROJECT)
             val caret = event.getData(PlatformDataKeys.CARET)
             val editor = event.getData(PlatformDataKeys.EDITOR_EVEN_IF_INACTIVE)
@@ -75,10 +71,9 @@ class InsertKotlinClassAction : AnAction("Kotlin Class from JSON") {
             }
             val offset = calculateOffset(caret, document)
             if (insertKotlinCode(project, document, className, jsonString, offset)) {
-                if (ConfigManager.isAppendOriginalJson) {
+                if (KotlinConfigManager.isAppendOriginalJson) {
                     insertJsonExample(project, document, jsonString, offset)
                 }
-                actionComplete()
             }
 
         } catch (e: UnSupportJsonException) {
@@ -109,17 +104,6 @@ class InsertKotlinClassAction : AnAction("Kotlin Class from JSON") {
         return false
     }
 
-    private fun actionComplete() {
-        Thread {
-            sendActionInfo(gson.toJson(SuccessCompleteAction()))
-        }.start()
-    }
-
-    private fun actionStart() {
-        Thread {
-            sendActionInfo(gson.toJson(StartAction()))
-        }.start()
-    }
 
     private fun insertKotlinCode(
         project: Project?,

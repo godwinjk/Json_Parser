@@ -1,6 +1,5 @@
 package com.godwin.jsonparser.generator_kt.extensions.yuan.varenyzc
 
-import com.intellij.util.ui.JBDimension
 import com.godwin.jsonparser.generator_kt.extensions.Extension
 import com.godwin.jsonparser.generator_kt.jsontokotlin.model.classscodestruct.DataClass
 import com.godwin.jsonparser.generator_kt.jsontokotlin.model.classscodestruct.KotlinClass
@@ -27,10 +26,8 @@ object NeedNonNullableClassesSupport : Extension() {
                 setConfig(prefixKeyEnable, isSelected.toString())
                 prefixJField.isEnabled = isSelected
             })
-            jLink(
-                text = "Classes non-nullable: ",
-                linkURL = "https://github.com/wuseal/JsonToKotlinClass/blob/master/doc/classes_non_nullable.md",
-                maxSize = JBDimension(160,30)
+            jLabel(
+                text = "Classes non-nullable: "
             )
             add(prefixJField)
         }
@@ -53,16 +50,18 @@ object NeedNonNullableClassesSupport : Extension() {
                                 list.contains(innerType) -> {
                                     "List<$innerType>?"
                                 }
+
                                 list.contains("List") -> {
                                     "List<$innerType?>"
                                 }
+
                                 else -> {
                                     "List<$innerType?>?"
                                 }
                             }
                         } else {
                             if (list.contains(oldType.replace("?", ""))) {
-                                oldType.replace("?","")
+                                oldType.replace("?", "")
                             } else {
                                 "${oldType}?"
                             }

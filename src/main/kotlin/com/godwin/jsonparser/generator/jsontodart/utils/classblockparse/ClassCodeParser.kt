@@ -1,18 +1,23 @@
 package com.godwin.jsonparser.generator.jsontodart.utils.classblockparse
 
 import com.godwin.jsonparser.generator.jsontodart.utils.getClassNameFromClassBlockString
+import com.godwin.jsonparser.generator.jsontodart.utils.getFileNameFromClassBlockString
 
 /**
  * parser for parse class block string, with this util, we could get the class struct elements
  */
 class ClassCodeParser(private val classBlockString: String) {
 
-    fun getKotlinDataClass(): ParsedKotlinDataClass {
-        return ParsedKotlinDataClass(getClassAnnotations(), getClassName(), getProperties())
+    fun getDartDataClass(): ParsedDartDataClass {
+        return ParsedDartDataClass(getClassAnnotations(), getClassName(), getFileName(), getProperties())
     }
 
     fun getClassName(): String {
         return getClassNameFromClassBlockString(classBlockString)
+    }
+
+    fun getFileName(): String {
+        return getFileNameFromClassBlockString(classBlockString)
     }
 
     fun getClassAnnotations(): List<String> {
@@ -20,12 +25,12 @@ class ClassCodeParser(private val classBlockString: String) {
         return annotationsBlock.split("\n").filter { it.contains("@") }.map { it.trim() }
     }
 
-    fun getProperties(): List<ParsedKotlinDataClass.Property> {
+    fun getProperties(): List<ParsedDartDataClass.Property> {
         val propertiesBlock = classBlockString.substringAfter("{").substringBeforeLast("}").trim()
 
         val lines = propertiesBlock.split("\n")
 
-        val properties = mutableListOf<ParsedKotlinDataClass.Property>()
+        val properties = mutableListOf<ParsedDartDataClass.Property>()
 
         val propertyLinesList = getPropertyLinesList(lines)
 
@@ -38,7 +43,7 @@ class ClassCodeParser(private val classBlockString: String) {
             val propertyValue = getPropertyValue(propertyBlockLines.last(), isLastLine)
             val propertyComment = getPropertyComment(propertyBlockLines.last())
             properties.add(
-                ParsedKotlinDataClass.Property(
+                ParsedDartDataClass.Property(
                     annotations,
                     propertyKeyword,
                     propertyName,
@@ -75,7 +80,7 @@ class ClassCodeParser(private val classBlockString: String) {
 
     private fun getPropertyKeyword(propertyLine: String): String {
         val stringBeforeLastColonWithoutComment = propertyLine.substringBefore("//").substringBeforeLast(";").trim()
-        val keyword =  stringBeforeLastColonWithoutComment.split(" ").first()
+        val keyword = stringBeforeLastColonWithoutComment.split(" ").first()
         return if (keyword == "final") "final" else ""
     }
 

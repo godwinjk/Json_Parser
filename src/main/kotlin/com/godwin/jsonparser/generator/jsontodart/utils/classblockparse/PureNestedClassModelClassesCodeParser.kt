@@ -1,6 +1,6 @@
 package com.godwin.jsonparser.generator.jsontodart.utils.classblockparse
 
-import com.godwin.jsonparser.generator.jsontodart.classscodestruct.KotlinDataClass
+import com.godwin.jsonparser.generator.jsontodart.classscodestruct.DartClass
 import com.godwin.jsonparser.generator.jsontodart.classscodestruct.Property
 import com.godwin.jsonparser.generator.jsontodart.utils.getClassesStringList
 
@@ -10,7 +10,7 @@ import com.godwin.jsonparser.generator.jsontodart.utils.getClassesStringList
 @Deprecated("Please use #NestedClassModelClassesCodeParser")
 class PureNestedClassModelClassesCodeParser(private val classesCode: String) {
 
-    fun parse(): KotlinDataClass {
+    fun parse(): DartClass {
 
         if (classesCode.contains("//") || classesCode.contains("@")) {
             throw IllegalArgumentException("Can't support this classes code for it has comment or annotations $classesCode")
@@ -30,27 +30,27 @@ class PureNestedClassModelClassesCodeParser(private val classesCode: String) {
 
     }
 
-    private fun parsedToKotlinDataClass(classCode: String): KotlinDataClass {
+    private fun parsedToKotlinDataClass(classCode: String): DartClass {
         val tobeParsedCode = classCode.trim()
-        val parsedKotlinDataClass = ClassCodeParser(tobeParsedCode).getKotlinDataClass()
+        val parsedKotlinDataClass = ClassCodeParser(tobeParsedCode).getDartDataClass()
         return toKotlinDataClass(parsedKotlinDataClass)
     }
 
-    private fun toKotlinDataClass(parsedKotlinDataClass: ParsedKotlinDataClass): KotlinDataClass {
-        val properties = parsedKotlinDataClass.properties.map {
+    private fun toKotlinDataClass(parsedDartDataClass: ParsedDartDataClass): DartClass {
+        val properties = parsedDartDataClass.properties.map {
             Property(
-                    annotations = listOf(),
-                    keyword = it.keyword,
-                    originName = it.propertyName,
-                    name = it.propertyName,
-                    type = it.propertyType,
-                    value = it.propertyValue,
-                    comment = it.propertyComment,
-                    isLast = it.isLastProperty,
-                    originJsonValue = ""
+                annotations = listOf(),
+                keyword = it.keyword,
+                originName = it.propertyName,
+                name = it.propertyName,
+                type = it.propertyType,
+                value = it.propertyValue,
+                comment = it.propertyComment,
+                isLast = it.isLastProperty,
+                originJsonValue = ""
             )
         }
-        return KotlinDataClass(annotations = listOf(), name = parsedKotlinDataClass.name, properties = properties)
+        return DartClass(annotations = listOf(), name = parsedDartDataClass.name, properties = properties)
     }
 
 }

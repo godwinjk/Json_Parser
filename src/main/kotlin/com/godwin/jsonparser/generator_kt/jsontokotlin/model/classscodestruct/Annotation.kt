@@ -1,6 +1,6 @@
 package com.godwin.jsonparser.generator_kt.jsontokotlin.model.classscodestruct
 
-import com.godwin.jsonparser.generator_kt.jsontokotlin.model.ConfigManager
+import com.godwin.jsonparser.generator_kt.jsontokotlin.model.KotlinConfigManager
 import com.godwin.jsonparser.generator_kt.jsontokotlin.utils.numberOf
 
 
@@ -29,7 +29,7 @@ data class Annotation(val annotationTemplate: String, val rawName: String) {
                 }
                 val rawName = annotationString.substringAfter("\"").substringBefore("\"")
                 val annotationTemplate =
-                        annotationString.substringBefore("\"") + "\"%s\"" + annotationString.substringAfterLast("\"")
+                    annotationString.substringBefore("\"") + "\"%s\"" + annotationString.substringAfterLast("\"")
                 Annotation(annotationTemplate, rawName)
             } else {
                 Annotation(annotationString, "")
@@ -52,7 +52,7 @@ data class Annotation(val annotationTemplate: String, val rawName: String) {
                     fromMultipleLineAnnotationString(annotationString)
                 }
             } catch (e: IllegalArgumentException) {
-                val annotationTemplate = ConfigManager.customPropertyAnnotationFormatString
+                val annotationTemplate = KotlinConfigManager.customPropertyAnnotationFormatString
                 if (annotationTemplate.contains("%s").not()) {
                     Annotation(annotationTemplate, "")
                 } else {

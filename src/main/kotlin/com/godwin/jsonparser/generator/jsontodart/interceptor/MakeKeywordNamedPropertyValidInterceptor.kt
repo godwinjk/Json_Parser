@@ -1,16 +1,16 @@
 package com.godwin.jsonparser.generator.jsontodart.interceptor
 
-import com.godwin.jsonparser.generator.jsontodart.classscodestruct.KotlinDataClass
+import com.godwin.jsonparser.generator.jsontodart.classscodestruct.DartClass
 import com.godwin.jsonparser.generator.jsontodart.utils.KOTLIN_KEYWORD_LIST
 
 /**
  * Interceptor to make kotlin keyword property names valid
  */
-class MakeKeywordNamedPropertyValidInterceptor : IKotlinDataClassInterceptor {
+class MakeKeywordNamedPropertyValidInterceptor : IDartClassInterceptor {
 
-    override fun intercept(kotlinDataClass: KotlinDataClass): KotlinDataClass {
+    override fun intercept(dartClass: DartClass): DartClass {
 
-        val keywordValidProperties = kotlinDataClass.properties.map {
+        val keywordValidProperties = dartClass.properties.map {
             if (KOTLIN_KEYWORD_LIST.contains(it.name)) {
                 it.copy(name = "`${it.name}`")
             } else {
@@ -18,6 +18,6 @@ class MakeKeywordNamedPropertyValidInterceptor : IKotlinDataClassInterceptor {
             }
         }
 
-        return kotlinDataClass.copy(properties = keywordValidProperties)
+        return dartClass.copy(properties = keywordValidProperties)
     }
 }

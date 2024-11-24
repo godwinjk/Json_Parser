@@ -1,6 +1,6 @@
 package com.godwin.jsonparser.generator.extensions
 
-import com.godwin.jsonparser.generator.jsontodart.classscodestruct.KotlinDataClass
+import com.godwin.jsonparser.generator.jsontodart.classscodestruct.DartClass
 import com.intellij.ui.layout.panel
 import com.intellij.util.ui.JBDimension
 import com.intellij.util.ui.JBEmptyBorder
@@ -55,17 +55,17 @@ object PropertyPrefixSupport : Extension() {
     }
 
 
-    override fun intercept(kotlinDataClass: KotlinDataClass): KotlinDataClass {
+    override fun intercept(dartClass: DartClass): DartClass {
         return if (getConfig(prefixKeyEnable).toBoolean() && getConfig(prefixKey).isNotEmpty()) {
-            val originProperties = kotlinDataClass.properties
+            val originProperties = dartClass.properties
             val newProperties = originProperties.map {
                 val prefix = getConfig(prefixKey)
                 val newName = prefix + it.name.first().toUpperCase() + it.name.substring(1)
                 it.copy(name = newName)
             }
-            kotlinDataClass.copy(properties = newProperties)
+            dartClass.copy(properties = newProperties)
         } else {
-            kotlinDataClass
+            dartClass
         }
 
     }

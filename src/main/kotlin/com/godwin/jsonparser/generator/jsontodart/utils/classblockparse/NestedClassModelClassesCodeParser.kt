@@ -1,25 +1,25 @@
 package com.godwin.jsonparser.generator.jsontodart.utils.classblockparse
 
-import com.godwin.jsonparser.generator.jsontodart.classscodestruct.KotlinDataClass
+import com.godwin.jsonparser.generator.jsontodart.classscodestruct.DartClass
 
 
 class NestedClassModelClassesCodeParser(private val nestedClassCode: String) {
 
-    fun parse(): KotlinDataClass {
+    fun parse(): DartClass {
 
         if (nestedClassCode.contains(
                 "\n) {\n"
             ).not()
         ) {
-            return KotlinDataClass.fromParsedKotlinDataClass(ClassCodeParser(nestedClassCode).getKotlinDataClass())
+            return DartClass.fromParsedDartClass(ClassCodeParser(nestedClassCode).getDartDataClass())
         }
         val parenClassCode = nestedClassCode.substringBefore("\n) {\n") + "\n)"
-        val parenParsedKotlinDataClass = ClassCodeParser(parenClassCode).getKotlinDataClass()
-        val parenKotlinDataClass = KotlinDataClass.fromParsedKotlinDataClass(parenParsedKotlinDataClass)
+        val parenParsedKotlinDataClass = ClassCodeParser(parenClassCode).getDartDataClass()
+        val parenDartClass = DartClass.fromParsedDartClass(parenParsedKotlinDataClass)
 
         val nestedSubClassesCode = nestedClassCode.substringAfter("\n) {\n").substringBeforeLast("}").trim()
         val nestedClasses = splitSubClasses(nestedSubClassesCode).map { NestedClassModelClassesCodeParser(it).parse() }
-        return parenKotlinDataClass.copy(nestedClasses = nestedClasses)
+        return parenDartClass.copy(nestedClasses = nestedClasses)
     }
 
 

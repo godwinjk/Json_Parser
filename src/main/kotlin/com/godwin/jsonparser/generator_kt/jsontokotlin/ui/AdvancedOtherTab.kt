@@ -1,7 +1,6 @@
 package com.godwin.jsonparser.generator_kt.jsontokotlin.ui
 
-import com.godwin.jsonparser.generator.jsontodart.filetype.GenFileType
-import com.godwin.jsonparser.generator_kt.jsontokotlin.model.ConfigManager
+import com.godwin.jsonparser.generator_kt.jsontokotlin.model.KotlinConfigManager
 import com.intellij.util.ui.JBDimension
 import java.awt.BorderLayout
 import javax.swing.JPanel
@@ -16,30 +15,51 @@ class AdvancedOtherTab(isDoubleBuffered: Boolean) : JPanel(BorderLayout(), isDou
 
             alignLeftComponent {
 
-                jCheckBox("Append original JSON", ConfigManager.isAppendOriginalJson, { isSelected -> ConfigManager.isAppendOriginalJson = isSelected })
+                jCheckBox(
+                    "Append original JSON",
+                    KotlinConfigManager.isAppendOriginalJson,
+                    { isSelected -> KotlinConfigManager.isAppendOriginalJson = isSelected })
 
-                jCheckBox("Enable Comment", ConfigManager.isCommentOff.not(), { isSelected -> ConfigManager.isCommentOff = isSelected.not() })
+                jCheckBox(
+                    "Enable Comment",
+                    KotlinConfigManager.isCommentOff.not(),
+                    { isSelected -> KotlinConfigManager.isCommentOff = isSelected.not() })
 
-                jCheckBox("Enable Order By Alphabetical", ConfigManager.isOrderByAlphabetical, { isSelected -> ConfigManager.isOrderByAlphabetical = isSelected })
+                jCheckBox(
+                    "Enable Order By Alphabetical",
+                    KotlinConfigManager.isOrderByAlphabetical,
+                    { isSelected -> KotlinConfigManager.isOrderByAlphabetical = isSelected })
 
-                jCheckBox("Enable Inner Class Model", ConfigManager.isInnerClassModel, { isSelected -> ConfigManager.isInnerClassModel = isSelected })
+                jCheckBox(
+                    "Enable Inner Class Model",
+                    KotlinConfigManager.isInnerClassModel,
+                    { isSelected -> KotlinConfigManager.isInnerClassModel = isSelected })
 
-                jCheckBox("Enable Map Type when JSON Field Key Is Primitive Type", ConfigManager.enableMapType, { isSelected -> ConfigManager.enableMapType = isSelected })
+                jCheckBox(
+                    "Enable Map Type when JSON Field Key Is Primitive Type",
+                    KotlinConfigManager.enableMapType,
+                    { isSelected -> KotlinConfigManager.enableMapType = isSelected })
 
-                jCheckBox("Only create annotations when needed", ConfigManager.enableMinimalAnnotation, { isSelected -> ConfigManager.enableMinimalAnnotation = isSelected })
+                jCheckBox(
+                    "Only create annotations when needed",
+                    KotlinConfigManager.enableMinimalAnnotation,
+                    { isSelected -> KotlinConfigManager.enableMinimalAnnotation = isSelected })
 
-                jCheckBox("Auto detect JSON Scheme", ConfigManager.autoDetectJsonScheme, { isSelected -> ConfigManager.autoDetectJsonScheme = isSelected })
+                jCheckBox(
+                    "Auto detect JSON Scheme",
+                    KotlinConfigManager.autoDetectJsonScheme,
+                    { isSelected -> KotlinConfigManager.autoDetectJsonScheme = isSelected })
 
                 jHorizontalLinearLayout {
                     jLabel("Indent (number of space): ")
-                    jTextInput(ConfigManager.indent.toString()) {
+                    jTextInput(KotlinConfigManager.indent.toString()) {
                         columns = 2
                         addFocusLostListener {
-                            ConfigManager.indent = try {
+                            KotlinConfigManager.indent = try {
                                 text.toInt()
                             } catch (e: Exception) {
-                                text = ConfigManager.indent.toString()
-                                ConfigManager.indent
+                                text = KotlinConfigManager.indent.toString()
+                                KotlinConfigManager.indent
                             }
                         }
                     }
@@ -48,9 +68,9 @@ class AdvancedOtherTab(isDoubleBuffered: Boolean) : JPanel(BorderLayout(), isDou
 
             jHorizontalLinearLayout {
                 jLabel("Parent Class Template: ")
-                jTextInput(ConfigManager.parenClassTemplate) {
+                jTextInput(KotlinConfigManager.parenClassTemplate) {
                     addFocusLostListener {
-                        ConfigManager.parenClassTemplate = text
+                        KotlinConfigManager.parenClassTemplate = text
                     }
                     maximumSize = JBDimension(400, 30)
                 }

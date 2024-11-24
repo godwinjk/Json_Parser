@@ -1,18 +1,17 @@
 package com.godwin.jsonparser.generator.jsontodart.interceptor
 
-import com.godwin.jsonparser.generator.jsontodart.classscodestruct.KotlinDataClass
+import com.godwin.jsonparser.generator.jsontodart.classscodestruct.DartClass
 
 
-class ChangePropertyKeywordToFinalInterceptor : IKotlinDataClassInterceptor {
+class ChangePropertyKeywordToFinalInterceptor : IDartClassInterceptor {
 
-    override fun intercept(kotlinDataClass: KotlinDataClass): KotlinDataClass {
+    override fun intercept(dartClass: DartClass): DartClass {
 
-        val finalProperties = kotlinDataClass.properties.map {
-
+        val finalProperties = dartClass.properties.map {
             it.copy(keyword = "final")
         }
 
-        return kotlinDataClass.copy(properties = finalProperties)
+        return dartClass.copy(properties = finalProperties)
     }
 
 }

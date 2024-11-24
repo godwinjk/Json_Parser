@@ -1,21 +1,19 @@
 package com.godwin.jsonparser.generator.jsontodart
 
-import com.godwin.jsonparser.generator.jsontodart.TargetJsonElement
-import com.godwin.jsonparser.generator.jsontodart.UnSupportJsonException
-import com.google.gson.Gson
-import com.google.gson.JsonElement
-import com.google.gson.JsonObject
 import com.godwin.jsonparser.generator.jsontodart.bean.jsonschema.GSON
 import com.godwin.jsonparser.generator.jsontodart.bean.jsonschema.JsonSchema
 import com.godwin.jsonparser.generator.jsontodart.codeelements.KProperty
 import com.godwin.jsonparser.generator.jsontodart.utils.*
-import java.util.*
+import com.godwin.jsonparser.generator_kt.jsontokotlin.model.DartConfigManager
+import com.google.gson.Gson
+import com.google.gson.JsonElement
+import com.google.gson.JsonObject
 
 /**
  * Kotlin code maker
  * Created by seal.wu on 2017/8/21.
  */
-class KotlinCodeMaker {
+class DartCodeMaker {
 
     private var className: String
     private var inputText: String
@@ -41,7 +39,7 @@ class KotlinCodeMaker {
         this.inputText = jsonElement.toString()
     }
 
-    private fun parseJSONSchemaOrNull(className: String, json: String) : String? {
+    private fun parseJSONSchemaOrNull(className: String, json: String): String? {
         return try {
             val jsonSchema = GSON.fromJson<JsonSchema>(json, JsonSchema::class.java)
             if (jsonSchema.schema?.isNotBlank() != true) {
@@ -55,7 +53,7 @@ class KotlinCodeMaker {
         }
     }
 
-    private fun parseJSONString() : String {
+    private fun parseJSONString(): String {
         val stringBuilder = StringBuilder()
         stringBuilder.append("\n")
 
@@ -73,7 +71,7 @@ class KotlinCodeMaker {
         return stringBuilder.toString()
     }
 
-    fun makeKotlinData(): String {
+    fun makeDartClassData(): String {
         return parseJSONSchemaOrNull(className, inputText)
             ?: parseJSONString()
     }
@@ -89,14 +87,14 @@ class KotlinCodeMaker {
                         getArrayType("Any", originElement.asJsonArray).replace(Regex("Int|Float|String|Boolean"), "Any")
                     unSupportJsonException.adviceType = adviceType
                     unSupportJsonException.advice =
-                            """No need converting, just use $adviceType is enough for your json string"""
+                        """No need converting, just use $adviceType is enough for your json string"""
                     throw unSupportJsonException
                 } else {
                     //when [1,"a"]
                     val unSupportJsonException = UnSupportJsonException("Unsupported Json String")
                     unSupportJsonException.adviceType = "List<Any>"
                     unSupportJsonException.advice =
-                            """No need converting,  List<Any> may be a good class type for your json string"""
+                        """No need converting,  List<Any> may be a good class type for your json string"""
                     throw unSupportJsonException
                 }
             }
@@ -108,7 +106,7 @@ class KotlinCodeMaker {
             val unSupportJsonException = UnSupportJsonException("Unsupported Json String")
             val adviceType = getArrayType("Any", originElement.asJsonArray).replace("AnyX", "Any")
             unSupportJsonException.advice =
-                    """No need converting, just use $adviceType is enough for your json string"""
+                """No need converting, just use $adviceType is enough for your json string"""
             throw unSupportJsonException
         }
     }
@@ -148,7 +146,7 @@ class KotlinCodeMaker {
                             || onlyHasOneSubArrayAndAllItemsAreObjectElementRecursive()
                         ) {
                             val subCode = try {
-                                KotlinCodeMaker(getChildType(getRawType(type)), jsonElementValue).makeKotlinData()
+                                DartCodeMaker(getChildType(getRawType(type)), jsonElementValue).makeDartClassData()
                             } catch (e: UnSupportJsonException) {
                                 type = e.adviceType
                                 ""
@@ -161,15 +159,15 @@ class KotlinCodeMaker {
 
                 jsonElementValue.isJsonObject -> {
                     jsonElementValue.asJsonObject.run {
-                        if (ConfigManager.enableMapType && maybeJsonObjectBeMapType(this)) {
+                        if (DartConfigManager.enableMapType && maybeJsonObjectBeMapType(this)) {
                             val mapKeyType = getMapKeyTypeConvertFromJsonObject(this)
                             var mapValueType = getMapValueTypeConvertFromJsonObject(this)
                             if (mapValueIsObjectType(mapValueType)) {
                                 val subCode = try {
-                                    KotlinCodeMaker(
+                                    DartCodeMaker(
                                         getChildType(mapValueType),
                                         entrySet().first().value
-                                    ).makeKotlinData()
+                                    ).makeDartClassData()
                                 } catch (e: UnSupportJsonException) {
                                     mapValueType = e.adviceType
                                     ""
@@ -182,7 +180,7 @@ class KotlinCodeMaker {
                         } else {
                             var type = getJsonObjectType(property)
                             val subCode = try {
-                                KotlinCodeMaker(getRawType(type), jsonElementValue).makeKotlinData()
+                                DartCodeMaker(getRawType(type), jsonElementValue).makeDartClassData()
                             } catch (e: UnSupportJsonException) {
                                 type = e.adviceType
                                 ""

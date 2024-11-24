@@ -1,5 +1,9 @@
 package com.godwin.jsonparser.generator_kt.jsontokotlin.ui
 
+import com.godwin.jsonparser.generator.jsontodart.filetype.GenFileType
+import com.godwin.jsonparser.generator_kt.jsontokotlin.utils.InputFileTpeValidateCallback
+import com.godwin.jsonparser.generator_kt.jsontokotlin.utils.executeCouldRollBackAction
+import com.godwin.jsonparser.icons.JsonIcons
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonElement
@@ -8,27 +12,23 @@ import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.application.runWriteAction
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.EditorFactory
+import com.intellij.openapi.editor.event.DocumentEvent
+import com.intellij.openapi.editor.event.DocumentListener
 import com.intellij.openapi.fileChooser.FileChooser
 import com.intellij.openapi.fileChooser.FileChooserDescriptor
 import com.intellij.openapi.progress.util.DispatchThreadProgressWindow
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.Messages
 import com.intellij.util.ui.JBDimension
-import com.godwin.jsonparser.generator_kt.jsontokotlin.feedback.ClickProjectURLAction
-import com.godwin.jsonparser.generator_kt.jsontokotlin.feedback.FormatJSONAction
-import com.godwin.jsonparser.generator_kt.jsontokotlin.feedback.sendActionInfo
-import com.godwin.jsonparser.generator_kt.jsontokotlin.model.ConfigManager
-import com.godwin.jsonparser.generator_kt.jsontokotlin.model.TargetJsonConverter
-import com.godwin.jsonparser.generator_kt.jsontokotlin.utils.executeCouldRollBackAction
-import com.godwin.jsonparser.icons.JsonIcons
-import com.intellij.openapi.editor.event.DocumentEvent
 import java.awt.Dimension
 import java.awt.Toolkit
 import java.awt.datatransfer.DataFlavor
 import java.net.URL
 import java.util.*
-import java.util.Timer
-import javax.swing.*
+import javax.swing.JComponent
+import javax.swing.JMenuItem
+import javax.swing.JPopupMenu
+import javax.swing.SwingUtilities
 import javax.swing.text.JTextComponent
 
 /**
@@ -48,14 +48,13 @@ class JsonInputDialog(classsName: String, private val project: Project) : Messag
     null,
     "",
     jsonInputDialogValidator
-) {
+), InputFileTpeValidateCallback {
     private lateinit var jsonContentEditor: Editor
 
     private val prettyGson: Gson = GsonBuilder().setPrettyPrinting().serializeNulls().disableHtmlEscaping().create()
 
-    //true dart
-    //false kotlin
-    private var selectedLanguage = false
+
+    private var fileType = GenFileType.UnInitialized
 
     init {
         setOKButtonText("Generate")
@@ -83,13 +82,35 @@ class JsonInputDialog(classsName: String, private val project: Project) : Messag
     override fun createCenterPanel(): JComponent? {
         jsonContentEditor = createJsonContentEditor()
         jsonInputDialogValidator.jsonInputEditor = jsonContentEditor
-
+        jsonInputDialogValidator.inputFileTpeValidateCallback = this
         //remove ˚
         Timer().schedule(object : TimerTask() {
             override fun run() {
                 SwingUtilities.invokeLater {
                     executeCouldRollBackAction(project) {
                         jsonContentEditor.document.setText("")
+                        jsonContentEditor.document.setText(
+                            "{ \n" +
+                                    "  \"accounting\" : [   \n" +
+                                    "                     { \"firstName\" : \"John\",  \n" +
+                                    "                       \"lastName\"  : \"Doe\",\n" +
+                                    "                       \"age\"       : 23 },\n" +
+                                    "\n" +
+                                    "                     { \"firstName\" : \"Mary\",  \n" +
+                                    "                       \"lastName\"  : \"Smith\",\n" +
+                                    "                        \"age\"      : 32 }\n" +
+                                    "                 ],                            \n" +
+                                    "  \"sales\"      : [ \n" +
+                                    "                     { \"firstName\" : \"Sally\", \n" +
+                                    "                       \"lastName\"  : \"Green\",\n" +
+                                    "                        \"age\"      : 27 },\n" +
+                                    "\n" +
+                                    "                     { \"firstName\" : \"Jim\",   \n" +
+                                    "                       \"lastName\"  : \"Galley\",\n" +
+                                    "                       \"age\"       : 41 }\n" +
+                                    "                 ] \n" +
+                                    "} "
+                        )
                     }
                 }
             }
@@ -112,11 +133,13 @@ class JsonInputDialog(classsName: String, private val project: Project) : Messag
                     jHorizontalLinearLayout {
                         jButtonGroup {
                             jRadioButton("Dart", false, {
-                                selectedLanguage = true
+                                fileType = GenFileType.Dart
+                                reValidate()
                             })
 
                             jRadioButton("Kotlin", false, {
-                                selectedLanguage = false
+                                fileType = GenFileType.Dart
+                                reValidate()
                             })
                         }
                         fillSpace()
@@ -127,11 +150,9 @@ class JsonInputDialog(classsName: String, private val project: Project) : Messag
                         jLabel("Love it?")
                         fixedSpace(5)
                         jLink(
-                            "Donate",
-                            "https://paypal.me/godwinj",
-                            maxSize = JBDimension(210, 30)
+                            "Donate", "https://paypal.me/godwinj", maxSize = JBDimension(210, 30)
                         ) {
-                            sendActionInfo(prettyGson.toJson(ClickProjectURLAction()))
+//                            sendActionInfo(prettyGson.toJson(ClickProjectURLAction()))
                         }
                         fixedSpace(1)
                         jLabel("Or")
@@ -141,7 +162,7 @@ class JsonInputDialog(classsName: String, private val project: Project) : Messag
                             "https://plugins.jetbrains.com/plugin/10650-json-parser",
                             maxSize = JBDimension(210, 30)
                         ) {
-                            sendActionInfo(prettyGson.toJson(ClickProjectURLAction()))
+//                            sendActionInfo(prettyGson.toJson(ClickProjectURLAction()))
                         }
                     }
                 }
@@ -153,8 +174,8 @@ class JsonInputDialog(classsName: String, private val project: Project) : Messag
         val editorFactory = EditorFactory.getInstance()
         val document = editorFactory.createDocument("").apply {
             setReadOnly(false)
-            addDocumentListener(object : com.intellij.openapi.editor.event.DocumentListener {
-                override fun documentChanged(event: DocumentEvent) = revalidate()
+            addDocumentListener(object : DocumentListener {
+                override fun documentChanged(event: DocumentEvent) = reValidate()
 
                 override fun beforeDocumentChange(event: DocumentEvent) = Unit
             })
@@ -182,8 +203,24 @@ class JsonInputDialog(classsName: String, private val project: Project) : Messag
     override fun createTextFieldComponent(): JTextComponent {
 
         return jTextInput(maxSize = JBDimension(10000, 35)) {
+            document.addDocumentListener(object : javax.swing.event.DocumentListener {
+                override fun insertUpdate(e: javax.swing.event.DocumentEvent?) {
+
+                }
+
+                override fun removeUpdate(e: javax.swing.event.DocumentEvent?) {
+
+                }
+
+                override fun changedUpdate(e: javax.swing.event.DocumentEvent?) {
+                    revalidate()
+                }
+
+            })
             document = NamingConventionDocument()
+
         }
+
     }
 
     private fun createPasteFromClipboardMenuItem() = JMenuItem("Paste from clipboard").apply {
@@ -237,13 +274,15 @@ class JsonInputDialog(classsName: String, private val project: Project) : Messag
         } else ""
     }
 
+    fun getFileType() = fileType
+
     override fun getInputString(): String = if (exitCode == 0) jsonContentEditor.document.text.trim() else ""
 
     override fun getPreferredFocusedComponent(): JComponent? {
         return jsonContentEditor.contentComponent
     }
 
-    fun handleFormatJSONString() {
+    private fun handleFormatJSONString() {
         val currentText = jsonContentEditor.document.text
         if (currentText.isNotEmpty()) {
             try {
@@ -260,10 +299,14 @@ class JsonInputDialog(classsName: String, private val project: Project) : Messag
     }
 
     private fun feedBackFormatJSONActionInfo() {
-        Thread { sendActionInfo(prettyGson.toJson(FormatJSONAction())) }.start()
+//        Thread { sendActionInfo(prettyGson.toJson(FormatJSONAction())) }.start()
     }
 
-    private fun revalidate() {
-        okAction.isEnabled = jsonInputDialogValidator.checkInput(myField.text)
+    private fun reValidate() {
+        okAction.isEnabled = jsonInputDialogValidator.checkInput(myField.text) && fileType != GenFileType.UnInitialized
+    }
+
+    override fun fileTypeSelected(): Boolean {
+        return fileType != GenFileType.UnInitialized
     }
 }

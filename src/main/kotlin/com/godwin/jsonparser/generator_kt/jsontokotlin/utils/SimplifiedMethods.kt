@@ -1,14 +1,12 @@
 package com.godwin.jsonparser.generator_kt.jsontokotlin.utils
 
-import com.godwin.jsonparser.generator_kt.jsontokotlin.model.ConfigManager
-import com.intellij.notification.NotificationDisplayType
-import com.intellij.notification.NotificationGroup
+import com.godwin.jsonparser.generator_kt.jsontokotlin.model.KotlinConfigManager
+import com.intellij.notification.NotificationGroupManager
 import com.intellij.notification.NotificationType
 import com.intellij.notification.Notifications
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.command.CommandProcessor
 import com.intellij.openapi.project.Project
-import java.lang.IllegalStateException
 import java.util.regex.Pattern
 
 /**
@@ -35,7 +33,7 @@ fun getIndent(): String {
 
     return buildString {
 
-        for (i in 1..ConfigManager.indent) {
+        for (i in 1..KotlinConfigManager.indent) {
             append(" ")
         }
     }
@@ -68,7 +66,7 @@ fun replaceClassNameToClassBlockString(classBlockString: String, newClassName: S
 }
 
 fun showNotify(notifyMessage: String, project: Project?) {
-    val notificationGroup = NotificationGroup("JSON to Kotlin Class", NotificationDisplayType.BALLOON, true)
+    val notificationGroup = NotificationGroupManager.getInstance().getNotificationGroup("JSON to Kotlin Class")
     ApplicationManager.getApplication().invokeLater {
         val notification = notificationGroup.createNotification(notifyMessage, NotificationType.INFORMATION)
         Notifications.Bus.notify(notification, project)

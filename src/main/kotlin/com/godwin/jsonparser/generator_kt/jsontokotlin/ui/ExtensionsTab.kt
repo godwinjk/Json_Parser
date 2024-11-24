@@ -6,7 +6,7 @@ import com.intellij.util.ui.JBDimension
 import java.awt.BorderLayout
 import javax.swing.JPanel
 
-class ExtensionsTab(private val genFileType: GenFileType, isDoubleBuffered: Boolean) :
+class ExtensionsTab( isDoubleBuffered: Boolean) :
     JPanel(BorderLayout(), isDoubleBuffered) {
     init {
         jScrollPanel(JBDimension(500, 300)) {

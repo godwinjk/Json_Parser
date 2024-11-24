@@ -5,7 +5,7 @@ import com.godwin.jsonparser.generator_kt.jsontokotlin.model.classscodestruct.Da
 import com.godwin.jsonparser.generator_kt.jsontokotlin.model.classscodestruct.KotlinClass
 import com.godwin.jsonparser.generator_kt.jsontokotlin.ui.jCheckBox
 import com.godwin.jsonparser.generator_kt.jsontokotlin.ui.jHorizontalLinearLayout
-import com.godwin.jsonparser.generator_kt.jsontokotlin.ui.jLink
+import com.godwin.jsonparser.generator_kt.jsontokotlin.ui.jLabel
 import javax.swing.JPanel
 
 object BuildFromJsonObjectSupport : Extension() {
@@ -19,9 +19,8 @@ object BuildFromJsonObjectSupport : Extension() {
                 getConfig(configKey).toBoolean(),
                 { isSelected -> setConfig(configKey, isSelected.toString()) }
             )
-            jLink(
+            jLabel(
                 "Make a static function that can build from JSONObject",
-                "https://github.com/wuseal/JsonToKotlinClass/blob/master/doc/build_from_jsonobject_tip.md"
             )
             fillSpace()
         }

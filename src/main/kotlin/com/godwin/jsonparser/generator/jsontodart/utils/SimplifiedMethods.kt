@@ -1,5 +1,6 @@
 package com.godwin.jsonparser.generator.jsontodart.utils
 
+import com.godwin.jsonparser.generator_kt.jsontokotlin.model.DartConfigManager
 import com.intellij.notification.NotificationDisplayType
 import com.intellij.notification.NotificationGroup
 import com.intellij.notification.NotificationType
@@ -7,7 +8,6 @@ import com.intellij.notification.Notifications
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.command.CommandProcessor
 import com.intellij.openapi.project.Project
-import com.godwin.jsonparser.generator.jsontodart.ConfigManager
 
 /**
  * File contains functions which simply other functions's invoke
@@ -33,7 +33,7 @@ fun getIndent(): String {
 
     return buildString {
 
-        for (i in 1..ConfigManager.indent) {
+        for (i in 1..DartConfigManager.indent) {
             append(" ")
         }
     }
@@ -51,6 +51,15 @@ fun getClassesStringList(classesString: String): List<String> {
  */
 fun getClassNameFromClassBlockString(classBlockString: String): String {
     return classBlockString.substringAfter("class").substringBefore("{").trim()
+    //throw IllegalStateException("cannot find class name in classBlockString: $classBlockString")
+}
+
+fun getFileNameFromClassBlockString(classBlockString: String): String {
+    var className = getClassNameFromClassBlockString(classBlockString)
+    if (DartConfigManager.isDartModelClassName) {
+        return camelCaseToSnakeCase(className)
+    }
+    return className
     //throw IllegalStateException("cannot find class name in classBlockString: $classBlockString")
 }
 
@@ -73,4 +82,9 @@ fun <E> List<E>.firstIndexAfterSpecificIndex(element: E, afterIndex: Int): Int {
 
 fun getCommentCode(comment: String): String {
     return comment.replace(Regex("[\n\r]"), "")
+}
+
+fun camelCaseToSnakeCase(input: String): String {
+    // Insert an underscore before each uppercase letter, then convert the entire string to lowercase
+    return input.replace(Regex("([a-z0-9])([A-Z])"), "$1_$2").lowercase()
 }
