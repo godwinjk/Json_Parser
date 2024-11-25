@@ -8,7 +8,6 @@
 Simple JSON Parser is an IntelliJ IDE plugin for validation and formatting JSON string<br>
 <!-- Plugin description end -->
 
-
 ## Features
 
 - [x] Pretty print Json
@@ -28,6 +27,10 @@ Simple JSON Parser is an IntelliJ IDE plugin for validation and formatting JSON 
   <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
 
 ## Changelog
+
+### Version 1.7.3
+
+1. Compatibility issue resolved
 
 ### Version 1.7.2
 
