@@ -1,7 +1,5 @@
 package com.godwin.jsonparser.services
 
-import com.godwin.jsonparser.MyBundle
-import com.godwin.jsonparser.constants.CONTENT_FACTORY_DEPRECATION_VERSION
 import com.godwin.jsonparser.ui.IParserWidget
 import com.godwin.jsonparser.ui.ParserToolWindowPanel
 import com.godwin.jsonparser.ui.ParserWidget
@@ -12,8 +10,6 @@ import com.intellij.openapi.actionSystem.ActionManager
 import com.intellij.openapi.actionSystem.ActionPlaces
 import com.intellij.openapi.actionSystem.ActionToolbar
 import com.intellij.openapi.actionSystem.DefaultActionGroup
-import com.intellij.openapi.application.ApplicationInfo
-import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.wm.ToolWindow
@@ -72,7 +68,7 @@ class ProjectService() {
         group.add(CloseTabAction(debuggerWidget))
         //        group.add(new NewWindowAction(debuggerWidget));
         val toolbar = ActionManager.getInstance().createActionToolbar(ActionPlaces.TOOLBAR, group, false)
-        toolbar.setOrientation(SwingConstants.VERTICAL)
+        toolbar.orientation = SwingConstants.VERTICAL
         return toolbar
     }
 
