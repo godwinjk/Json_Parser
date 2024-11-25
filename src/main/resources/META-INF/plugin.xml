@@ -2,14 +2,18 @@
 <idea-plugin>
     <id>com.godwin.json.parser</id>
     <name>Json Parser</name>
-    <version>1.1</version>
-    <vendor email="godwinjoseph.k.com">Godwin</vendor>
+    <version>1.7.3</version>
+    <vendor email="godwinjoseph.k@gmail.com">Godwin</vendor>
 
     <description><![CDATA[
       Simple JSON Parser is an IntelliJ IDE plugin for validation and formatting JSON string<br>
     ]]></description>
 
     <change-notes><![CDATA[
+     <h4> Version 1.7.3 </h4>
+    <ol>
+        <li>IntelliJ 2024.3 compatibility</li>
+    </ol>
     <h4> Version 1.7.2 </h4>
     <ol>
         <li>Unquoted fields and single quoted fields now supported</li>
@@ -52,6 +56,7 @@
     </change-notes>
     <depends>com.intellij.modules.lang</depends>
     <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.json</depends>
 
     <extensions defaultExtensionNs="com.intellij">
         <toolWindow factoryClass="com.godwin.jsonparser.ParserToolWindowFactory" id="Json Parser" anchor="right"

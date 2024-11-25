@@ -68,7 +68,7 @@ class ProjectService() {
         group.add(CloseTabAction(debuggerWidget))
         //        group.add(new NewWindowAction(debuggerWidget));
         val toolbar = ActionManager.getInstance().createActionToolbar(ActionPlaces.TOOLBAR, group, false)
-        toolbar.setOrientation(SwingConstants.VERTICAL)
+        toolbar.orientation = SwingConstants.VERTICAL
         return toolbar
     }
 

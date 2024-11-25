@@ -23,9 +23,9 @@ public class JBRadioAction extends AnAction implements CustomComponentAction {
     private ActionListener mActionListener;
     private boolean selected;
 
-    public JBRadioAction(@Nullable String text) {
-        this(text, null);
-    }
+//    public JBRadioAction(@Nullable String text) {
+//        this(text, null);
+//    }
 
     public JBRadioAction(@Nullable String text, ButtonGroup buttonGroup) {
         super(text);
@@ -55,7 +55,7 @@ public class JBRadioAction extends AnAction implements CustomComponentAction {
             JRadioButton radioButton = (JRadioButton) e.getSource();
             ActionToolbar actionToolbar = UIUtil.getParentOfType(ActionToolbar.class, radioButton);
             DataContext dataContext = actionToolbar != null ? actionToolbar.getToolbarDataContext() : DataManager.getInstance().getDataContext(radioButton);
-            JBRadioAction.this.actionPerformed(AnActionEvent.createFromAnAction(JBRadioAction.this, null, "unknown", dataContext));
+            JBRadioAction.this.actionPerformed(AnActionEvent.createEvent(JBRadioAction.this, dataContext, null, "unknown", ActionUiKind.NONE, null));
             System.out.println("JBRadioAction.createCustomComponent");
             if (mActionListener != null) {
                 mActionListener.actionPerformed(e);
