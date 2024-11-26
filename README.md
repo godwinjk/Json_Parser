@@ -4,6 +4,10 @@
 [![Version](https://img.shields.io/jetbrains/plugin/v/10650-json-parser.svg)](https://plugins.jetbrains.com/plugin/10650-json-parser)
 [![Downloads](https://img.shields.io/jetbrains/plugin/d/10650-json-parser.svg)](https://plugins.jetbrains.com/plugin/10650-json-parser)
 
+
+# JSON PARSER ISSUE
+There is an ongoing issue for this plugin. You can't open the JSON parser tool window, and if you tried there will be an error. I have released a new version of this plugin and it iw Waiting for approval. Here is the Link
+https://plugins.jetbrains.com/plugin/10650-json-parser/versions/stable/639348
 <!-- Plugin description -->
 Simple JSON Parser is an IntelliJ IDE plugin for validation and formatting JSON string<br>
 <!-- Plugin description end -->
