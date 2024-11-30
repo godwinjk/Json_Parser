@@ -4,10 +4,14 @@
 [![Version](https://img.shields.io/jetbrains/plugin/v/10650-json-parser.svg)](https://plugins.jetbrains.com/plugin/10650-json-parser)
 [![Downloads](https://img.shields.io/jetbrains/plugin/d/10650-json-parser.svg)](https://plugins.jetbrains.com/plugin/10650-json-parser)
 
-
 # JSON PARSER ISSUE
-There is an ongoing issue for this plugin. You can't open the JSON parser tool window, and if you tried there will be an error. I have released a new version of this plugin and it iw Waiting for approval. Here is the Link
-https://plugins.jetbrains.com/plugin/10650-json-parser/versions/stable/639348
+
+There is an ongoing issue for this plugin. You can't open the JSON parser tool window, and if you tried there will be an
+error. I have released a new version of this plugin and it iw Waiting for approval. Here is the Link
+https://plugins.jetbrains.com/plugin/10650-json-parser/versions/stable/642454
+
+# JSON PARSER
+
 <!-- Plugin description -->
 Simple JSON Parser is an IntelliJ IDE plugin for validation and formatting JSON string<br>
 <!-- Plugin description end -->
@@ -31,6 +35,15 @@ Simple JSON Parser is an IntelliJ IDE plugin for validation and formatting JSON 
   <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
 
 ## Changelog
+
+### Version 1.7.4
+
+Added a bunch of features to JSON parser. Now you can retrieve JSON from web and also you can load from your local
+system.
+
+1. Retrieve from Web. You can add header too in the next line separated with colon symbol. Each header key value pair
+   should be in the next line.
+2. Load from your local system
 
 ### Version 1.7.3
 

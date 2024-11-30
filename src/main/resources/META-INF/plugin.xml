@@ -2,7 +2,7 @@
 <idea-plugin>
     <id>com.godwin.json.parser</id>
     <name>Json Parser</name>
-    <version>1.7.3</version>
+    <version>1.7.4</version>
     <vendor email="godwinjoseph.k@gmail.com">Godwin</vendor>
 
     <description><![CDATA[
@@ -10,6 +10,12 @@
     ]]></description>
 
     <change-notes><![CDATA[
+    <h4> Version 1.7.4 </h4>
+    <ol>
+        <li>Retrieve from web</li>
+        <li>Load from file</li>
+        <li>Minor bug fixes</li>
+    </ol>
      <h4> Version 1.7.3 </h4>
     <ol>
         <li>IntelliJ 2024.3 compatibility</li>

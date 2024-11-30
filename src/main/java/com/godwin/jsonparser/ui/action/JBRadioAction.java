@@ -1,11 +1,13 @@
 package com.godwin.jsonparser.ui.action;
 
-import com.intellij.ide.DataManager;
-import com.intellij.openapi.actionSystem.*;
+import com.godwin.jsonparser.common.Logger;
+import com.intellij.openapi.actionSystem.ActionUpdateThread;
+import com.intellij.openapi.actionSystem.AnAction;
+import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.Presentation;
 import com.intellij.openapi.actionSystem.ex.CustomComponentAction;
 import com.intellij.openapi.util.Key;
 import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.util.ui.UIUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -51,12 +53,14 @@ public class JBRadioAction extends AnAction implements CustomComponentAction {
     @NotNull
     private JRadioButton getComponent(Presentation presentation) {
         JRadioButton jRadioButton = new JRadioButton("");
+        mButtonGroup.add(jRadioButton);
         jRadioButton.addActionListener(e -> {
-            JRadioButton radioButton = (JRadioButton) e.getSource();
-            ActionToolbar actionToolbar = UIUtil.getParentOfType(ActionToolbar.class, radioButton);
-            DataContext dataContext = actionToolbar != null ? actionToolbar.getToolbarDataContext() : DataManager.getInstance().getDataContext(radioButton);
-            JBRadioAction.this.actionPerformed(AnActionEvent.createEvent(JBRadioAction.this, dataContext, null, "unknown", ActionUiKind.NONE, null));
-            System.out.println("JBRadioAction.createCustomComponent");
+            jRadioButton.setSelected(true);
+//            JRadioButton radioButton = (JRadioButton) e.getSource();
+//            ActionToolbar actionToolbar = UIUtil.getParentOfType(ActionToolbar.class, radioButton);
+//            DataContext dataContext = actionToolbar != null ? actionToolbar.getToolbarDataContext() : DataManager.getInstance().getDataContext(radioButton);
+//            JBRadioAction.this.actionPerformed(AnActionEvent.createEvent(JBRadioAction.this, dataContext, null, "unknown", ActionUiKind.NONE, null));
+            Logger.i("JBRadioAction.createCustomComponent" + getTemplatePresentation().getText());
             if (mActionListener != null) {
                 mActionListener.actionPerformed(e);
             }
