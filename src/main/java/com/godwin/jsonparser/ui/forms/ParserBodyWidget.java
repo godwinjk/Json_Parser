@@ -36,6 +36,7 @@ import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.tree.IElementType;
 import org.apache.http.util.TextUtils;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -90,7 +91,7 @@ public class ParserBodyWidget {
         changeIcon();
         setEmptyTree();
 
-        setUiComponents();
+//        setUiComponents();
     }
 
     private void setUiComponents() {
@@ -103,18 +104,20 @@ public class ParserBodyWidget {
                 new CopyToClipBoardAction("Copy to Clipboard", "Click to copy selected text to clipboard", AllIcons.Actions.Copy),
                 new AnAction("Use Soft Wraps", "Toggle using soft wraps in current editor", AllIcons.Actions.ToggleSoftWrap) {
                     @Override
-                    public void actionPerformed(AnActionEvent anActionEvent) {
+                    public void actionPerformed(@NotNull AnActionEvent anActionEvent) {
                         try {
-                            String actionCommand = buttonGroup.getSelection().getActionCommand();
-                            if ("Pretty".equalsIgnoreCase(actionCommand)) {
-                                EditorSettings settings = prettyEditor.getSettings();
-                                settings.setUseSoftWraps(!settings.isUseSoftWraps());
-                            } else if ("Raw".equalsIgnoreCase(actionCommand)) {
-                                EditorSettings settings = rawEditor.getSettings();
-                                settings.setUseSoftWraps(!settings.isUseSoftWraps());
+                            if (buttonGroup.getSelection() != null) {
+                                String actionCommand = buttonGroup.getSelection().getActionCommand();
+                                if ("Pretty".equalsIgnoreCase(actionCommand)) {
+                                    EditorSettings settings = prettyEditor.getSettings();
+                                    settings.setUseSoftWraps(!settings.isUseSoftWraps());
+                                } else if ("Raw".equalsIgnoreCase(actionCommand)) {
+                                    EditorSettings settings = rawEditor.getSettings();
+                                    settings.setUseSoftWraps(!settings.isUseSoftWraps());
+                                }
                             }
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            Logger.e(e.toString());
                         }
                     }
 
@@ -213,18 +216,14 @@ public class ParserBodyWidget {
                 }
                 String finalMessage = message;
                 writeToEditor(text + "\n\n\n" + finalMessage);
-            } else if (e instanceof JsonProcessingException) {
+            } else if (e instanceof JsonProcessingException exception) {
 
                 writeToEditor(text);
 
-                JsonProcessingException exception = (JsonProcessingException) e;
                 String originalMessage = exception.getOriginalMessage();
                 long charOffset = exception.getLocation().getCharOffset();
 
-
-//
                 EditorHintsNotifier.notifyError(Objects.requireNonNull(prettyEditor), originalMessage, charOffset);
-
             }
         }
     }
@@ -270,9 +269,12 @@ public class ParserBodyWidget {
 
     private void changeIcon() {
         DefaultTreeCellRenderer renderer = (DefaultTreeCellRenderer) outputTree.getCellRenderer();
-        Icon icon = new ImageIcon();
-        renderer.setClosedIcon(AllIcons.General.ArrowRight);
-        renderer.setOpenIcon(AllIcons.General.ArrowDown);
+//        Icon icon = new ImageIcon();
+//        renderer.setClosedIcon(AllIcons.General.ArrowRight);
+//        renderer.setOpenIcon(AllIcons.General.ArrowDown);
+//        renderer.setLeafIcon(AllIcons.Nodes.C_plocal);
+        renderer.setClosedIcon(null);
+        renderer.setOpenIcon(null);
         renderer.setLeafIcon(AllIcons.Nodes.C_plocal);
     }
 
