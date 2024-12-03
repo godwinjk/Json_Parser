@@ -70,53 +70,31 @@
         <applicationService serviceImplementation="com.godwin.jsonparser.services.JsonPersistence"/>
     </extensions>
     <actions>
-        <action id="ParserActionId" class="com.godwin.jsonparser.ui.action.OpenParserAction" text="Parse Json"
+        <action id="com.godwin.jsonparser.parseraction" class="com.godwin.jsonparser.ui.action.OpenParserAction"
+                text="Parse Json"
                 description="Open In json parser">
             <add-to-group group-id="ConsoleView.PopupMenu" anchor="first"/>
             <add-to-group group-id="EditorPopupMenu" anchor="first"/>
             <keyboard-shortcut keymap="$default" first-keystroke="ctrl shift alt J" second-keystroke="ctrl alt J"/>
         </action>
 
-        <action id="com.godwin.jsonparser.generator.jsontodart.makedartdata"
-                class="com.godwin.jsonparser.generator.jsontodart.InsertDartClassAction"
-                text="Generate Dart Class from JSON"
-                description="Convert a json string data into class code">
-            <add-to-group group-id="GenerateGroup" anchor="last"/>
-            <keyboard-shortcut keymap="$default" first-keystroke="alt l"/>
-        </action>
-        <action id="com.godwin.jsonparser.generator.jsontodart.GenerateDartClassAction"
-                class="com.godwin.jsonparser.generator.jsontodart.GenerateDartClassAction"
-                text="Generate Dart Class from JSON"
-                icon="/icons/json_action.png"
-                description="Convert a json string data into class code">
-            <add-to-group group-id="NewGroup" anchor="before" relative-to-action="NewFile"/>
-        </action>
-
-        <action id="com.godwin.jsonparser.generator.jsontokt.insert"
-                class="com.godwin.jsonparser.generator_kt.jsontokotlin.InsertKotlinClassAction"
-                text="Generate Kotlin Class from JSON"
+        <action id="com.godwin.jsonparser.generator.insert"
+                class="com.godwin.jsonparser.generator_kt.jsontokotlin.InsertJsonClassAction"
+                text="Dart/Kotlin From Json"
+                icon="AllIcons.Json.Object"
                 description="Convert a json string data into class code">
             <add-to-group group-id="GenerateGroup" anchor="last"/>
             <keyboard-shortcut keymap="$default" first-keystroke="alt l"/>
         </action>
 
-        <action id="com.godwin.jsonparser.generator.jsontokt.GenerateClassAction"
-                class="com.godwin.jsonparser.generator_kt.jsontokotlin.GenerateKotlinFileAction"
-                text="Generate Kotlin Class from JSON"
-                icon="/icons/json_action.png"
+        <action id="com.godwin.jsonparser.generator.generate"
+                class="com.godwin.jsonparser.generator_kt.jsontokotlin.GenerateJsonFileAction"
+                text="Dart/Kotlin From Json"
+                icon="AllIcons.Json.Object"
                 description="Convert a json string data into class code">
             <add-to-group group-id="NewGroup" anchor="before" relative-to-action="NewFile"/>
         </action>
     </actions>
-    <!--    <project-components>-->
-    <!--        <component>-->
-    <!--            <implementation-class>com.godwin.jsonparser.ParserComponent</implementation-class>-->
-    <!--        </component>-->
-    <!--        <component>-->
-    <!--            <implementation-class>com.godwin.jsonparser.ParserComponent</implementation-class>-->
-    <!--            <interface-class>com.godwin.jsonparser.ParserComponent</interface-class>-->
-    <!--        </component>-->
-    <!--    </project-components>-->
     <applicationListeners>
         <listener class="com.godwin.jsonparser.listeners.MyProjectManagerListener"
                   topic="com.intellij.openapi.project.ProjectManagerListener"/>

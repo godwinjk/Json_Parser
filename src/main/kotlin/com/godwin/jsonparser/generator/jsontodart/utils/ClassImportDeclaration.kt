@@ -17,9 +17,7 @@ object ClassImportDeclaration {
         return applyImportClassDeclarationInterceptors(
             InterceptorManager.getEnabledImportClassDeclarationInterceptors(), fileName
         )
-
     }
-
 
     fun applyImportClassDeclarationInterceptors(
         interceptors: List<IImportClassDeclarationInterceptor>, fileName: String

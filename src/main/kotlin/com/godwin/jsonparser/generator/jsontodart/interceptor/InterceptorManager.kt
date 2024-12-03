@@ -1,10 +1,9 @@
 package com.godwin.jsonparser.generator.jsontodart.interceptor
 
 import com.godwin.jsonparser.generator.extensions.ExtensionsCollector
+import com.godwin.jsonparser.generator.jsontodart.interceptor.annotations.FreezedAndJsonSerializableImportInterceptor
 import com.godwin.jsonparser.generator.jsontodart.interceptor.annotations.custom.AddCustomAnnotationClassImportDeclarationInterceptor
 import com.godwin.jsonparser.generator.jsontodart.interceptor.annotations.custom.AddCustomAnnotationInterceptor
-import com.godwin.jsonparser.generator.jsontodart.interceptor.annotations.freezed.FreezedAnnotationClassImportDeclarationInterceptor
-import com.godwin.jsonparser.generator.jsontodart.interceptor.annotations.jsonserializable.JsonSerializableAnnotationClassImportDeclarationInterceptor
 import com.godwin.jsonparser.generator.jsontodart.interceptor.annotations.jsonserializable.JsonSerializableInterceptor
 import com.godwin.jsonparser.generator_kt.jsontokotlin.model.DartConfigManager
 import com.godwin.jsonparser.generator_kt.jsontokotlin.model.DefaultValueStrategy
@@ -64,11 +63,13 @@ object InterceptorManager {
             when (DartConfigManager.targetJsonConverterLib) {
                 TargetJsonConverter.Custom -> add(AddCustomAnnotationClassImportDeclarationInterceptor())
                 TargetJsonConverter.DartPackage -> {
-                    if (DartConfigManager.isJsonSerializationAnnotation) {
-                        add(JsonSerializableAnnotationClassImportDeclarationInterceptor())
-                    }
-                    if (DartConfigManager.isFreezedAnnotation) {
-                        add(FreezedAnnotationClassImportDeclarationInterceptor())
+                    if (DartConfigManager.isJsonSerializationAnnotation || DartConfigManager.isFreezedAnnotation) {
+                        add(
+                            FreezedAndJsonSerializableImportInterceptor(
+                                DartConfigManager.isJsonSerializationAnnotation,
+                                DartConfigManager.isFreezedAnnotation,
+                            )
+                        )
                     }
                 }
 

@@ -4,10 +4,7 @@ import com.godwin.jsonparser.generator.jsontodart.utils.getCommentCode
 import com.godwin.jsonparser.generator.jsontodart.utils.getIndent
 
 data class ParsedDartDataClass(
-    val annotations: List<String>,
-    val name: String,
-    val fileName: String,
-    val properties: List<Property>
+    val annotations: List<String>, val name: String, val fileName: String, val properties: List<Property>
 ) {
 
     companion object {
@@ -49,7 +46,6 @@ data class ParsedDartDataClass(
             val indent = getIndent()
             return buildString {
                 if (annotations.size > 1) {
-
                     annotations.forEach {
                         if (it.isNotBlank()) {
                             append(indent).append(it).append("\n")
@@ -84,7 +80,6 @@ data class ParsedDartDataClass(
                         append(" // ").append(propertyComment)
                     }
                 }
-
             }
         }
     }

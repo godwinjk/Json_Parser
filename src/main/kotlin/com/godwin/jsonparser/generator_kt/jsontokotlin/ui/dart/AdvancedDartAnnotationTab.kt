@@ -52,8 +52,8 @@ class AdvancedDartAnnotationTab(isDoubleBuffered: Boolean) : JPanel(BorderLayout
                     DartConfigManager.targetJsonConverterLib = TargetJsonConverter.DartPackage
                 }
             })
-
         }
+
         jScrollPanel(JBDimension(500, 300)) {
             jVerticalLinearLayout {
                 add(AnnotationsSelectPanel {
@@ -76,6 +76,8 @@ class AdvancedDartAnnotationTab(isDoubleBuffered: Boolean) : JPanel(BorderLayout
                 })
                 add(dartPackagePanel)
                 add(customizeAnnotationConfigPanel)
+                customizeAnnotationConfigPanel.isVisible =
+                    DartConfigManager.targetJsonConverterLib == TargetJsonConverter.Custom
             }
         }.apply {
             verticalScrollBarPolicy =

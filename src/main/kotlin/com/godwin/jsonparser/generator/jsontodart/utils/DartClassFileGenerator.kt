@@ -243,7 +243,7 @@ class DartClassFileGenerator(private val interceptors: List<IDartClassIntercepto
         val fileContent = classes.fold(jsonComment) { value, item ->
             "$value\n\n${
                 preProcessDartClass(
-                    item.fileName, packageDeclare, item.toString()
+                    fileName, packageDeclare, item.toString()
                 )
             }"
         }

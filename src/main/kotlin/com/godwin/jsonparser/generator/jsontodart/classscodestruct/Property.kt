@@ -44,6 +44,24 @@ data class Property(
         }
     }
 
+    fun getCodeForConstructor(): String {
+        return buildString {
+            if (annotations.isNotEmpty()) {
+                val annotationsCode = if (annotations.size > 1) {
+                    annotations.joinToString("\n") { it.getAnnotationString() }
+                } else {
+                    annotations[0].getAnnotationString()
+                }
+
+                if (annotationsCode.isNotBlank()) {
+                    append(annotationsCode)
+                    append(" ")
+                }
+            }
+            append("required ").append(type).append(" ").append(name)
+        }
+    }
+
     fun toParsedProperty(): ParsedDartDataClass.Property {
 
         val propertyAnnotationCodeList = annotations.map { annotation -> annotation.getAnnotationString() }

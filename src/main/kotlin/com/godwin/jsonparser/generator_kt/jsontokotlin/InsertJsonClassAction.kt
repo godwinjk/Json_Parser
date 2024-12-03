@@ -1,11 +1,14 @@
 package com.godwin.jsonparser.generator_kt.jsontokotlin
 
+import com.godwin.jsonparser.generator.jsontodart.DartClassImportDeclarationWriter
+import com.godwin.jsonparser.generator.jsontodart.DartDataClassCodeMaker
+import com.godwin.jsonparser.generator.jsontodart.filetype.GenFileType
 import com.godwin.jsonparser.generator_kt.jsontokotlin.feedback.dealWithException
+import com.godwin.jsonparser.generator_kt.jsontokotlin.model.DartConfigManager
 import com.godwin.jsonparser.generator_kt.jsontokotlin.model.KotlinConfigManager
 import com.godwin.jsonparser.generator_kt.jsontokotlin.model.UnSupportJsonException
 import com.godwin.jsonparser.generator_kt.jsontokotlin.ui.JsonInputDialog
 import com.godwin.jsonparser.generator_kt.jsontokotlin.utils.*
-import com.google.gson.Gson
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.PlatformDataKeys
@@ -22,10 +25,7 @@ import kotlin.math.max
  * Plugin action
  * Created by Seal.Wu on 2017/8/18.
  */
-class InsertKotlinClassAction : AnAction("Kotlin Class from JSON") {
-
-    private val gson = Gson()
-
+class InsertJsonClassAction : AnAction("Dart/Kotlin Class from JSON") {
     override fun actionPerformed(event: AnActionEvent) {
         var jsonString = ""
         try {
@@ -60,7 +60,7 @@ class InsertKotlinClassAction : AnAction("Kotlin Class from JSON") {
                 return
             }
             jsonString = json
-
+            val fileType = inputDialog.getFileType()
             if (reuseClassName(couldGetAndReuseClassNameInCurrentEditFileForInsertCode, className, tempClassName)) {
                 executeCouldRollBackAction(project) {
                     /**
@@ -70,9 +70,19 @@ class InsertKotlinClassAction : AnAction("Kotlin Class from JSON") {
                 }
             }
             val offset = calculateOffset(caret, document)
-            if (insertKotlinCode(project, document, className, jsonString, offset)) {
-                if (KotlinConfigManager.isAppendOriginalJson) {
-                    insertJsonExample(project, document, jsonString, offset)
+
+            if (fileType == GenFileType.Dart) {
+                insertDartCode(project, document, className, jsonString, offset)
+                if (insertDartCode(project, document, className, jsonString, offset)) {
+                    if (DartConfigManager.isAppendOriginalJson) {
+                        insertJsonExample(project, document, jsonString, offset, fileType)
+                    }
+                }
+            } else {
+                if (insertKotlinCode(project, document, className, jsonString, offset)) {
+                    if (KotlinConfigManager.isAppendOriginalJson) {
+                        insertJsonExample(project, document, jsonString, offset, fileType)
+                    }
                 }
             }
 
@@ -105,6 +115,68 @@ class InsertKotlinClassAction : AnAction("Kotlin Class from JSON") {
     }
 
 
+    private fun insertDartCode(
+        project: Project?,
+        document: Document,
+        className: String,
+        jsonString: String,
+        offset: Int
+    ): Boolean {
+        DartClassImportDeclarationWriter.insertImportClassCode(
+            project,
+            document,
+            className
+        )
+        var currentOffset = offset;
+        val codeMaker: DartDataClassCodeMaker
+        try {
+            //passing current file directory along with className and json
+            codeMaker = DartDataClassCodeMaker(className, jsonString)
+        } catch (e: IllegalFormatFlagsException) {
+            e.printStackTrace()
+            Messages.showErrorDialog(e.message, "UnSupport Json")
+            return false
+        }
+
+        val generateClassesString = codeMaker.makeDartDataClassCode()
+
+        executeCouldRollBackAction(project) {
+            if (offset <= 0) {
+                if (offset == 0) {
+                    currentOffset = document.textLength
+                }
+                val lastPackageKeywordLineEndIndex = try {
+                    "^[\\s]*package\\s.+\n$".toRegex(RegexOption.MULTILINE).findAll(document.text)
+                        .last().range.endInclusive
+                } catch (e: Exception) {
+                    -1
+                }
+                val lastImportKeywordLineEndIndex = try {
+                    "^[\\s]*import\\s.+\n$".toRegex(RegexOption.MULTILINE).findAll(document.text)
+                        .last().range.endInclusive
+                } catch (e: Exception) {
+                    -1
+                }
+                if (offset < lastPackageKeywordLineEndIndex) {
+                    currentOffset = lastPackageKeywordLineEndIndex + 1
+                }
+                if (offset < lastImportKeywordLineEndIndex) {
+                    currentOffset = lastImportKeywordLineEndIndex + 1
+                }
+
+            } else {
+                currentOffset = document.textLength
+            }
+            document.insertString(
+                currentOffset.coerceAtLeast(0),
+                com.godwin.jsonparser.generator.jsontodart.utils.ClassCodeFilter.removeDuplicateClassCode(
+                    generateClassesString
+                )
+            )
+        }
+        return true
+    }
+
     private fun insertKotlinCode(
         project: Project?,
         document: Document,
@@ -112,7 +184,7 @@ class InsertKotlinClassAction : AnAction("Kotlin Class from JSON") {
         jsonString: String,
         offset: Int
     ): Boolean {
-        ClassImportDeclarationWriter.insertImportClassCode(project, document)
+        KotlinClassImportDeclarationWriter.insertImportClassCode(project, document)
 
         val codeMaker: KotlinClassCodeMaker
         try {
@@ -140,9 +212,14 @@ class InsertKotlinClassAction : AnAction("Kotlin Class from JSON") {
         project: Project?,
         document: Document,
         jsonString: String,
-        offset: Int
+        offset: Int,
+        fileType: GenFileType
     ) {
-        val jsonExample = jsonString.toJavaDocMultilineComment()
+        val jsonExample = if (fileType == GenFileType.Dart) {
+            jsonString.toDartDocMultilineComment()
+        } else {
+            jsonString.toJavaDocMultilineComment()
+        }
         executeCouldRollBackAction(project) {
             document.insertString(
                 max(offset, 0),

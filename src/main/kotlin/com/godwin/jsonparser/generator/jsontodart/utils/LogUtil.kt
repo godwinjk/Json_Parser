@@ -5,9 +5,6 @@ import com.godwin.jsonparser.generator.jsontodart.test.TestConfig
 import com.intellij.openapi.diagnostic.LoggerRt
 import java.util.logging.Logger
 
-/**
- * Created by Seal.Wu on 2018/3/12.
- */
 object LogUtil {
 
     fun i(info: String) {

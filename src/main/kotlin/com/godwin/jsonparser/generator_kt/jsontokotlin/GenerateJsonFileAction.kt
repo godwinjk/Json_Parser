@@ -28,7 +28,7 @@ import com.intellij.psi.impl.file.PsiDirectoryFactory
 /**
  * Created by Seal.Wu on 2018/4/18.
  */
-class GenerateKotlinFileAction : AnAction("Kotlin/Dart from JSON") {
+class GenerateJsonFileAction : AnAction("Dart/Kotlin from JSON") {
 
     override fun actionPerformed(event: AnActionEvent) {
         try {

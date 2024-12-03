@@ -11,7 +11,7 @@ import kotlin.math.max
  */
 
 
-object ClassImportDeclarationWriter : IClassImportDeclarationWriter {
+object KotlinClassImportDeclarationWriter : IClassImportDeclarationWriter {
 
 
     override fun insertImportClassCode(project: Project?, editFile: Document) {
@@ -19,7 +19,7 @@ object ClassImportDeclarationWriter : IClassImportDeclarationWriter {
         val text = editFile.text
 
         val interceptedImportClassDeclaration = ClassImportDeclaration.applyImportClassDeclarationInterceptors(
-                InterceptorManager.getEnabledImportClassDeclarationInterceptors()
+            InterceptorManager.getEnabledImportClassDeclarationInterceptors()
         )
 
         interceptedImportClassDeclaration.split("\n").forEach { importClassLineString ->
@@ -38,7 +38,7 @@ object ClassImportDeclarationWriter : IClassImportDeclarationWriter {
                 }
                 val index = max(lastImportKeywordIndex, packageIndex)
                 val insertIndex =
-                        if (index == -1) 0 else editFile.getLineEndOffset(editFile.getLineNumber(index))
+                    if (index == -1) 0 else editFile.getLineEndOffset(editFile.getLineNumber(index))
 
                 executeCouldRollBackAction(project) {
                     editFile.insertString(insertIndex, "\n" + importClassLineString + "\n")

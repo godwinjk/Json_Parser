@@ -35,33 +35,60 @@ data class DartClass(
                 append(mixinClass)
             }
             append(" {").append("\n")
-            //属性
-            properties.forEach { p ->
-                val code = p.getCode()
-                val addIndentCode = code.split("\n").joinToString("\n") { indent + it }
-                append(addIndentCode)
-                append(";")
-                if (p.comment.isNotBlank()) append(" // ").append(getCommentCode(p.comment))
-                append("\n")
-            }
-
-            //构造方法
-            append("\n").append(indent).append(name).append("({")
-            properties.forEach { p ->
-                if (!DartConfigManager.isPropertyOptional || DartConfigManager.isPropertyFinal) {
-                    append("required ")
+            //This block is for class properties.
+            //Here For freezed no properties are defining, all things are handled by freezed after build runner
+            if (!DartConfigManager.isFreezedAnnotation) {
+                properties.forEach { p ->
+                    val code = p.getCode()
+                    val addIndentCode = code.split("\n").joinToString("\n") { indent + it }
+                    append(addIndentCode)
+                    append(";")
+                    if (p.comment.isNotBlank()) append(" // ").append(getCommentCode(p.comment))
+                    append("\n")
                 }
-                append("this.").append(p.name)
-                if (p.isLast.not()) append(", ")
             }
-            append("});").append("\n\n")
-
+            // This bloc is for constructor
+            //Again for freezed we are not creating this constructor
+            if (!DartConfigManager.isFreezedAnnotation) {
+                append("\n").append(indent).append(name).append("({")
+                properties.forEach { p ->
+                    if (!DartConfigManager.isPropertyOptional || DartConfigManager.isPropertyFinal) {
+                        append("required ")
+                    }
+                    append("this.").append(p.name)
+                    if (p.isLast.not()) append(", ")
+                }
+                append("});").append("\n")
+            } else if (DartConfigManager.isFreezedAnnotation) {
+                //For freezed only
+                append("\n").append(indent).append("factory ").append(name).append("({")
+                properties.forEach { p ->
+                    append("\n")
+                    val code = p.getCodeForConstructor().split("\n").joinToString("\n") { indent + indent + it }
+                    append(code)
+                    if (p.isLast.not()) {
+                        append(", ")
+                    }
+                }
+                append("}) = ").append("_$name;").append("\n")
+            }
             //from json
-            if (DartConfigManager.isJsonSerializationAnnotation || DartConfigManager.isFreezedAnnotation) {
+            if (DartConfigManager.isFreezedAnnotation) {
+                append("\n")
                 append(indent).append("factory ").append(name)
-                    .append(".fromJson(Map<String, dynamic> json) => _$${name}(json);\n")
+                    .append(".fromJson(Map<String, dynamic> json) => _$${name}FromJson(json);\n")
+            } else if (DartConfigManager.isJsonSerializationAnnotation) {
+                append(indent).append("factory ").append(name)
+                    .append(".fromJson(Map<String, dynamic> json) => _$$name(json);\n")
+                append(indent).append("Map<String, dynamic> toJson() =>  ").append("_$$name(json);\n")
+            } else if (DartConfigManager.isJsonSerializationAnnotation && !DartConfigManager.isFreezedAnnotation) {
+                append(indent).append("factory ").append(name)
+                    .append(".fromJson(Map<String, dynamic> json) => _$$name(json);\n")
+
+                append(indent).append("Map<String, dynamic> toJson() =>  ").append("_$$name(json);\n")
+
             } else {
-                append(indent).append("const factory ").append(name).append(".fromJson(Map<String, dynamic> json) {\n")
+                append(indent).append("factory ").append(name).append(".fromJson(Map<String, dynamic> json) {\n")
                 append(indent).append(indent).append("return ").append(name).append("(").append("\n")
 
                 properties.forEach { p ->
@@ -95,10 +122,10 @@ data class DartClass(
                 append(indent).append("}").append("\n\n")
             }
             //toJson
-            if (DartConfigManager.isJsonSerializationAnnotation) {
+            if (DartConfigManager.isJsonSerializationAnnotation && !DartConfigManager.isFreezedAnnotation) {
                 append(indent).append("Map<String, dynamic> toJson() => _$${name}(this);")
-                append("\n\n")
-            } else if (DartConfigManager.isFreezedAnnotation) {
+                append("\n")
+            } else if (!DartConfigManager.isFreezedAnnotation) {
                 append(indent).append("Map<String, dynamic> toJson() {\n")
                 append(indent).append(indent).append("final Map<String, dynamic> data = new Map<String, dynamic>();\n")
 
@@ -116,23 +143,23 @@ data class DartClass(
 
                     when {
                         p.isListType() && p.getGenericType().isPrimitiveType() -> {
-                            append("if (this.${p.name} != null) {\n")
+                            append("if (${p.name} != null) {\n")
                             append(indent).append(indent).append(indent).append(valueSetter).append(" = ")
-                                .append("this.${p.name};\n")
+                                .append("${p.name};\n")
                             append(indent).append(indent).append("}\n")
                         }
 
                         p.isListType() && !p.getGenericType().isPrimitiveType() -> {
-                            append("if (this.${p.name} != null) {\n")
+                            append("if (${p.name} != null) {\n")
                             append(indent).append(indent).append(indent).append(valueSetter).append(" = ")
-                                .append("this.${p.name}.map((v) => v.toJson()).toList();\n")
+                                .append("${p.name}.map((v) => v.toJson()).toList();\n")
                             append(indent).append(indent).append("}\n")
                         }
 
                         else -> {
-                            append("if (this.${p.name} != null) {\n")
+                            append("if (${p.name} != null) {\n")
                             append(indent).append(indent).append(indent).append(valueSetter).append(" = ")
-                                .append("this.${p.name}.toJson();\n")
+                                .append("${p.name}.toJson();\n")
                             append(indent).append(indent).append("}\n")
                         }
                     }
@@ -141,15 +168,6 @@ data class DartClass(
                 append(indent).append("}").append("\n")
             }
             append("}")
-
-//            if (nestedClasses.isNotEmpty()) {
-//                append(" {")
-//                append("\n")
-//                val nestedClassesCode = nestedClasses.joinToString("\n\n") { it.getCode(extraIndent = indent) }
-//                append(nestedClassesCode)
-//                append("\n")
-//                append("}")
-//            }
         }
         return if (extraIndent.isNotEmpty()) {
             code.split("\n").joinToString("\n") {

@@ -100,7 +100,7 @@ class InsertDartClassAction : AnAction("Dart Class from JSON") {
         jsonString: String,
         caret: Caret?
     ): Boolean {
-        ClassImportDeclarationWriter.insertImportClassCode(project, document, className)
+        DartClassImportDeclarationWriter.insertImportClassCode(project, document, className)
 
         val codeMaker: DartDataClassCodeMaker
         try {

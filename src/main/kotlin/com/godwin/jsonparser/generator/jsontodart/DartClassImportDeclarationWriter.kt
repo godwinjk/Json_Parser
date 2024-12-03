@@ -11,9 +11,7 @@ import com.intellij.openapi.project.Project
  * Created by Seal.Wu on 2017/9/18.
  */
 
-
-object ClassImportDeclarationWriter : IClassImportDeclarationWriter {
-
+object DartClassImportDeclarationWriter : IClassImportDeclarationWriter {
 
     override fun insertImportClassCode(project: Project?, editFile: Document, className: String) {
         val text = editFile.text
@@ -36,7 +34,12 @@ object ClassImportDeclarationWriter : IClassImportDeclarationWriter {
                 } catch (e: Exception) {
                     -1
                 }
-                val index = Math.max(lastImportKeywordIndex, packageIndex)
+                val lastPathKeyWordIndex = try {
+                    "^[\\s]*.g.dart\\s.+\n$".toRegex(RegexOption.MULTILINE).findAll(text).last().range.endInclusive
+                } catch (e: Exception) {
+                    -1
+                }
+                val index = lastImportKeywordIndex.coerceAtLeast(lastPathKeyWordIndex.coerceAtLeast(packageIndex))
                 val insertIndex =
                     if (index == -1) 0 else editFile.getLineEndOffset(editFile.getLineNumber(index))
 
