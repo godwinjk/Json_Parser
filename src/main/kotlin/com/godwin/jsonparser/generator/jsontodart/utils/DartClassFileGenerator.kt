@@ -30,7 +30,12 @@ class DartClassFileGenerator(private val interceptors: List<IDartClassIntercepto
         jsonString: String
     ) {
 
-        val generatedFilesClasses = generateDartClasses(removeDuplicateClassCode, directory)
+        var generatedFilesClasses = generateDartClasses(removeDuplicateClassCode, directory)
+        //Remove any duplicate finally before generating actual file
+        generatedFilesClasses = ClassCodeFilter.removeDuplicateClassCode(generatedFilesClasses)
+
+        //Adding import statement for subclass
+        ClassCodeFilter.addSubClassImports(generatedFilesClasses)
 
         val notificationText = if (DartConfigManager.isInnerClassModel) {
             generateSingleDartFile(
@@ -40,14 +45,13 @@ class DartClassFileGenerator(private val interceptors: List<IDartClassIntercepto
         } else {
             generatedFilesClasses.forEachIndexed { index, dartClass ->
                 generateDartClassFile(
+                    dartClass,
                     index == 0,
-                    dartClass.fileName,
                     packageDeclare,
-                    dartClass.toString(),
                     project,
                     psiFileFactory,
                     directory,
-                    jsonString
+                    jsonString,
                 )
             }
             "${generatedFilesClasses.size} Dart class generated successful"
@@ -134,8 +138,8 @@ class DartClassFileGenerator(private val interceptors: List<IDartClassIntercepto
     ) {
         classes.forEach {
             it.properties.forEach { p ->
-                if (p.kotlinDataClassPropertyTypeRef == originDataClass) {
-                    p.kotlinDataClassPropertyTypeRef = newKotlinDataClass
+                if (p.classPropertyTypeRef == originDataClass) {
+                    p.classPropertyTypeRef = newKotlinDataClass
                 }
             }
         }
@@ -144,10 +148,10 @@ class DartClassFileGenerator(private val interceptors: List<IDartClassIntercepto
     fun synchronizedPropertyTypeWithTypeRef(unSynchronizedTypeClasses: List<ParsedDartDataClass>): List<ParsedDartDataClass> {
         return unSynchronizedTypeClasses.map { dataClass ->
             val newProperties = dataClass.properties.map {
-                if (it.kotlinDataClassPropertyTypeRef != ParsedDartDataClass.NONE) {
+                if (it.classPropertyTypeRef != ParsedDartDataClass.NONE) {
                     val rawPropertyReferenceType = getRawType(getChildType(it.propertyType))
                     val tobeReplaceNewType =
-                        it.propertyType.replace(rawPropertyReferenceType, it.kotlinDataClassPropertyTypeRef.name)
+                        it.propertyType.replace(rawPropertyReferenceType, it.classPropertyTypeRef.name)
                     if (it.propertyValue.isNotBlank()) {
                         it.copy(propertyType = tobeReplaceNewType, propertyValue = getDefaultValue(tobeReplaceNewType))
                     } else it.copy(propertyType = tobeReplaceNewType)
@@ -166,12 +170,12 @@ class DartClassFileGenerator(private val interceptors: List<IDartClassIntercepto
          * Build Property Type reference to ParsedKotlinDataClass
          * Only pre class property type could reference behind classes
          */
-        classes.forEachIndexed { index, kotlinDataClass ->
-            kotlinDataClass.properties.forEachIndexed { _, property ->
+        classes.forEachIndexed { index, dartClass ->
+            dartClass.properties.forEachIndexed { _, property ->
                 val indexOfClassName =
                     classNameList.firstIndexAfterSpecificIndex(getRawType(getChildType(property.propertyType)), index)
                 if (indexOfClassName != -1) {
-                    property.kotlinDataClassPropertyTypeRef = classes[indexOfClassName]
+                    property.classPropertyTypeRef = classes[indexOfClassName]
                 }
             }
         }
@@ -180,24 +184,23 @@ class DartClassFileGenerator(private val interceptors: List<IDartClassIntercepto
     }
 
     private fun generateDartClassFile(
+        parsedClass: ParsedDartDataClass,
         isFirstClass: Boolean,
-        fileName: String,
         packageDeclare: String,
-        classCodeContent: String,
         project: Project?,
         psiFileFactory: PsiFileFactory,
         directory: PsiDirectory,
-        jsonString: String
+        jsonString: String,
     ) {
         val jsonComment = if (isFirstClass && DartConfigManager.isAppendOriginalJson) {
-            jsonString.toDartDocMultilineComment().append("\n\n")
+            jsonString.toDartDocMultilineComment().append("\n")
         } else ""
 
-        val dartFileContent = preProcessDartClass(fileName, packageDeclare, classCodeContent)
-        val fileContent = jsonComment.append(dartFileContent)
+        val dartFileContent = preProcessDartClass(parsedClass.fileName, packageDeclare, parsedClass)
+        val fileContent = jsonComment.append(dartFileContent).trim()
 
         executeCouldRollBackAction(project) {
-            val file = psiFileFactory.createFileFromText("$fileName.dart", DartFileType(), fileContent)
+            val file = psiFileFactory.createFileFromText("${parsedClass.fileName}.dart", DartFileType(), fileContent)
             directory.add(file)
         }
     }
@@ -205,22 +208,26 @@ class DartClassFileGenerator(private val interceptors: List<IDartClassIntercepto
     private fun preProcessDartClass(
         fileName: String,
         packageDeclare: String,
-        classCodeContent: String,
+        parsedClass: ParsedDartDataClass,
     ): String {
         val classCode = if (interceptors.isNotEmpty()) {
-            NormalClassesCodeParser(classCodeContent).parse()[0].applyInterceptors(interceptors).getCode()
+            NormalClassesCodeParser(parsedClass.toString()).parse()[0].applyInterceptors(interceptors).getCode()
         } else {
-            classCodeContent
+            parsedClass.toString()
         }
         val dartFileContent = buildString {
             if (packageDeclare.isNotEmpty()) {
                 append(packageDeclare)
-                append("\n\n")
+                append("\n")
             }
-            val importClassDeclaration = ClassImportDeclaration.getImportClassDeclaration(fileName)
+            if (parsedClass.importStatement.isNotBlank()) {
+                append(parsedClass.importStatement.trim())
+                append("\n")
+            }
+            val importClassDeclaration = ClassImportDeclaration.getImportClassDeclaration(fileName).trim()
             if (importClassDeclaration.isNotBlank()) {
                 append(importClassDeclaration)
-                append("\n\n")
+                append("\n")
             }
             append(classCode)
         }
@@ -240,13 +247,15 @@ class DartClassFileGenerator(private val interceptors: List<IDartClassIntercepto
         val jsonComment = if (DartConfigManager.isAppendOriginalJson) {
             jsonString.toDartDocMultilineComment()
         } else ""
+
         val fileContent = classes.fold(jsonComment) { value, item ->
-            "$value\n\n${
+            "$value\n${
                 preProcessDartClass(
-                    fileName, packageDeclare, item.toString()
+                    fileName, packageDeclare, item
                 )
             }"
-        }
+        }.trim()
+
         executeCouldRollBackAction(project) {
             val file = psiFileFactory.createFileFromText("$fileName.dart", DartFileType(), fileContent)
             directory.add(file)

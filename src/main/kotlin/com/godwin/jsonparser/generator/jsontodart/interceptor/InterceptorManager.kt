@@ -4,6 +4,7 @@ import com.godwin.jsonparser.generator.extensions.ExtensionsCollector
 import com.godwin.jsonparser.generator.jsontodart.interceptor.annotations.FreezedAndJsonSerializableImportInterceptor
 import com.godwin.jsonparser.generator.jsontodart.interceptor.annotations.custom.AddCustomAnnotationClassImportDeclarationInterceptor
 import com.godwin.jsonparser.generator.jsontodart.interceptor.annotations.custom.AddCustomAnnotationInterceptor
+import com.godwin.jsonparser.generator.jsontodart.interceptor.annotations.freezed.FreezedInterceptor
 import com.godwin.jsonparser.generator.jsontodart.interceptor.annotations.jsonserializable.JsonSerializableInterceptor
 import com.godwin.jsonparser.generator_kt.jsontokotlin.model.DartConfigManager
 import com.godwin.jsonparser.generator_kt.jsontokotlin.model.DefaultValueStrategy
@@ -30,7 +31,9 @@ object InterceptorManager {
                     if (DartConfigManager.isJsonSerializationAnnotation) {
                         add(JsonSerializableInterceptor())
                     }
-
+                    if (DartConfigManager.isFreezedAnnotation) {
+                        add(FreezedInterceptor())
+                    }
                 }
 
                 TargetJsonConverter.Custom -> add(AddCustomAnnotationInterceptor())

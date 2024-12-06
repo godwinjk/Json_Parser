@@ -2,7 +2,9 @@ package com.godwin.jsonparser.ui;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
-import java.util.*;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Godwin on 4/21/2018 12:32 PM for json.
@@ -11,10 +13,16 @@ import java.util.*;
  */
 public class TreeNodeCreator {
 
-    public static DefaultTreeModel getTreeModelFromMap(Map<String, Object> jsonMap) {
+    public static DefaultTreeModel getTreeModelFromMap(Object jsonMap) {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("");
-
-        createNodeFromMap(jsonMap, root);
+        if (jsonMap instanceof List) {
+            if (!((List) jsonMap).isEmpty()) {
+                root = new DefaultMutableTreeNode(" [" + ((List) jsonMap).size() + "]");
+            }
+            processList((List<Object>) jsonMap, root);
+        } else if (jsonMap instanceof Map) {
+            createNodeFromMap((Map<String, Object>) jsonMap, root);
+        }
         return new DefaultTreeModel(root);
     }
 

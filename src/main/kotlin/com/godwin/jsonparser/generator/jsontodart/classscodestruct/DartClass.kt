@@ -1,8 +1,11 @@
 package com.godwin.jsonparser.generator.jsontodart.classscodestruct
 
 import com.godwin.jsonparser.generator.jsontodart.interceptor.IDartClassInterceptor
-import com.godwin.jsonparser.generator.jsontodart.utils.*
+import com.godwin.jsonparser.generator.jsontodart.utils.BACKSTAGE_NULLABLE_POSTFIX
 import com.godwin.jsonparser.generator.jsontodart.utils.classblockparse.ParsedDartDataClass
+import com.godwin.jsonparser.generator.jsontodart.utils.getCommentCode
+import com.godwin.jsonparser.generator.jsontodart.utils.getIndent
+import com.godwin.jsonparser.generator.jsontodart.utils.isPrimitiveType
 import com.godwin.jsonparser.generator_kt.jsontokotlin.model.DartConfigManager
 
 data class DartClass(
@@ -180,16 +183,6 @@ data class DartClass(
         } else {
             code
         }
-    }
-
-    fun toParsedDartClass(): ParsedDartDataClass {
-
-        val annotationCodeList = annotations.map { it.getAnnotationString() }
-
-        val parsedProperties = properties.map { it.toParsedProperty() }
-        val fileName = if (DartConfigManager.isDartModelClassName) camelCaseToSnakeCase(name)
-        else name
-        return ParsedDartDataClass(annotationCodeList, name, fileName, parsedProperties)
     }
 
     fun applyInterceptors(interceptors: List<IDartClassInterceptor>): DartClass {

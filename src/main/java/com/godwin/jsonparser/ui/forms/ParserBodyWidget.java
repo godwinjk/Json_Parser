@@ -44,7 +44,6 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -256,13 +255,12 @@ public class ParserBodyWidget {
             return;
         }
         try {
-            Map<String, Object> prettyJsonString = JsonUtils.getMap(jsonString);
+            Object prettyJsonString = JsonUtils.getMap(jsonString);
 
             DefaultTreeModel model = TreeNodeCreator.getTreeModelFromMap(prettyJsonString);
             outputTree.setModel(model);
             expandAllNodes(outputTree, 0, outputTree.getRowCount());
         } catch (Exception e) {
-//            e.printStackTrace();
             Logger.e("json Error catch");
         }
     }

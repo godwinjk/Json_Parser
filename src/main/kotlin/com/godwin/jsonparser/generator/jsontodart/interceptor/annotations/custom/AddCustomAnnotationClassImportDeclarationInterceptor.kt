@@ -8,6 +8,7 @@ class AddCustomAnnotationClassImportDeclarationInterceptor : IImportClassDeclara
     override fun intercept(originClassImportDeclaration: String, fileName: String): String {
 
         val propertyAnnotationImportClassString = DartConfigManager.customAnnotationClassImportdeclarationString
-        return originClassImportDeclaration.append(propertyAnnotationImportClassString)
+        return if (originClassImportDeclaration.isBlank()) propertyAnnotationImportClassString
+        else originClassImportDeclaration.append(propertyAnnotationImportClassString)
     }
 }

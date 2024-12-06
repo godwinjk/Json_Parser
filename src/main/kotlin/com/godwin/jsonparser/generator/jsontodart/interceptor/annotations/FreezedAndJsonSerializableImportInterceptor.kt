@@ -17,13 +17,13 @@ class FreezedAndJsonSerializableImportInterceptor(
                 append("import 'package:freezed_annotation/freezed_annotation.dart';")
                 append("\n")
             }
-            append("import 'dart:convert';").append("\npart '$fileName.g.dart';").append("\n")
+            append("import 'dart:convert';").append("\n\npart '$fileName.g.dart';").append("\n")
             if (isFreezedSupport) {
                 append("part '$fileName.freezed.dart';")
             }
         }
 
-
-        return originClassImportDeclaration.append(string)
+        return if (originClassImportDeclaration.isBlank()) string
+        else originClassImportDeclaration.append(string)
     }
 }

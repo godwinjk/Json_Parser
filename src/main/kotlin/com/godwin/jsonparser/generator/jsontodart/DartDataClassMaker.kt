@@ -127,8 +127,8 @@ class DartDataClassMaker(private val rootClassName: String, private val json: St
     ) {
         classes.forEach {
             it.properties.forEach { p ->
-                if (p.kotlinDataClassPropertyTypeRef == originDataClass) {
-                    p.kotlinDataClassPropertyTypeRef = newKotlinDataClass
+                if (p.classPropertyTypeRef == originDataClass) {
+                    p.classPropertyTypeRef = newKotlinDataClass
                 }
             }
         }
@@ -141,12 +141,12 @@ class DartDataClassMaker(private val rootClassName: String, private val json: St
         return unSynchronizedTypeClasses.map { dataClass: ParsedDartDataClass ->
 
             val newProperties = dataClass.properties.map { property ->
-                if (property.kotlinDataClassPropertyTypeRef != ParsedDartDataClass.NONE) {
+                if (property.classPropertyTypeRef != ParsedDartDataClass.NONE) {
                     val rawPropertyReferenceType = getRawType(getChildType(property.propertyType))
                     val tobeReplaceNewType =
                         property.propertyType.replace(
                             rawPropertyReferenceType,
-                            property.kotlinDataClassPropertyTypeRef.name
+                            property.classPropertyTypeRef.name
                         )
                     if (property.propertyValue.isNotBlank()) {
                         property.copy(
@@ -195,7 +195,7 @@ class DartDataClassMaker(private val rootClassName: String, private val json: St
                 notBeenReferencedClass.remove(referencedClass)
                 classNameList.removeAt(indexOfClassName)
                 notBeenReferencedClass.remove(referencedClass)
-                property.kotlinDataClassPropertyTypeRef = referencedClass
+                property.classPropertyTypeRef = referencedClass
 
                 buildClassTypeReference(referencedClass, classNameList, notBeenReferencedClass)
 
