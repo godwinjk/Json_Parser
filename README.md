@@ -51,6 +51,7 @@ community.
 Every donation, no matter the size, makes a difference and is deeply appreciated. ❤️
 
 [![](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://paypal.me/godwinj)
+❤️[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/S6S0176OVQ)
 
 ## Changelog
 
