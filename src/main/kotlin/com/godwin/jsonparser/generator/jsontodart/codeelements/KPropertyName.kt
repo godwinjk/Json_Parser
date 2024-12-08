@@ -1,8 +1,10 @@
 package com.godwin.jsonparser.generator.jsontodart.codeelements
 
+import java.util.*
+
 /**
  * make name to be camel case
- * Created by Sealwu on 2017/9/18.
+ * Created by Godwin on 2024/12/20.
  */
 
 interface IPropertyNameMaker {
@@ -33,7 +35,7 @@ object KPropertyName : KName(), IPropertyNameMaker {
     override fun makePropertyName(rawString: String, needTransformToLegalName: Boolean): String {
         return if (needTransformToLegalName) {
             val camelCaseLegalName = makeLowerCamelCaseLegalNameOrEmptyName(rawString)
-            if (camelCaseLegalName.isEmpty()) KPropertyName.makeLowerCamelCaseLegalNameOrEmptyName("x-$rawString") else camelCaseLegalName
+            if (camelCaseLegalName.isEmpty()) makeLowerCamelCaseLegalNameOrEmptyName("x-$rawString") else camelCaseLegalName
         } else {
             rawString
         }
@@ -74,13 +76,13 @@ object KPropertyName : KName(), IPropertyNameMaker {
         val stringBuilder = StringBuilder()
         temp.split(nameSeparator.toRegex()).forEach {
             if (it.isNotBlank()) {
-                stringBuilder.append(it.substring(0, 1).toUpperCase().plus(it.substring(1)))
+                stringBuilder.append(it.substring(0, 1).uppercase(Locale.getDefault()).plus(it.substring(1)))
             }
         }
 
         val camelCaseName = stringBuilder.toString()
         return if (camelCaseName.isNotEmpty()) {
-            camelCaseName.substring(0, 1).toLowerCase().plus(camelCaseName.substring(1))
+            camelCaseName.substring(0, 1).lowercase(Locale.getDefault()).plus(camelCaseName.substring(1))
         } else {
             camelCaseName
         }

@@ -1,9 +1,11 @@
 package com.godwin.jsonparser.generator.jsontodart.codeelements
 
+import java.util.*
+
 
 /**
  * Transform to legal Class name
- * Created by Seal on 2017/9/18.
+ * Created by Seal on 2024/12/20.
  */
 
 interface IKClassName {
@@ -34,7 +36,7 @@ object KClassName : KName(), IKClassName {
 
         }
 
-        val upperCamelCase =toUpperCamelCase(temp)
+        val upperCamelCase = toUpperCamelCase(temp)
 
         return toBeLegalName(upperCamelCase)
     }
@@ -55,7 +57,7 @@ object KClassName : KName(), IKClassName {
 
         temp.split(nameSeparator.toRegex()).forEach {
             if (it.isNotBlank()) {
-                stringBuilder.append(it.substring(0, 1).toUpperCase().plus(it.substring(1)))
+                stringBuilder.append(it.substring(0, 1).uppercase(Locale.getDefault()).plus(it.substring(1)))
             }
         }
 

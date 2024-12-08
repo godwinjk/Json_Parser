@@ -4,7 +4,7 @@ import com.godwin.jsonparser.generator.jsontodart.utils.classblockparse.ParsedDa
 
 /**
  * Class Code Filter
- * Created by Seal.Wu on 2018/4/18.
+ * Created by Godwin on 2024/12/20.
  */
 object ClassCodeFilter {
 
@@ -13,6 +13,25 @@ object ClassCodeFilter {
      */
     fun removeDuplicateClassCode(generateClassesString: String): String {
         return generateClassesString.split("\n\n").distinct().joinToString("\n\n")
+    }
+
+    fun buildTypeReference(classes: List<ParsedDartDataClass>): List<ParsedDartDataClass> {
+        val classNameList = classes.map { it.name }
+        /**
+         * Build Property Type reference to ParsedKotlinDataClass
+         * Only pre class property type could reference behind classes
+         */
+        classes.forEachIndexed { index, dartClass ->
+            dartClass.properties.forEachIndexed { _, property ->
+                val indexOfClassName =
+                    classNameList.firstIndexAfterSpecificIndex(getRawType(getChildType(property.propertyType)), index)
+                if (indexOfClassName != -1) {
+                    property.classPropertyTypeRef = classes[indexOfClassName]
+                }
+            }
+        }
+
+        return classes
     }
 
     fun removeDuplicateClassCode(dartClasses: List<ParsedDartDataClass>): List<ParsedDartDataClass> {
@@ -61,7 +80,7 @@ object ClassCodeFilter {
                 if (property.classPropertyTypeRef != ParsedDartDataClass.NONE) {
                     for (classB in dartClasses) {
                         if (property.classPropertyTypeRef == classB) {
-                            importStatements.add("import '${classB.fileName}';")
+                            importStatements.add("import '${classB.fileName}.dart';")
                             break // Exit inner loop since a match is found
                         }
                     }

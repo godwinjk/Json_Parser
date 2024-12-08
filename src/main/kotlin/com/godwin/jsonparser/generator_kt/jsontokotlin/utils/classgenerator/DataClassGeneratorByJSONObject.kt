@@ -8,7 +8,7 @@ import com.godwin.jsonparser.generator_kt.jsontokotlin.utils.*
 import com.google.gson.JsonObject
 
 /**
- * Created by Seal.Wu on 2019-08-18
+ * Created by Godwin on 2024/12/20
  * Description: Generate Kotlin Data class Struct from JSON Object
  */
 class DataClassGeneratorByJSONObject(private val className: String, private val jsonObject: JsonObject) {

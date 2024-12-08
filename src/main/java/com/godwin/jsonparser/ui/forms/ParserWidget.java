@@ -46,12 +46,12 @@ public class ParserWidget implements Publisher {
     private JSplitPane splitPane;
     private JButton optionButton;
 
-    private Editor mInputEditor;
+    private final Editor mInputEditor;
 
-    private Project mProject;
-    private Disposable mParent;
+    private final Project mProject;
+    private final Disposable mParent;
 
-    private ParserBodyWidget mBodyWidget;
+    private final ParserBodyWidget mBodyWidget;
 
     IParserWidget mParserWidget;
 
@@ -87,7 +87,6 @@ public class ParserWidget implements Publisher {
 
         setPopupMenu(editor.getComponent());
 
-//        ((EditorEx) editor).setHighlighter(createHighlighter(FileTypes.PLAIN_TEXT));
         return editor;
     }
 

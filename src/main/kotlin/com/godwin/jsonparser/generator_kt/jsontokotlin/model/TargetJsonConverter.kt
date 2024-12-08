@@ -2,7 +2,7 @@ package com.godwin.jsonparser.generator_kt.jsontokotlin.model
 
 /**
  *
- * Created by Seal.Wu on 2018/2/7.
+ * Created by Godwin on 2024/12/20
  */
 /**
  * This means which Json convert library you are using in you project

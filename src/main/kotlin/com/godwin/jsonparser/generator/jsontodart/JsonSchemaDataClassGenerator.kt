@@ -4,6 +4,7 @@ import com.godwin.jsonparser.generator.jsontodart.bean.jsonschema.*
 import com.godwin.jsonparser.generator_kt.jsontokotlin.model.DartConfigManager
 import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
+import java.util.*
 
 class JsonSchemaDataClassGenerator(private val jsonObjectDef: ObjectPropertyDef) {
     val classes = mutableListOf<TypeSpec>()
@@ -12,7 +13,7 @@ class JsonSchemaDataClassGenerator(private val jsonObjectDef: ObjectPropertyDef)
         val clazz = className
             ?: throw IllegalArgumentException("className cannot be null when jsonObjectDef.title is null")
 
-        val requiredFields = jsonObjectDef.required ?: emptyArray() // don't remove `?: emptyArray()`
+        val requiredFields = jsonObjectDef.required // don't remove `?: emptyArray()`
         val properties = jsonObjectDef.properties
         val s = TypeSpec.classBuilder(clazz).apply {
             if (!DartConfigManager.isCommentOff && (jsonObjectDef.description?.isNotBlank() == true)) {
@@ -64,7 +65,11 @@ class JsonSchemaDataClassGenerator(private val jsonObjectDef: ObjectPropertyDef)
                 ClassName.bestGuess("Array").parameterizedBy(arrayParameterType).copy(nullable = nullable)
             }
 
-            is ObjectPropertyDef -> ClassName("", property.capitalize()).copy(nullable = nullable)
+            is ObjectPropertyDef -> ClassName("",
+                property.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }).copy(
+                nullable = nullable
+            )
+
             else -> String::class.asTypeName().copy(nullable = nullable)
         }
     }

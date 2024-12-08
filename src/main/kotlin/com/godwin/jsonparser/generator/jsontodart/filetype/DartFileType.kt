@@ -1,11 +1,11 @@
-package com.godwin.jsonparser.generatorjsontodart.filetype
+package com.godwin.jsonparser.generator.jsontodart.filetype
 
 import com.intellij.openapi.fileTypes.FileType
 import com.intellij.openapi.vfs.VirtualFile
 import javax.swing.Icon
 
 /**
- * Created by Seal.Wu on 2018/4/18.
+ * Created by Godwin on 2018/4/18.
  */
 
 class DartFileType : FileType {

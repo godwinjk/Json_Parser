@@ -35,29 +35,29 @@ object DartConfigManager : IConfigManager {
     private const val JSON_SERIALIZATION_ANNOTATION = "jsonParser_json_serialization_annotation"
 
     var indent: Int
-        get() = if (TestConfig.isTestModel) TestConfig.indent else PropertiesComponent.getInstance().getInt(
+        get() = if (isTestModel) TestConfig.indent else PropertiesComponent.getInstance().getInt(
             INDENT_KEY, 4
         )
-        set(value) = if (TestConfig.isTestModel) {
+        set(value) = if (isTestModel) {
             TestConfig.indent = value
         } else PropertiesComponent.getInstance().setValue(INDENT_KEY, value, 4)
 
     var enableMapType: Boolean
-        get() = if (TestConfig.isTestModel) TestConfig.enableMapType else PropertiesComponent.getInstance().getBoolean(
+        get() = if (isTestModel) TestConfig.enableMapType else PropertiesComponent.getInstance().getBoolean(
             ENABLE_MAP_TYP_KEY, false
         )
-        set(value) = if (TestConfig.isTestModel) {
+        set(value) = if (isTestModel) {
             TestConfig.enableMapType = value
         } else PropertiesComponent.getInstance().setValue(ENABLE_MAP_TYP_KEY, value, false)
 
     var enableMinimalAnnotation: Boolean
-        get() = if (TestConfig.isTestModel) {
+        get() = if (isTestModel) {
             TestConfig.enableMinimalAnnotation
         } else {
             PropertiesComponent.getInstance().getBoolean(ENABLE_MINIMAL_ANNOTATION, false)
         }
         set(value) {
-            if (TestConfig.isTestModel) {
+            if (isTestModel) {
                 TestConfig.enableMinimalAnnotation = value
             } else {
                 PropertiesComponent.getInstance().setValue(ENABLE_MINIMAL_ANNOTATION, value, false)
@@ -65,13 +65,13 @@ object DartConfigManager : IConfigManager {
         }
 
     var autoDetectJsonScheme: Boolean
-        get() = if (TestConfig.isTestModel) {
+        get() = if (isTestModel) {
             TestConfig.autoDetectJsonScheme
         } else {
             PropertiesComponent.getInstance().getBoolean(AUTO_DETECT_JSON_SCHEMA, true)
         }
         set(value) {
-            if (TestConfig.isTestModel) {
+            if (isTestModel) {
                 TestConfig.autoDetectJsonScheme = value
             } else {
                 PropertiesComponent.getInstance().setValue(AUTO_DETECT_JSON_SCHEMA, value, true)
@@ -79,26 +79,26 @@ object DartConfigManager : IConfigManager {
         }
 
     var parenClassTemplate: String
-        get() = if (TestConfig.isTestModel) {
+        get() = if (isTestModel) {
             TestConfig.parenClassTemplate
         } else {
             PropertiesComponent.getInstance().getValue(PARENT_CLASS_TEMPLATE, "")
         }
         set(value) {
-            if (TestConfig.isTestModel) {
+            if (isTestModel) {
                 TestConfig.parenClassTemplate = value
             } else {
                 PropertiesComponent.getInstance().setValue(PARENT_CLASS_TEMPLATE, value, "")
             }
         }
     var parenClassTemplateDart: String
-        get() = if (TestConfig.isTestModel) {
+        get() = if (isTestModel) {
             TestConfig.parenClassTemplate
         } else {
             PropertiesComponent.getInstance().getValue(PARENT_CLASS_TEMPLATE_DART, "")
         }
         set(value) {
-            if (TestConfig.isTestModel) {
+            if (isTestModel) {
                 TestConfig.parenClassTemplate = value
             } else {
                 PropertiesComponent.getInstance().setValue(PARENT_CLASS_TEMPLATE_DART, value, "")
@@ -106,13 +106,13 @@ object DartConfigManager : IConfigManager {
         }
 
     var extensionsConfig: String
-        get() = if (TestConfig.isTestModel) {
+        get() = if (isTestModel) {
             TestConfig.extensionsConfig
         } else {
             PropertiesComponent.getInstance().getValue(KEYWORD_PROPERTY_EXTENSIONS_CONFIG, "")
         }
         set(value) {
-            if (TestConfig.isTestModel) {
+            if (isTestModel) {
                 TestConfig.extensionsConfig = value
             } else {
                 PropertiesComponent.getInstance().setValue(KEYWORD_PROPERTY_EXTENSIONS_CONFIG, value, "")

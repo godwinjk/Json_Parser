@@ -5,9 +5,8 @@ import java.net.MalformedURLException
 import java.net.URL
 
 /**
- * Created by kezhenxu at 2018/12/15 16:58
+ * Created by Godwin at 2024/12/20 16:58
  *
- * @author kezhenxu (kezhenxu94 at 163 dot com)
  */
 object UrlInputValidator : InputValidator {
     override fun checkInput(inputString: String): Boolean = try {

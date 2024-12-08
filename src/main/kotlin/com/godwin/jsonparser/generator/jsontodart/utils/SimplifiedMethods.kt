@@ -1,8 +1,8 @@
 package com.godwin.jsonparser.generator.jsontodart.utils
 
+import com.godwin.jsonparser.constants.NOTIFICATION_GROUP_ID
 import com.godwin.jsonparser.generator_kt.jsontokotlin.model.DartConfigManager
-import com.intellij.notification.NotificationDisplayType
-import com.intellij.notification.NotificationGroup
+import com.intellij.notification.NotificationGroupManager
 import com.intellij.notification.NotificationType
 import com.intellij.notification.Notifications
 import com.intellij.openapi.application.ApplicationManager
@@ -11,7 +11,7 @@ import com.intellij.openapi.project.Project
 
 /**
  * File contains functions which simply other functions's invoke
- * Created by Seal.Wu on 2018/2/7.
+ * Created by Godwin on 2024/12/20.
  */
 
 
@@ -23,7 +23,7 @@ fun executeCouldRollBackAction(project: Project?, action: (Project?) -> Unit) {
         ApplicationManager.getApplication().runWriteAction {
             action.invoke(project)
         }
-    }, "insertKotlin", "JsonToKotlin")
+    }, "InsertClass", "JsonToDartOrKotlin")
 }
 
 /**
@@ -64,7 +64,7 @@ fun getFileNameFromClassBlockString(classBlockString: String): String {
 }
 
 fun showNotify(notifyMessage: String, project: Project?) {
-    val notificationGroup = NotificationGroup("JSON to Dart Class", NotificationDisplayType.BALLOON, true)
+    val notificationGroup = NotificationGroupManager.getInstance().getNotificationGroup(NOTIFICATION_GROUP_ID)
     ApplicationManager.getApplication().invokeLater {
         val notification = notificationGroup.createNotification(notifyMessage, NotificationType.INFORMATION)
         Notifications.Bus.notify(notification, project)

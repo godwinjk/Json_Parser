@@ -4,7 +4,7 @@ import com.google.gson.JsonElement
 
 /**
  * Target Json Element Maker form a String or an Element for generating Code
- * Created by Seal.Wu on 2017/9/19.
+ * Created by Godwin on 2024/12/20.
  */
 interface ITargetJsonElement {
     /**

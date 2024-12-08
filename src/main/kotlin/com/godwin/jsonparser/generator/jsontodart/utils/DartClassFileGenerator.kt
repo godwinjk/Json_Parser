@@ -1,15 +1,15 @@
 package com.godwin.jsonparser.generator.jsontodart.utils
 
-import com.godwin.jsonparser.generator.extensions.ClassNameSuffixSupport.append
 import com.godwin.jsonparser.generator.jsontodart.codeelements.getDefaultValue
+import com.godwin.jsonparser.generator.jsontodart.filetype.DartFileType
 import com.godwin.jsonparser.generator.jsontodart.interceptor.IDartClassInterceptor
 import com.godwin.jsonparser.generator.jsontodart.interceptor.InterceptorManager
 import com.godwin.jsonparser.generator.jsontodart.utils.classblockparse.ClassCodeParser
 import com.godwin.jsonparser.generator.jsontodart.utils.classblockparse.NormalClassesCodeParser
 import com.godwin.jsonparser.generator.jsontodart.utils.classblockparse.ParsedDartDataClass
+import com.godwin.jsonparser.generator_kt.extensions.chen.biao.KeepAnnotationSupport.append
 import com.godwin.jsonparser.generator_kt.jsontokotlin.model.DartConfigManager
 import com.godwin.jsonparser.generator_kt.jsontokotlin.utils.toDartDocMultilineComment
-import com.godwin.jsonparser.generatorjsontodart.filetype.DartFileType
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiFileFactory
@@ -68,11 +68,10 @@ class DartClassFileGenerator(private val interceptors: List<IDartClassIntercepto
             }
         }
         showNotify(notifyMessage, project)
-
     }
 
     private fun generateDartClasses(
-        removeDuplicateClassCode: String, directory: PsiDirectory
+        removeDuplicateClassCode: String, directory: PsiDirectory,
     ): List<ParsedDartDataClass> {
         val classes = getClassesStringList(removeDuplicateClassCode).map { ClassCodeParser(it).getDartDataClass() }
 
@@ -80,12 +79,11 @@ class DartClassFileGenerator(private val interceptors: List<IDartClassIntercepto
          * Build Property Type reference to ParsedKotlinDataClass
          * Only pre class property type could reference behind classes
          */
-        val buildRefClasses = buildTypeReference(classes)
+        val buildRefClasses = ClassCodeFilter.buildTypeReference(classes)
 
         val newClassNames = getNoneConflictClassNames(buildRefClasses, directory)
 
         val newKotlinClasses = updateClassNames(buildRefClasses, newClassNames)
-
 
         return synchronizedPropertyTypeWithTypeRef(newKotlinClasses)
 
@@ -163,25 +161,6 @@ class DartClassFileGenerator(private val interceptors: List<IDartClassIntercepto
         }
     }
 
-    fun buildTypeReference(classes: List<ParsedDartDataClass>): List<ParsedDartDataClass> {
-        val classNameList = classes.map { it.name }
-
-        /**
-         * Build Property Type reference to ParsedKotlinDataClass
-         * Only pre class property type could reference behind classes
-         */
-        classes.forEachIndexed { index, dartClass ->
-            dartClass.properties.forEachIndexed { _, property ->
-                val indexOfClassName =
-                    classNameList.firstIndexAfterSpecificIndex(getRawType(getChildType(property.propertyType)), index)
-                if (indexOfClassName != -1) {
-                    property.classPropertyTypeRef = classes[indexOfClassName]
-                }
-            }
-        }
-
-        return classes
-    }
 
     private fun generateDartClassFile(
         parsedClass: ParsedDartDataClass,

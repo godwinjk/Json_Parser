@@ -1,13 +1,14 @@
-package com.godwin.jsonparser.generator_kt.jsontokotlin.ui
+package com.godwin.jsonparser.generator_kt.jsontokotlin.ui.kotlin
 
 import com.godwin.jsonparser.generator_kt.jsontokotlin.model.KotlinConfigManager
+import com.godwin.jsonparser.generator_kt.jsontokotlin.ui.*
 import com.intellij.util.ui.JBDimension
 import java.awt.BorderLayout
 import javax.swing.JPanel
 
 /**
  * others settings tab in config settings dialog
- * Created by Seal.Wu on 2018/2/6.
+ * Created by Godwin on 2024/12/20
  */
 class AdvancedOtherTab(isDoubleBuffered: Boolean) : JPanel(BorderLayout(), isDoubleBuffered) {
     init {

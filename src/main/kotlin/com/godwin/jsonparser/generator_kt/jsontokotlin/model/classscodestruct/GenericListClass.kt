@@ -5,10 +5,11 @@ import com.godwin.jsonparser.generator_kt.jsontokotlin.interceptor.IKotlinClassI
 
 
 /**
- * Created by Seal.Wu on 2019-11-23
+ * Created by Godwin on 2024/12/20
  *  present a list class type like List<Any>
  */
-data class GenericListClass(override val generic: KotlinClass, val nullableElements: Boolean) : UnModifiableGenericClass() {
+data class GenericListClass(override val generic: KotlinClass, val nullableElements: Boolean) :
+    UnModifiableGenericClass() {
     override val name: String
         get() = if (nullableElements) "List<${generic.name}?>" else "List<${generic.name}>"
 

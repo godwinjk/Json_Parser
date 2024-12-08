@@ -26,7 +26,7 @@ import com.intellij.psi.impl.file.PsiDirectoryFactory
 
 
 /**
- * Created by Seal.Wu on 2018/4/18.
+ * Created by Godwin on 2024/12/20
  */
 class GenerateJsonFileAction : AnAction("Dart/Kotlin from JSON") {
 

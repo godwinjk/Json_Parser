@@ -18,7 +18,7 @@ import com.intellij.ui.content.ContentFactory
 import javax.swing.SwingConstants
 
 @Service(value = [Service.Level.PROJECT])
-class ProjectService() {
+class ProjectService {
     lateinit var project: Project
 
     init {

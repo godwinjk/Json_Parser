@@ -1,7 +1,8 @@
-package com.godwin.jsonparser.generator_kt.jsontokotlin.ui
+package com.godwin.jsonparser.generator_kt.jsontokotlin.ui.kotlin
 
 import com.godwin.jsonparser.generator_kt.jsontokotlin.model.KotlinConfigManager
 import com.godwin.jsonparser.generator_kt.jsontokotlin.model.TargetJsonConverter
+import com.godwin.jsonparser.generator_kt.jsontokotlin.ui.*
 import com.intellij.util.ui.JBDimension
 import java.awt.BorderLayout
 import javax.swing.JPanel
@@ -9,7 +10,7 @@ import javax.swing.ScrollPaneConstants
 
 /**
  *
- * Created by Seal.Wu on 2018/2/7.
+ * Created by Godwin on 2024/12/20
  */
 /**
  * JSON Converter Annotation Tab View

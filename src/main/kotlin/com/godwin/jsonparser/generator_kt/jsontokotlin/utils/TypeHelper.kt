@@ -11,7 +11,7 @@ import java.util.*
 
 /**
  * Type helper deal with type string
- * Created by Seal.Wu on 2017/9/21.
+ * Created by Godwin on 2024/12/20
  */
 
 
@@ -149,7 +149,7 @@ fun adjustPropertyNameForGettingArrayChildType(property: String): String {
                 innerProperty = "Item${random.nextInt()}"
             } else if (innerProperty.indexOf("list") == 0 && innerProperty.length >= 5) {
                 val end = innerProperty.substring(5)
-                val pre = (innerProperty[4] + "").toLowerCase()
+                val pre = (innerProperty[4] + "").lowercase(Locale.getDefault())
                 innerProperty = pre + end
             }
         }

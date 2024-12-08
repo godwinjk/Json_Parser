@@ -6,7 +6,7 @@ import com.godwin.jsonparser.generator_kt.jsontokotlin.interceptor.InterceptorMa
 
 /**
  *  class import declaration
- * Created by Seal.Wu on 2018/4/18.
+ * Created by Godwin on 2024/12/20
  */
 object ClassImportDeclaration {
 
@@ -16,13 +16,15 @@ object ClassImportDeclaration {
     fun getImportClassDeclaration(): String {
 
         return applyImportClassDeclarationInterceptors(
-                InterceptorManager.getEnabledImportClassDeclarationInterceptors())
+            InterceptorManager.getEnabledImportClassDeclarationInterceptors()
+        )
 
     }
 
 
     fun applyImportClassDeclarationInterceptors(
-            interceptors: List<IImportClassDeclarationInterceptor>): String {
+        interceptors: List<IImportClassDeclarationInterceptor>
+    ): String {
 
         var classImportDeclaration = ""
 

@@ -1,6 +1,7 @@
 package com.godwin.jsonparser.generator_kt.jsontokotlin.ui
 
 import com.godwin.jsonparser.generator.jsontodart.filetype.GenFileType
+import com.godwin.jsonparser.generator_kt.jsontokotlin.ui.kotlin.AdvancedDialog
 import com.godwin.jsonparser.generator_kt.jsontokotlin.utils.InputFileTpeValidateCallback
 import com.godwin.jsonparser.generator_kt.jsontokotlin.utils.executeCouldRollBackAction
 import com.godwin.jsonparser.icons.JsonIcons
@@ -32,27 +33,23 @@ import javax.swing.SwingUtilities
 import javax.swing.text.JTextComponent
 
 /**
- * Dialog widget relative
- * Created by Seal.wu on 2017/9/21.
- */
-
-/**
  * Json input Dialog
  */
 private val jsonInputDialogValidator: JsonInputDialogValidator = JsonInputDialogValidator()
 
-class JsonInputDialog(classsName: String, private val project: Project) : Messages.InputDialog(
-    project,
-    "Please input the JSON String and class name to generate Kotlin data class",
-    "Generate Kotlin Data Class Code",
-    null,
-    "",
-    jsonInputDialogValidator
-), InputFileTpeValidateCallback {
+class JsonInputDialog(classsName: String, private val project: Project) :
+    Messages.InputDialog(
+        project,
+        "Please input the JSON String and class name to generate class",
+        "Generate Kotlin/Dart Class Code",
+        null,
+        "",
+        jsonInputDialogValidator
+    ), InputFileTpeValidateCallback {
+
     private lateinit var jsonContentEditor: Editor
 
     private val prettyGson: Gson = GsonBuilder().setPrettyPrinting().serializeNulls().disableHtmlEscaping().create()
-
 
     private var fileType = GenFileType.UnInitialized
 
@@ -61,8 +58,7 @@ class JsonInputDialog(classsName: String, private val project: Project) : Messag
         myField.text = classsName
     }
 
-    override fun createNorthPanel(): JComponent? {
-
+    override fun createNorthPanel(): JComponent {
         return jHorizontalLinearLayout {
             jIcon(JsonIcons.jsonLogo)
             fixedSpace(5)
@@ -79,7 +75,7 @@ class JsonInputDialog(classsName: String, private val project: Project) : Messag
         }
     }
 
-    override fun createCenterPanel(): JComponent? {
+    override fun createCenterPanel(): JComponent {
         jsonContentEditor = createJsonContentEditor()
         jsonInputDialogValidator.jsonInputEditor = jsonContentEditor
         jsonInputDialogValidator.inputFileTpeValidateCallback = this
@@ -89,28 +85,6 @@ class JsonInputDialog(classsName: String, private val project: Project) : Messag
                 SwingUtilities.invokeLater {
                     executeCouldRollBackAction(project) {
                         jsonContentEditor.document.setText("")
-                        jsonContentEditor.document.setText(
-                            "{ \n" +
-                                    "  \"accounting\" : [   \n" +
-                                    "                     { \"firstName\" : \"John\",  \n" +
-                                    "                       \"lastName\"  : \"Doe\",\n" +
-                                    "                       \"age\"       : 23 },\n" +
-                                    "\n" +
-                                    "                     { \"firstName\" : \"Mary\",  \n" +
-                                    "                       \"lastName\"  : \"Smith\",\n" +
-                                    "                        \"age\"      : 32 }\n" +
-                                    "                 ],                            \n" +
-                                    "  \"sales\"      : [ \n" +
-                                    "                     { \"firstName\" : \"Sally\", \n" +
-                                    "                       \"lastName\"  : \"Green\",\n" +
-                                    "                        \"age\"      : 27 },\n" +
-                                    "\n" +
-                                    "                     { \"firstName\" : \"Jim\",   \n" +
-                                    "                       \"lastName\"  : \"Galley\",\n" +
-                                    "                       \"age\"       : 41 }\n" +
-                                    "                 ] \n" +
-                                    "} "
-                        )
                     }
                 }
             }
@@ -119,9 +93,7 @@ class JsonInputDialog(classsName: String, private val project: Project) : Messag
         myField = createTextFieldComponent()
 
         return jBorderLayout {
-
             putCenterFill(jsonContentEditor.component)
-
             bottomContainer {
                 jVerticalLinearLayout {
                     fixedSpace(7)
@@ -138,7 +110,7 @@ class JsonInputDialog(classsName: String, private val project: Project) : Messag
                             })
 
                             jRadioButton("Kotlin", false, {
-                                fileType = GenFileType.Dart
+                                fileType = GenFileType.Kotlin
                                 reValidate()
                             })
                         }
@@ -201,7 +173,6 @@ class JsonInputDialog(classsName: String, private val project: Project) : Messag
     }
 
     override fun createTextFieldComponent(): JTextComponent {
-
         return jTextInput(maxSize = JBDimension(10000, 35)) {
             document.addDocumentListener(object : javax.swing.event.DocumentListener {
                 override fun insertUpdate(e: javax.swing.event.DocumentEvent?) {
@@ -218,9 +189,7 @@ class JsonInputDialog(classsName: String, private val project: Project) : Messag
 
             })
             document = NamingConventionDocument()
-
         }
-
     }
 
     private fun createPasteFromClipboardMenuItem() = JMenuItem("Paste from clipboard").apply {
@@ -236,7 +205,7 @@ class JsonInputDialog(classsName: String, private val project: Project) : Messag
 
     private fun createRetrieveContentFromHttpURLMenuItem() = JMenuItem("Retrieve content from Http URL").apply {
         addActionListener {
-            val url = Messages.showInputDialog("URL", "Retrieve content from Http URL", null, null, UrlInputValidator)
+            val url = Messages.showInputDialog("URL", "Retrieve Content From Http URL", null, null, UrlInputValidator)
             val p = DispatchThreadProgressWindow(false, project)
             p.isIndeterminate = true
             p.setRunnable {
@@ -278,7 +247,7 @@ class JsonInputDialog(classsName: String, private val project: Project) : Messag
 
     override fun getInputString(): String = if (exitCode == 0) jsonContentEditor.document.text.trim() else ""
 
-    override fun getPreferredFocusedComponent(): JComponent? {
+    override fun getPreferredFocusedComponent(): JComponent {
         return jsonContentEditor.contentComponent
     }
 

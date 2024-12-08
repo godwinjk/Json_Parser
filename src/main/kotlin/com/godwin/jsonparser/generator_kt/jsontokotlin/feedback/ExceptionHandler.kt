@@ -12,7 +12,7 @@ import java.util.*
 
 /**
  *
- * Created by Seal.Wu on 2017/9/25.
+ * Created by Godwin on 2024/12/20
  */
 
 /**
@@ -30,7 +30,7 @@ fun getUncaughtExceptionHandler(jsonString: String, callBack: () -> Unit): Threa
         val time = SimpleDateFormat("yyyy-MM-dd HH:mm:ss E", Locale.CHINA).format(Date())
         logBuilder.append("createTime: $time").append("\n")
 
-        logBuilder.appendln().append(getConfigInfo()).appendln()
+        logBuilder.appendLine().append(getConfigInfo()).appendLine()
         val stringWriter = StringWriter()
         val printWriter = PrintWriter(stringWriter, true)
         e.printStackTrace(printWriter)
@@ -71,8 +71,8 @@ fun dealWithException(jsonString: String, e: Throwable) {
     }
     getUncaughtExceptionHandler(jsonString1) {
         Messages.showErrorDialog(
-            "I am sorry,JsonToKotlinClass may occur a RuntimeException,\nYou could try again after update to the latest version,\nOr you could post an issue here:\nhttps://github.com/wuseal/JsonToKotlinClass\nWe will fixed it soon!",
-            "Occur a fatal error"
+            "Oops! It looks like the Json Parser ran into a little hiccup. No worries though! You can give it another go after updating to the latest version, or if the issue persists, feel free to toss it into the issue tracker\nhttps://github.com/godwinjk/Json_Parser\n and we'll tackle it together!",
+            "OOps!! Fatal Error"
         )
     }.uncaughtException(Thread.currentThread(), e)
 }

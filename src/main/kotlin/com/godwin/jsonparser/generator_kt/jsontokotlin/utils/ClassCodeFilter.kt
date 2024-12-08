@@ -5,7 +5,7 @@ import com.godwin.jsonparser.generator_kt.jsontokotlin.model.KotlinConfigManager
 
 /**
  * Class Code Filter
- * Created by Seal.Wu on 2018/4/18.
+ * Created by Godwin on 2024/12/20
  */
 object ClassCodeFilter {
 

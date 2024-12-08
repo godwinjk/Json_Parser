@@ -8,7 +8,7 @@ import javax.swing.JPanel
 
 /**
  * others settings tab in config settings dialog
- * Created by Seal.Wu on 2018/2/6.
+ * Created by Godwin on 2024/12/20
  */
 class AdvancedDartOtherTab(isDoubleBuffered: Boolean) : JPanel(BorderLayout(), isDoubleBuffered) {
     init {

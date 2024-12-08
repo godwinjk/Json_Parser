@@ -5,7 +5,7 @@ import com.godwin.jsonparser.generator_kt.jsontokotlin.model.TargetJsonConverter
 
 /**
  *
- * Created by Seal.Wu on 2018/2/7.
+ * Created by Godwin on 2024/12/20.
  */
 /**
  * config for test unit

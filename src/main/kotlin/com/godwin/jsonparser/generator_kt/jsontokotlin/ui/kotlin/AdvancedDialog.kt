@@ -1,6 +1,7 @@
-package com.godwin.jsonparser.generator_kt.jsontokotlin.ui
+package com.godwin.jsonparser.generator_kt.jsontokotlin.ui.kotlin
 
 import com.godwin.jsonparser.generator.jsontodart.filetype.GenFileType
+import com.godwin.jsonparser.generator_kt.jsontokotlin.ui.ExtensionsTab
 import com.godwin.jsonparser.generator_kt.jsontokotlin.ui.dart.AdvancedDartAnnotationTab
 import com.godwin.jsonparser.generator_kt.jsontokotlin.ui.dart.AdvancedDartOtherTab
 import com.godwin.jsonparser.generator_kt.jsontokotlin.ui.dart.AdvancedDartPropertyTab
@@ -12,7 +13,7 @@ import javax.swing.JComponent
 
 /**
  *
- * Created by Seal.Wu on 2017/9/13.
+ * Created by Godwin on 2024/12/20
  */
 
 class AdvancedDialog(canBeParent: Boolean) : DialogWrapper(canBeParent) {
@@ -21,9 +22,8 @@ class AdvancedDialog(canBeParent: Boolean) : DialogWrapper(canBeParent) {
         init()
         title = "Advanced"
     }
-
-
-    override fun createCenterPanel(): JComponent? {
+    
+    override fun createCenterPanel(): JComponent {
 
         return JBTabbedPane().apply {
             add("Dart", createDartTab())
@@ -58,7 +58,7 @@ class AdvancedDialog(canBeParent: Boolean) : DialogWrapper(canBeParent) {
     private fun createAnnotationTab(genFileType: GenFileType) =
         if (genFileType == GenFileType.Kotlin) AdvancedAnnotationTab(true) else AdvancedDartAnnotationTab(true)
 
-    private fun createExtensionTab() = ExtensionsTab( true)
+    private fun createExtensionTab() = ExtensionsTab(true)
 
     private fun createPropertyTab(genFileType: GenFileType) =
         if (genFileType == GenFileType.Kotlin) AdvancedPropertyTab(true) else AdvancedDartPropertyTab(true)

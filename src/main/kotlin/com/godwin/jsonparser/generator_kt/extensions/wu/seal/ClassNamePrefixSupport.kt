@@ -6,6 +6,7 @@ import com.godwin.jsonparser.generator_kt.jsontokotlin.model.classscodestruct.Ko
 import com.godwin.jsonparser.generator_kt.jsontokotlin.ui.*
 import com.godwin.jsonparser.generator_kt.jsontokotlin.utils.getChildType
 import com.godwin.jsonparser.generator_kt.jsontokotlin.utils.getRawType
+import java.util.*
 import javax.swing.JPanel
 
 object ClassNamePrefixSupport : Extension() {
@@ -15,6 +16,7 @@ object ClassNamePrefixSupport : Extension() {
      */
     @Suppress("MemberVisibilityCanBePrivate")
     const val prefixKeyEnable = "wu.seal.class_name_prefix_enable"
+
     @Suppress("MemberVisibilityCanBePrivate")
     const val prefixKey = "wu.seal.class_name_prefix"
 
@@ -47,16 +49,21 @@ object ClassNamePrefixSupport : Extension() {
                 val standTypes = listOf("Int", "Double", "Long", "String", "Boolean")
                 val originName = kotlinClass.name
                 val newPropertyTypes =
-                        kotlinClass.properties.map {
-                            val rawSubType = getChildType(getRawType(it.type))
-                            when {
-                                it.type.isMapType() -> {
-                                    it.type//currently don't support map type
-                                }
-                                standTypes.contains(rawSubType) -> it.type
-                                else -> it.type.replace(rawSubType, prefix + rawSubType.capitalize())
+                    kotlinClass.properties.map {
+                        val rawSubType = getChildType(getRawType(it.type))
+                        when {
+                            it.type.isMapType() -> {
+                                it.type//currently don't support map type
                             }
+
+                            standTypes.contains(rawSubType) -> it.type
+                            else -> it.type.replace(rawSubType, prefix + rawSubType.replaceFirstChar {
+                                if (it.isLowerCase()) it.titlecase(
+                                    Locale.getDefault()
+                                ) else it.toString()
+                            })
                         }
+                    }
 
                 val newPropertyDefaultValues = kotlinClass.properties.map {
                     val rawSubType = getChildType(getRawType(it.type))
@@ -65,8 +72,13 @@ object ClassNamePrefixSupport : Extension() {
                         it.type.isMapType() -> {
                             it.value//currently don't support map type
                         }
+
                         standTypes.contains(rawSubType) -> it.value
-                        else -> it.value.replace(rawSubType, prefix + rawSubType.capitalize())
+                        else -> it.value.replace(rawSubType, prefix + rawSubType.replaceFirstChar {
+                            if (it.isLowerCase()) it.titlecase(
+                                Locale.getDefault()
+                            ) else it.toString()
+                        })
                     }
                 }
 
@@ -78,7 +90,10 @@ object ClassNamePrefixSupport : Extension() {
 
                     property.copy(type = newType, value = newValue)
                 }
-                kotlinClass.copy(name = prefix + originName.capitalize(), properties = newProperties)
+                kotlinClass.copy(
+                    name = prefix + originName.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() },
+                    properties = newProperties
+                )
             } else {
                 kotlinClass
             }

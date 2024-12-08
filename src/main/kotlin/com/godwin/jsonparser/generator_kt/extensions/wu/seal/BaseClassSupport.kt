@@ -24,35 +24,38 @@ object BaseClassSupport : Extension() {
     const val baseClassPropertiesKey = "azk.zero.baseclass_properties"
 
     override fun createUI(): JPanel {
-        val classImportField = jTextInput(getConfig(baseClassImportKey), getConfig(baseClassSupportEnabledKey).toBoolean()) {
-            addFocusLostListener {
-                if (getConfig(baseClassSupportEnabledKey).toBoolean()) {
-                    setConfig(baseClassImportKey, text)
+        val classImportField =
+            jTextInput(getConfig(baseClassImportKey), getConfig(baseClassSupportEnabledKey).toBoolean()) {
+                addFocusLostListener {
+                    if (getConfig(baseClassSupportEnabledKey).toBoolean()) {
+                        setConfig(baseClassImportKey, text)
+                    }
                 }
+                document = ImportConventionDocument()
             }
-            document = ImportConventionDocument()
-        }
 
-        val classNameField = jTextInput(getConfig(baseClassNameKey), getConfig(baseClassSupportEnabledKey).toBoolean()) {
-            addFocusLostListener {
-                if (getConfig(baseClassSupportEnabledKey).toBoolean()) {
-                    setConfig(baseClassNameKey, text)
+        val classNameField =
+            jTextInput(getConfig(baseClassNameKey), getConfig(baseClassSupportEnabledKey).toBoolean()) {
+                addFocusLostListener {
+                    if (getConfig(baseClassSupportEnabledKey).toBoolean()) {
+                        setConfig(baseClassNameKey, text)
+                    }
                 }
+                document = SuperClassConventionDocument(100)
             }
-            document = SuperClassConventionDocument(100)
-        }
 
-        val classPropertiesField = jTextInput(getConfig(baseClassPropertiesKey), getConfig(baseClassSupportEnabledKey).toBoolean()) {
-            addFocusLostListener {
-                if (getConfig(baseClassSupportEnabledKey).toBoolean()) {
-                    setConfig(baseClassPropertiesKey, text)
+        val classPropertiesField =
+            jTextInput(getConfig(baseClassPropertiesKey), getConfig(baseClassSupportEnabledKey).toBoolean()) {
+                addFocusLostListener {
+                    if (getConfig(baseClassSupportEnabledKey).toBoolean()) {
+                        setConfig(baseClassPropertiesKey, text)
+                    }
                 }
+                document = PropertyConventionDocument()
             }
-            document = PropertyConventionDocument()
-        }
 
         return jVerticalLinearLayout {
-            jHorizontalLinearLayout{
+            jHorizontalLinearLayout {
                 jCheckBox("Base Class Support?", getConfig(baseClassSupportEnabledKey).toBoolean(), { isSelected ->
                     setConfig(baseClassSupportEnabledKey, isSelected.toString())
                     classImportField.isEnabled = isSelected
@@ -74,7 +77,7 @@ object BaseClassSupport : Extension() {
             }
         }
     }
-    ;
+
     override fun intercept(kotlinClass: KotlinClass): KotlinClass {
 //        val exclusion = listOf("error", "message", "status_code", "status", "statusCode")
         return if (getConfig(baseClassSupportEnabledKey).toBoolean()) {

@@ -8,7 +8,7 @@ import com.google.gson.Gson
 import com.google.gson.JsonArray
 
 /**
- * Created by Seal.Wu on 2019-11-23
+ * Created by Godwin on 2024/12/20
  * Generate `List<$ItemType>` from json array string and json array's json key
  */
 class GenericListClassGeneratorByJSONArray(private val jsonKey: String, jsonArrayString: String) {
@@ -36,7 +36,7 @@ class GenericListClassGeneratorByJSONArray(private val jsonKey: String, jsonArra
                 // if all elements are numbers, we need to select the larger scope of Kotlin types among the elements
                 // e.g. [1,2,3.1] should return Double as it's type
 
-                val p = jsonArrayExcludeNull[0].asJsonPrimitive;
+                val p = jsonArrayExcludeNull[0].asJsonPrimitive
                 val elementKotlinClass =
                     if (p.isNumber) getKotlinNumberClass(jsonArrayExcludeNull) else p.toKotlinClass()
                 LogUtil.i("$tag jsonArray allElementAreSamePrimitiveType, return GenericListClass with generic type ${elementKotlinClass.name}")

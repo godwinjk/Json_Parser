@@ -5,7 +5,7 @@ import com.intellij.openapi.vfs.VirtualFile
 import javax.swing.Icon
 
 /**
- * Created by Seal.Wu on 2018/4/18.
+ * Created by Godwin on 2024/12/20
  */
 
 class KotlinFileType : FileType {

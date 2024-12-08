@@ -1,13 +1,13 @@
 package com.godwin.jsonparser.generator_kt.jsontokotlin.feedback
 
-import com.godwin.jsonparser.generator_kt.jsontokotlin.model.KotlinConfigManager
 import com.godwin.jsonparser.generator_kt.jsontokotlin.model.DefaultValueStrategy
+import com.godwin.jsonparser.generator_kt.jsontokotlin.model.KotlinConfigManager
 import java.text.SimpleDateFormat
 import java.util.*
 
 /**
  *
- * Created by Seal.Wu on 2017/9/27.
+ * Created by Godwin on 2024/12/20
  */
 data class ConfigInfo(
     val uuid: String = UUID,

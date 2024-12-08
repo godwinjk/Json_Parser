@@ -15,6 +15,7 @@ import com.intellij.openapi.actionSystem.PlatformDataKeys
 import com.intellij.openapi.editor.Caret
 import com.intellij.openapi.editor.Document
 import com.intellij.openapi.editor.Editor
+import com.intellij.openapi.fileEditor.FileDocumentManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.Messages
 import java.net.URL
@@ -23,7 +24,7 @@ import kotlin.math.max
 
 /**
  * Plugin action
- * Created by Seal.Wu on 2017/8/18.
+ * Created by Godwin on 2024/12/20
  */
 class InsertJsonClassAction : AnAction("Dart/Kotlin Class from JSON") {
     override fun actionPerformed(event: AnActionEvent) {
@@ -72,7 +73,6 @@ class InsertJsonClassAction : AnAction("Dart/Kotlin Class from JSON") {
             val offset = calculateOffset(caret, document)
 
             if (fileType == GenFileType.Dart) {
-                insertDartCode(project, document, className, jsonString, offset)
                 if (insertDartCode(project, document, className, jsonString, offset)) {
                     if (DartConfigManager.isAppendOriginalJson) {
                         insertJsonExample(project, document, jsonString, offset, fileType)
@@ -114,7 +114,6 @@ class InsertJsonClassAction : AnAction("Dart/Kotlin Class from JSON") {
         return false
     }
 
-
     private fun insertDartCode(
         project: Project?,
         document: Document,
@@ -122,12 +121,13 @@ class InsertJsonClassAction : AnAction("Dart/Kotlin Class from JSON") {
         jsonString: String,
         offset: Int
     ): Boolean {
+        val virtualFile = FileDocumentManager.getInstance().getFile(document)
         DartClassImportDeclarationWriter.insertImportClassCode(
             project,
             document,
-            className
+            virtualFile?.name ?: className
         )
-        var currentOffset = offset;
+        var currentOffset = offset
         val codeMaker: DartDataClassCodeMaker
         try {
             //passing current file directory along with className and json
@@ -145,33 +145,41 @@ class InsertJsonClassAction : AnAction("Dart/Kotlin Class from JSON") {
                 if (offset == 0) {
                     currentOffset = document.textLength
                 }
-                val lastPackageKeywordLineEndIndex = try {
-                    "^[\\s]*package\\s.+\n$".toRegex(RegexOption.MULTILINE).findAll(document.text)
-                        .last().range.endInclusive
-                } catch (e: Exception) {
-                    -1
-                }
-                val lastImportKeywordLineEndIndex = try {
-                    "^[\\s]*import\\s.+\n$".toRegex(RegexOption.MULTILINE).findAll(document.text)
-                        .last().range.endInclusive
-                } catch (e: Exception) {
-                    -1
-                }
-                if (offset < lastPackageKeywordLineEndIndex) {
-                    currentOffset = lastPackageKeywordLineEndIndex + 1
-                }
-                if (offset < lastImportKeywordLineEndIndex) {
-                    currentOffset = lastImportKeywordLineEndIndex + 1
-                }
+                val normalizedText = document.text.replace("\r\n", "\n")
 
+                val packageIndex = "^[\\s]*package\\s.+$".toRegex(RegexOption.MULTILINE)
+                    .find(normalizedText)
+                    ?.range
+                    ?.endInclusive ?: -1
+
+                val lastImportKeywordIndex = "^[\\s]*import\\s.+$".toRegex(RegexOption.MULTILINE)
+                    .findAll(normalizedText)
+                    .lastOrNull()
+                    ?.range
+                    ?.endInclusive ?: -1
+
+                val lastPartKeyWord = "^[\\s]*part\\s.+$".toRegex(RegexOption.MULTILINE)
+                    .findAll(normalizedText)
+                    .lastOrNull()
+                    ?.range
+                    ?.endInclusive ?: -1
+
+
+                if (offset < packageIndex) {
+                    currentOffset = packageIndex + 1
+                }
+                if (offset < lastImportKeywordIndex) {
+                    currentOffset = lastImportKeywordIndex + 1
+                }
+                if (offset < lastPartKeyWord) {
+                    currentOffset = lastPartKeyWord + 1
+                }
             } else {
                 currentOffset = document.textLength
             }
             document.insertString(
                 currentOffset.coerceAtLeast(0),
-                com.godwin.jsonparser.generator.jsontodart.utils.ClassCodeFilter.removeDuplicateClassCode(
-                    generateClassesString
-                )
+                "\n\n$generateClassesString"
             )
         }
         return true

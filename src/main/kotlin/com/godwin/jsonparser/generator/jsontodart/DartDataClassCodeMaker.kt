@@ -4,7 +4,10 @@ import com.godwin.jsonparser.generator.jsontodart.interceptor.IDartClassIntercep
 import com.godwin.jsonparser.generator.jsontodart.interceptor.InterceptorManager
 import com.godwin.jsonparser.generator.jsontodart.utils.LogUtil
 
-class DartDataClassCodeMaker(private val rootClassName: String, private val json: String) {
+class DartDataClassCodeMaker(
+    private val rootClassName: String,
+    private val json: String
+) {
 
     fun makeDartDataClassCode(): String {
         val interceptors = InterceptorManager.getEnabledDartDataClassInterceptors()
@@ -13,12 +16,10 @@ class DartDataClassCodeMaker(private val rootClassName: String, private val json
     }
 
     private fun makeDartDataClassCode(interceptors: List<IDartClassInterceptor>): String {
-
         val dartDataClasses = DartDataClassMaker(rootClassName = rootClassName, json = json).makeDartDataClasses()
-        LogUtil.i("DartDataClassCodeMaker makeDartDataClassCode dartDataClasses: $dartDataClasses")
 
         val interceptedDataClasses = dartDataClasses.map { it.applyInterceptors(interceptors) }
-        return interceptedDataClasses.joinToString("\n\n\n\n") {
+        return interceptedDataClasses.joinToString("\n\n") {
             LogUtil.i("DartDataClassCodeMaker makeDartDataClassCode joinToString: $it")
             it.getCode()
         }

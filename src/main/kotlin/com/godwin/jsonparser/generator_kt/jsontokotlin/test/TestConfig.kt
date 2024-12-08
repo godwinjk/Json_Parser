@@ -8,7 +8,7 @@ import com.godwin.jsonparser.generator_kt.jsontokotlin.model.codeannotations.Gso
 
 /**
  *
- * Created by Seal.Wu on 2018/2/7.
+ * Created by Godwin on 2024/12/20
  */
 /** 
  * config for test unit
@@ -45,7 +45,7 @@ object TestConfig {
 
     var extensionsConfig = ""
 
-    var autoDetectJsonScheme  = true
+    var autoDetectJsonScheme = true
 
     private var state = State()
 
@@ -74,7 +74,7 @@ object TestConfig {
 
         extensionsConfig = ""
 
-        autoDetectJsonScheme  = true
+        autoDetectJsonScheme = true
     }
 
     fun setToTestInitStateForJsonSchema() {
@@ -102,7 +102,7 @@ object TestConfig {
 
         extensionsConfig = ""
 
-        autoDetectJsonScheme  = true
+        autoDetectJsonScheme = true
     }
 
 
@@ -144,7 +144,7 @@ object TestConfig {
         parenClassTemplate = state.parenClassTemplate
         isKeywordPropertyValid = state.isKeywordPropertyValid
         extensionsConfig = state.extensionsConfig
-        autoDetectJsonScheme  = state.autoDetectJsonScheme
+        autoDetectJsonScheme = state.autoDetectJsonScheme
     }
 
     class State {
@@ -159,7 +159,8 @@ object TestConfig {
 
         var customPropertyAnnotationFormatString = GsonPropertyAnnotationTemplate.propertyAnnotationFormat
         var customClassAnnotationFormatString = ""
-        var customAnnotationImportClassString = AddGsonAnnotationClassImportDeclarationInterceptor.propertyAnnotationImportClassString
+        var customAnnotationImportClassString =
+            AddGsonAnnotationClassImportDeclarationInterceptor.propertyAnnotationImportClassString
 
         var indent: Int = 4
 
@@ -173,7 +174,7 @@ object TestConfig {
 
         var extensionsConfig = ""
 
-        var autoDetectJsonScheme  = true
+        var autoDetectJsonScheme = true
 
     }
 }

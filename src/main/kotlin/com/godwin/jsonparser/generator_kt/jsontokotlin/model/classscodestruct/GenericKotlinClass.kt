@@ -1,7 +1,7 @@
 package com.godwin.jsonparser.generator_kt.jsontokotlin.model.classscodestruct
 
 /**
- * Created by Seal.Wu On 2019-11-24
+ * Created by Godwin On 2024/12/20
  * Indicate the class contains generic type
  */
 interface GenericKotlinClass : KotlinClass {

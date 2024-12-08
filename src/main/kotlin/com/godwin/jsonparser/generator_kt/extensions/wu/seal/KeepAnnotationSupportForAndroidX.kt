@@ -1,16 +1,16 @@
 package com.godwin.jsonparser.generator_kt.extensions.wu.seal
 
 import com.godwin.jsonparser.generator_kt.extensions.Extension
+import com.godwin.jsonparser.generator_kt.jsontokotlin.model.classscodestruct.Annotation
 import com.godwin.jsonparser.generator_kt.jsontokotlin.model.classscodestruct.KotlinClass
 import com.godwin.jsonparser.generator_kt.jsontokotlin.ui.jCheckBox
 import com.godwin.jsonparser.generator_kt.jsontokotlin.ui.jHorizontalLinearLayout
 import com.godwin.jsonparser.generator_kt.jsontokotlin.utils.runWhenDataClass
-import com.godwin.jsonparser.generator_kt.jsontokotlin.model.classscodestruct.Annotation
 import javax.swing.JPanel
 
 /**
- * @author Seal.Wu
- * create at 2019/11/03
+ * @author Godwin
+ * create at 2024/12/20
  * description:
  */
 object KeepAnnotationSupportForAndroidX : Extension() {
@@ -23,8 +23,11 @@ object KeepAnnotationSupportForAndroidX : Extension() {
 
     override fun createUI(): JPanel {
         return jHorizontalLinearLayout {
-            jCheckBox("Add @Keep Annotation On Class (AndroidX)", getConfig(configKey).toBoolean(), { isSelected -> setConfig(
-                configKey, isSelected.toString()) })
+            jCheckBox("Add @Keep Annotation On Class (AndroidX)", getConfig(configKey).toBoolean(), { isSelected ->
+                setConfig(
+                    configKey, isSelected.toString()
+                )
+            })
             fillSpace()
         }
     }

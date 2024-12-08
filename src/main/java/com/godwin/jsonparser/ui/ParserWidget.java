@@ -15,9 +15,9 @@ import java.util.Set;
  * crea
  */
 public class ParserWidget extends JPanel implements IParserWidget {
-    private Project mProject;
-    private Disposable mParent;
-    private JBPanel<JBPanel> mPanel;
+    private final Project mProject;
+    private final Disposable mParent;
+    private final JBPanel<JBPanel> mPanel;
     private IParserTabs mTabs;
 
 

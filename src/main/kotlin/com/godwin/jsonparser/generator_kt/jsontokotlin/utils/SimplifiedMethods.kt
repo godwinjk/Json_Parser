@@ -1,5 +1,6 @@
 package com.godwin.jsonparser.generator_kt.jsontokotlin.utils
 
+import com.godwin.jsonparser.constants.NOTIFICATION_GROUP_ID
 import com.godwin.jsonparser.generator_kt.jsontokotlin.model.KotlinConfigManager
 import com.intellij.notification.NotificationGroupManager
 import com.intellij.notification.NotificationType
@@ -11,7 +12,7 @@ import java.util.regex.Pattern
 
 /**
  * File contains functions which simply other functions's invoke
- * Created by Seal.Wu on 2018/2/7.
+ * Created by Godwin on 2024/12/20
  */
 
 
@@ -66,7 +67,7 @@ fun replaceClassNameToClassBlockString(classBlockString: String, newClassName: S
 }
 
 fun showNotify(notifyMessage: String, project: Project?) {
-    val notificationGroup = NotificationGroupManager.getInstance().getNotificationGroup("JSON to Kotlin Class")
+    val notificationGroup = NotificationGroupManager.getInstance().getNotificationGroup(NOTIFICATION_GROUP_ID)
     ApplicationManager.getApplication().invokeLater {
         val notification = notificationGroup.createNotification(notifyMessage, NotificationType.INFORMATION)
         Notifications.Bus.notify(notification, project)

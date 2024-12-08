@@ -13,6 +13,7 @@ object PropertySuffixSupport : Extension() {
      */
     @Suppress("MemberVisibilityCanBePrivate")
     const val suffixKeyEnable = "wu.seal.property_suffix_enable"
+
     @Suppress("MemberVisibilityCanBePrivate")
     const val suffixKey = "wu.seal.property_suffix"
 
@@ -45,7 +46,7 @@ object PropertySuffixSupport : Extension() {
                 val newProperties = originProperties.map {
                     val suffix = getConfig(suffixKey)
                     if (it.name.isNotEmpty()) {
-                        val newName = it.name + suffix.first().toUpperCase() + suffix.substring(1)
+                        val newName = it.name + suffix.first().uppercaseChar() + suffix.substring(1)
                         it.copy(name = newName)
                     } else it
                 }

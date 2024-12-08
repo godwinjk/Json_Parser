@@ -10,8 +10,8 @@ import com.intellij.openapi.wm.ToolWindow;
  * @author : Godwin Joseph Kurinjikattu
  */
 public class ParserToolWindowPanel extends SimpleToolWindowPanel {
-    private PropertiesComponent myPropertiesComponent;
-    private ToolWindow myWindow;
+    private final PropertiesComponent myPropertiesComponent;
+    private final ToolWindow myWindow;
 
     public ParserToolWindowPanel(PropertiesComponent propertiesComponent, ToolWindow window) {
         super(false, true);

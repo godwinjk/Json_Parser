@@ -1,10 +1,11 @@
 package com.godwin.jsonparser.generator.jsontodart.supporter
 
 import com.godwin.jsonparser.generator.jsontodart.utils.getIndent
+import java.util.*
 
 /**
  *
- * Created by Seal.Wu on 2017/9/18.
+ * Created by Godwin on 2024/12/20.
  */
 
 interface INoneLibSupporter {
@@ -14,7 +15,7 @@ interface INoneLibSupporter {
     fun getNoneLibSupporterProperty(rawPropertyName: String, propertyType: String): String
 
 
-    fun getNoneLibSupporterClassName(rawClassName: String):String
+    fun getNoneLibSupporterClassName(rawClassName: String): String
 
 }
 
@@ -22,7 +23,7 @@ interface INoneLibSupporter {
 object NoneSupporter : INoneLibSupporter {
 
 
-    override fun getNoneLibSupporterClassName(rawClassName: String):String {
+    override fun getNoneLibSupporterClassName(rawClassName: String): String {
         return ""
     }
 
@@ -33,7 +34,7 @@ object NoneSupporter : INoneLibSupporter {
         blockBuilder.append(getIndent())
         blockBuilder.append(propertyType)
         blockBuilder.append(" ")
-        blockBuilder.append(rawPropertyName.decapitalize())
+        blockBuilder.append(rawPropertyName.replaceFirstChar { it.lowercase(Locale.getDefault()) })
         blockBuilder.append(";")
         return blockBuilder.toString()
     }

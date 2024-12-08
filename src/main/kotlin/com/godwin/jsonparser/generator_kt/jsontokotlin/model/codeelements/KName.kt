@@ -2,7 +2,7 @@ package com.godwin.jsonparser.generator_kt.jsontokotlin.model.codeelements
 
 /**
  * Name class
- * Created by Seal.Wu on 2017/9/21.
+ * Created by Godwin on 2024/12/20
  */
 
 
@@ -17,18 +17,77 @@ abstract class KName : IKName {
     private val suffix = "X"
 
     protected val illegalNameList = listOf(
-            "as", "break", "class", "continue", "do", "else", "false", "for", "fun", "if", "in", "interface", "is", "null"
-            , "object", "package", "return", "super", "this", "throw", "true", "try", "typealias", "val", "var", "when", "while"
+        "as",
+        "break",
+        "class",
+        "continue",
+        "do",
+        "else",
+        "false",
+        "for",
+        "fun",
+        "if",
+        "in",
+        "interface",
+        "is",
+        "null",
+        "object",
+        "package",
+        "return",
+        "super",
+        "this",
+        "throw",
+        "true",
+        "try",
+        "typealias",
+        "val",
+        "var",
+        "when",
+        "while"
     )
 
 
     protected val illegalCharacter = listOf(
-            "\\+", "\\-", "\\*", "/", "%", "=", "&", "\\|", "!", "\\[", "\\]", "\\{", "\\}", "\\(", "\\)", "\\\\", "\"", "_"
-            , ",", ":", "\\?", "\\>", "\\<", "@", ";", "'", "\\`", "\\~", "\\$", "\\^", "#", "\\", "/", " ", "\t", "\n"
+        "\\+",
+        "\\-",
+        "\\*",
+        "/",
+        "%",
+        "=",
+        "&",
+        "\\|",
+        "!",
+        "\\[",
+        "\\]",
+        "\\{",
+        "\\}",
+        "\\(",
+        "\\)",
+        "\\\\",
+        "\"",
+        "_",
+        ",",
+        ":",
+        "\\?",
+        "\\>",
+        "\\<",
+        "@",
+        ";",
+        "'",
+        "\\`",
+        "\\~",
+        "\\$",
+        "\\^",
+        "#",
+        "\\",
+        "/",
+        " ",
+        "\t",
+        "\n"
     )
 
 
-    protected val nameSeparator = listOf(" ", "_", "\\-", ":","\\.")
+    protected val nameSeparator = listOf(" ", "_", "\\-", ":", "\\.")
 
 
     /**

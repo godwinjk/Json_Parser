@@ -40,7 +40,7 @@ object PropertyPrefixSupport : Extension() {
                 val newProperties = originProperties.map {
                     val prefix = getConfig(prefixKey)
                     if (it.name.isNotEmpty()) {
-                        val newName = prefix + it.name.first().toUpperCase() + it.name.substring(1)
+                        val newName = prefix + it.name.first().uppercaseChar() + it.name.substring(1)
                         it.copy(name = newName)
                     } else it
                 }

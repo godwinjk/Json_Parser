@@ -55,7 +55,7 @@ public class TreeNodeCreator {
                 if (null == item.getValue()) {
                     subNode = new DefaultMutableTreeNode(item.getKey() + ": null");
                 } else {
-                    subNode = new DefaultMutableTreeNode(item.getKey() + ": " + item.getValue().toString());
+                    subNode = new DefaultMutableTreeNode(item.getKey() + ": " + item.getValue());
                 }
                 rootNode.add(subNode);
             }

@@ -5,7 +5,7 @@ import com.godwin.jsonparser.generator_kt.jsontokotlin.model.builder.KotlinListC
 
 /**
  * ListClass present the class is a class which extends List
- * Created by Seal.Wu on 2019/11/17.
+ * Created by Godwin on 2024/12/20
  */
 data class ListClass(
     override val name: String,
@@ -13,7 +13,7 @@ data class ListClass(
     val nullableElements: Boolean,
     override val referencedClasses: List<KotlinClass> = listOf(generic),
     override val modifiable: Boolean = true,
-    override val codeBuilder: KotlinListClassCodeBuilder =  KotlinListClassCodeBuilder.DEFAULT
+    override val codeBuilder: KotlinListClassCodeBuilder = KotlinListClassCodeBuilder.DEFAULT
 ) : UnModifiableGenericClass() {
 
     override fun getOnlyCurrentCode(): String {

@@ -9,7 +9,7 @@ import javax.swing.BoxLayout
 
 /**
  *
- * Created by Seal.Wu on 2017/9/25.
+ * Created by Godwin on 2024/12/20.
  */
 
 fun Container.addComponentIntoVerticalBoxAlignmentLeft(component: Component) {
@@ -52,7 +52,7 @@ private fun JsonArray.allItemAreObjectElement(): Boolean {
             return false
         }
     }
-    return  true
+    return true
 }
 
 /**
@@ -129,7 +129,7 @@ fun JsonArray.filterOutNullElement(): JsonArray {
 
     val jsonElements = filter { it.isJsonNull.not() }
     return JsonArray().apply {
-        jsonElements.forEach {jsonElement->
+        jsonElements.forEach { jsonElement ->
             add(jsonElement)
         }
     }

@@ -1,8 +1,10 @@
 package com.godwin.jsonparser.generator_kt.jsontokotlin.model.codeelements
 
+import java.util.*
+
 /**
  * make name to be camel case
- * Created by Sealwu on 2017/9/18.
+ * Created by Godwin on 2024/12/20
  */
 
 interface IPropertyNameMaker {
@@ -43,7 +45,7 @@ object KPropertyName : KName(), IPropertyNameMaker {
     /**
      * get the none empty legal came case name
      */
-    fun makeLowerCamelCaseLegalName(rawNameString:String) :String{
+    fun makeLowerCamelCaseLegalName(rawNameString: String): String {
 
         return makePropertyName(rawNameString, true)
     }
@@ -78,14 +80,14 @@ object KPropertyName : KName(), IPropertyNameMaker {
 
         temp.split(nameSeparator.toRegex()).forEach {
             if (it.isNotBlank()) {
-                stringBuilder.append(it.substring(0, 1).toUpperCase().plus(it.substring(1)))
+                stringBuilder.append(it.substring(0, 1).uppercase(Locale.getDefault()).plus(it.substring(1)))
             }
         }
 
         val camelCaseName = stringBuilder.toString()
 
         return if (camelCaseName.isNotEmpty()) {
-            camelCaseName.substring(0, 1).toLowerCase().plus(camelCaseName.substring(1))
+            camelCaseName.substring(0, 1).lowercase(Locale.getDefault()).plus(camelCaseName.substring(1))
         } else {
             camelCaseName
         }

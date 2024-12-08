@@ -1,15 +1,16 @@
-package com.godwin.jsonparser.generator_kt.jsontokotlin.ui
+package com.godwin.jsonparser.generator_kt.jsontokotlin.ui.kotlin
 
-import com.godwin.jsonparser.generator_kt.jsontokotlin.model.KotlinConfigManager
 import com.godwin.jsonparser.generator_kt.jsontokotlin.model.DefaultValueStrategy
+import com.godwin.jsonparser.generator_kt.jsontokotlin.model.KotlinConfigManager
 import com.godwin.jsonparser.generator_kt.jsontokotlin.model.PropertyTypeStrategy
+import com.godwin.jsonparser.generator_kt.jsontokotlin.ui.*
 import com.intellij.util.ui.JBDimension
 import java.awt.BorderLayout
 import javax.swing.JPanel
 
 /**
  *
- * Created by Seal.Wu on 2018/2/7.
+ * Created by Godwin on 2024/12/20
  */
 class AdvancedPropertyTab(isDoubleBuffered: Boolean) : JPanel(BorderLayout(), isDoubleBuffered) {
 

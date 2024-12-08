@@ -8,7 +8,7 @@ import com.godwin.jsonparser.generator_kt.jsontokotlin.utils.IgnoreCaseStringSet
 
 /**
  * Kotlin Class Interface
- * Created by Seal.Wu on 2019/11/17.
+ * Created by Godwin on 2024/12/20
  */
 interface KotlinClass {
 
@@ -26,6 +26,7 @@ interface KotlinClass {
      * Indicate if this class code could be modified
      */
     val modifiable: Boolean
+
     /**
      * Indicate if this class contains generic type
      */
@@ -47,9 +48,11 @@ interface KotlinClass {
     fun getOnlyCurrentCode(): String
 
 
-    fun <T : KotlinClass> applyInterceptors(enabledKotlinClassInterceptors: List<IKotlinClassInterceptor<T>>): KotlinClass = this
+    fun <T : KotlinClass> applyInterceptors(enabledKotlinClassInterceptors: List<IKotlinClassInterceptor<T>>): KotlinClass =
+        this
 
-    fun <T : KotlinClass> applyInterceptor(classInterceptor: IKotlinClassInterceptor<T>): KotlinClass = applyInterceptors(listOf(classInterceptor))
+    fun <T : KotlinClass> applyInterceptor(classInterceptor: IKotlinClassInterceptor<T>): KotlinClass =
+        applyInterceptors(listOf(classInterceptor))
 
     fun rename(newName: String): KotlinClass
 
@@ -65,7 +68,8 @@ interface KotlinClass {
             thisNoneConflictName = getNoneConflictClassName(existClassNames, name)
         }
         existClassNames.add(thisNoneConflictName)
-        val classReplaceRule = referencedClasses.filter { it.modifiable }.associateWith { it.resolveNameConflicts(existClassNames) }
+        val classReplaceRule =
+            referencedClasses.filter { it.modifiable }.associateWith { it.resolveNameConflicts(existClassNames) }
         return rename(thisNoneConflictName).replaceReferencedClasses(classReplaceRule)
     }
 

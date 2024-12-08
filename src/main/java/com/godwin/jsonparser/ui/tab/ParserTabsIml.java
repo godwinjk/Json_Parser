@@ -16,7 +16,7 @@ import javax.swing.*;
  *
  */
 public class ParserTabsIml implements com.godwin.jsonparser.ui.tab.IParserTabs {
-    private JBEditorTabs mTabs;
+    private final JBEditorTabs mTabs;
     private DebuggerTabListener mListener;
 
     public ParserTabsIml(Project project, Disposable parent) {
@@ -93,16 +93,16 @@ public class ParserTabsIml implements com.godwin.jsonparser.ui.tab.IParserTabs {
             @Override
             public void selectionChanged(TabInfo tabInfo, TabInfo tabInfo1) {
                 try {
-                    Logger.i("On before Tab selection change :"+tabInfo.getText()+" to "+tabInfo1.getText());
-                }catch (Exception ignored){
+                    Logger.i("On before Tab selection change :" + tabInfo.getText() + " to " + tabInfo1.getText());
+                } catch (Exception ignored) {
                 }
             }
 
             @Override
             public void beforeSelectionChanged(TabInfo tabInfo, TabInfo tabInfo1) {
                 try {
-                    Logger.i("On before Tab selection change :"+tabInfo.getText()+" to "+tabInfo1.getText());
-                }catch (Exception ignored){
+                    Logger.i("On before Tab selection change :" + tabInfo.getText() + " to " + tabInfo1.getText());
+                } catch (Exception ignored) {
                 }
 
             }

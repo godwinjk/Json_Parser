@@ -192,7 +192,7 @@ fun getKotlinNumberClass(jsonArray: JsonArray): KotlinClass {
         if (it.isJsonPrimitive.not() || it.asJsonPrimitive.isNumber.not()) {
             throw IllegalArgumentException("the argument should be a json array with all elements are number type")
         }
-        val kotlinType = it.asJsonPrimitive.toKotlinClass();
+        val kotlinType = it.asJsonPrimitive.toKotlinClass()
         if (kotlinType.getNumLevel() > ans.getNumLevel()) {
             ans = kotlinType
         }
@@ -206,9 +206,9 @@ fun getKotlinNumberClass(jsonArray: JsonArray): KotlinClass {
  */
 fun KotlinClass.getNumLevel(): Int {
     return when {
-        this == KotlinClass.INT -> 0;
-        this == KotlinClass.LONG -> 1;
-        this == KotlinClass.DOUBLE -> 2;
+        this == KotlinClass.INT -> 0
+        this == KotlinClass.LONG -> 1
+        this == KotlinClass.DOUBLE -> 2
         else -> -1
     }
 }
@@ -319,7 +319,7 @@ private fun List<KotlinClass>.distinctByPropertiesAndSimilarClassNameOneTime(): 
 }
 
 fun List<KotlinClass>.distinctByPropertiesAndSimilarClassName(): List<KotlinClass> {
-    var lastSize = Int.MAX_VALUE
+    var lastSize: Int
     var currentSize = size
     var currentResult: List<KotlinClass> = distinctByPropertiesAndSimilarClassNameOneTime()
     do {

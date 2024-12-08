@@ -5,7 +5,7 @@ import com.godwin.jsonparser.generator_kt.jsontokotlin.utils.*
 
 /**
  * Default Value relative
- * Created by Seal.wu on 2017/9/25.
+ * Created by Godwin on 2024/12/20
  */
 
 fun getDefaultValue(propertyType: String): String {

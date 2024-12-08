@@ -1,11 +1,8 @@
 package com.godwin.jsonparser.generator.jsontodart.classscodestruct
 
 import com.godwin.jsonparser.generator.jsontodart.interceptor.IDartClassInterceptor
-import com.godwin.jsonparser.generator.jsontodart.utils.BACKSTAGE_NULLABLE_POSTFIX
+import com.godwin.jsonparser.generator.jsontodart.utils.*
 import com.godwin.jsonparser.generator.jsontodart.utils.classblockparse.ParsedDartDataClass
-import com.godwin.jsonparser.generator.jsontodart.utils.getCommentCode
-import com.godwin.jsonparser.generator.jsontodart.utils.getIndent
-import com.godwin.jsonparser.generator.jsontodart.utils.isPrimitiveType
 import com.godwin.jsonparser.generator_kt.jsontokotlin.model.DartConfigManager
 
 data class DartClass(
@@ -201,8 +198,16 @@ data class DartClass(
         return interceptor.intercept(this)
     }
 
-    companion object {
+    fun toParsedDartClass(): ParsedDartDataClass {
+        val annotationCodeList = annotations.map { it.getAnnotationString() }
 
+        val parsedProperties = properties.map { it.toParsedProperty() }
+        val fileName = if (DartConfigManager.isDartModelClassName) camelCaseToSnakeCase(name)
+        else name
+        return ParsedDartDataClass(annotationCodeList, name, fileName, parsedProperties)
+    }
+
+    companion object {
         fun fromParsedDartClass(parsedDartDataClass: ParsedDartDataClass): DartClass {
             val annotations = parsedDartDataClass.annotations.map { Annotation.fromAnnotationString(it) }
             val propertyNames = parsedDartDataClass.properties.map { it.propertyName }
@@ -214,7 +219,7 @@ data class DartClass(
                 annotations = annotations, id = -1, name = parsedDartDataClass.name, properties = properties
             )
         }
-
     }
+
 
 }

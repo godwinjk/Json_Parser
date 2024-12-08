@@ -7,6 +7,7 @@ import com.godwin.jsonparser.generator_kt.jsontokotlin.model.jsonschema.JsonObje
 import com.godwin.jsonparser.generator_kt.jsontokotlin.model.jsonschema.JsonSchema
 import com.godwin.jsonparser.generator_kt.jsontokotlin.model.jsonschema.PropertyDef
 import com.godwin.jsonparser.generator_kt.jsontokotlin.utils.constToLiteral
+import java.util.*
 
 class DataClassGeneratorByJSONSchema(private val rootClassName: String, private val jsonSchema: JsonSchema) {
 
@@ -77,7 +78,8 @@ class DataClassGeneratorByJSONSchema(private val rootClassName: String, private 
         checkEnum: Boolean = true,
         checkSealed: Boolean = true
     ): KotlinClass {
-        val simpleName = jsonClassName ?: propertyName.capitalize()
+        val simpleName = jsonClassName
+            ?: propertyName.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
         return when {
             realDefJsonType == "array" -> {
                 val innerProperty = resolveProperty(
@@ -91,17 +93,20 @@ class DataClassGeneratorByJSONSchema(private val rootClassName: String, private 
                     nullableElements = innerProperty.originJsonValue == null,
                 )
             }
+
             checkEnum && realDef.enum != null -> resolveEnumClass(realDef, simpleName)
             checkSealed && realDef.anyOf != null -> resolveSealedClass(realDef, simpleName)
             realDefJsonType != null && (jsonClassName != null || realDefJsonType == "object") -> generateClass(
                 realDef,
                 simpleName
             )
+
             JSON_SCHEMA_FORMAT_MAPPINGS.containsKey(realDef.format) -> {
                 object : UnModifiableNoGenericClass() {
                     override val name: String = JSON_SCHEMA_FORMAT_MAPPINGS[realDef.format]!!
                 }
             }
+
             else -> when (realDefJsonType) {
                 "string" -> KotlinClass.STRING
                 "enum" -> KotlinClass.STRING
@@ -213,8 +218,10 @@ class DataClassGeneratorByJSONSchema(private val rootClassName: String, private 
                 val className = if (pd.typeString != "object" && pd.enum.isNullOrEmpty()) cls else def.tryGetClassName()
                 Pair(className, pd)
             }
+
             (def.oneOf != null) -> getRealDefinition(def.oneOf.firstOrNull { it.typeString != "null" }
                 ?: def.oneOf.first())
+
             (def.allOf != null) -> {
                 val combinedProps: MutableMap<String, PropertyDef> = mutableMapOf()
                 def.allOf.forEach { p ->
@@ -225,6 +232,7 @@ class DataClassGeneratorByJSONSchema(private val rootClassName: String, private 
                 val combined = PropertyDef(type = "object", properties = combinedProps)
                 Pair(null, combined)
             }
+
             else -> Pair(null, def)
         }
     }

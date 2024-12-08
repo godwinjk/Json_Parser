@@ -19,8 +19,11 @@ class DartDataClassMaker(private val rootClassName: String, private val json: St
         val code = ClassCodeFilter.removeDuplicateClassCode(codeMaker.makeDartClassData())
 
         // create the list of non duplicate classes
-        val parsedClasses: List<ParsedDartDataClass> =
+        var parsedClasses: List<ParsedDartDataClass> =
             makeDartDataClasses(code)
+
+        parsedClasses = ClassCodeFilter.buildTypeReference(parsedClasses)
+        parsedClasses = ClassCodeFilter.removeDuplicateClassCode(parsedClasses)
 
         return parsedClasses.map {
             DartClass.fromParsedDartClass(it)

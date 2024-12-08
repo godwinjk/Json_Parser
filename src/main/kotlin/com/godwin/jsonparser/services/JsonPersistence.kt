@@ -9,13 +9,13 @@ class JsonPersistence : PersistentStateComponent<JsonPersistence> {
 
     companion object {
         fun getInstance(): JsonPersistence {
-            return  ApplicationManager.getApplication().getService(JsonPersistence::class.java)
+            return ApplicationManager.getApplication().getService(JsonPersistence::class.java)
         }
     }
 
-    public var jsonParserLastDisplayTime: Long = 0
-    public var donateClicked: Int = 0
-    public var starClicked: Int = 0
+    var jsonParserLastDisplayTime: Long = 0
+    var donateClicked: Int = 0
+    var starClicked: Int = 0
     override fun getState(): JsonPersistence {
         return this
     }

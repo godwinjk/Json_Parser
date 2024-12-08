@@ -12,7 +12,7 @@ import javax.swing.JPanel
 /**
  * This extension make the default value of data class property to be json value
  * This extension should be put at last
- * Created by Seal.Wu on 2019-11-09
+ * Created by Godwin on 2024/12/20
  */
 object ForceInitDefaultValueWithOriginJsonValueSupport : Extension() {
 
@@ -24,8 +24,14 @@ object ForceInitDefaultValueWithOriginJsonValueSupport : Extension() {
 
     override fun createUI(): JPanel {
         return jHorizontalLinearLayout {
-            jCheckBox("Force init Default Value With Origin Json Value", getConfig(configKey).toBoolean(), { isSelected -> setConfig(
-                configKey, isSelected.toString()) })
+            jCheckBox(
+                "Force init Default Value With Origin Json Value",
+                getConfig(configKey).toBoolean(),
+                { isSelected ->
+                    setConfig(
+                        configKey, isSelected.toString()
+                    )
+                })
             fillSpace()
         }
     }
@@ -50,7 +56,7 @@ object ForceInitDefaultValueWithOriginJsonValueSupport : Extension() {
                 kotlinClass
             }
         } else {
-            return  kotlinClass
+            return kotlinClass
         }
     }
 }

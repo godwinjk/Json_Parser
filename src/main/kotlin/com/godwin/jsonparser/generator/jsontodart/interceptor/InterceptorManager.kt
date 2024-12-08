@@ -1,6 +1,5 @@
 package com.godwin.jsonparser.generator.jsontodart.interceptor
 
-import com.godwin.jsonparser.generator.extensions.ExtensionsCollector
 import com.godwin.jsonparser.generator.jsontodart.interceptor.annotations.FreezedAndJsonSerializableImportInterceptor
 import com.godwin.jsonparser.generator.jsontodart.interceptor.annotations.custom.AddCustomAnnotationClassImportDeclarationInterceptor
 import com.godwin.jsonparser.generator.jsontodart.interceptor.annotations.custom.AddCustomAnnotationInterceptor
@@ -54,9 +53,6 @@ object InterceptorManager {
             if (DartConfigManager.isOrderByAlphabetical) {
                 add(OrderPropertyByAlphabeticalInterceptor())
             }
-        }.apply {
-            //add extensions's interceptor
-            addAll(ExtensionsCollector.extensions)
         }
     }
 
@@ -82,10 +78,6 @@ object InterceptorManager {
             if (DartConfigManager.parenClassTemplate.isNotBlank()) {
                 add(ParentClassClassImportDeclarationInterceptor())
             }
-        }.apply {
-            //add extensions's interceptor
-            addAll(ExtensionsCollector.extensions)
         }
     }
-
 }

@@ -5,6 +5,7 @@ import com.godwin.jsonparser.generator_kt.jsontokotlin.model.classscodestruct.Da
 import com.godwin.jsonparser.generator_kt.jsontokotlin.model.classscodestruct.KotlinClass
 import com.godwin.jsonparser.generator_kt.jsontokotlin.ui.jCheckBox
 import com.godwin.jsonparser.generator_kt.jsontokotlin.ui.jHorizontalLinearLayout
+import java.util.*
 import javax.swing.JPanel
 
 object CamelCaseSupport : Extension() {
@@ -38,8 +39,8 @@ object CamelCaseSupport : Extension() {
                                 if (this.isEmpty()) {
                                     append(s)
                                 } else {
-                                    append(s.substring(0, 1).toUpperCase())
-                                    append(s.substring(1).toLowerCase())
+                                    append(s.substring(0, 1).uppercase(Locale.getDefault()))
+                                    append(s.substring(1).lowercase(Locale.getDefault()))
                                 }
                             }
                             toString()

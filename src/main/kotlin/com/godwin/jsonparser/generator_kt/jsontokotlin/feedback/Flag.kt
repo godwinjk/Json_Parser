@@ -7,7 +7,7 @@ import com.intellij.openapi.extensions.PluginId
 
 /**
  * Flag relative
- * Created by Seal.Wu on 2017/9/25.
+ * Created by Godwin on 2024/12/20
  */
 
 val PLUGIN_VERSION = if (TestConfig.isTestModel.not()) {
