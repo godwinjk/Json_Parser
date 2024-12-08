@@ -1,14 +1,8 @@
 # Json Parser
 
-![Build](https://github.com/godwinjk/Json_Parser/workflows/Build/badge.svg)
+[//]: # (![Build]&#40;https://github.com/godwinjk/Json_Parser/workflows/Build/badge.svg&#41;)
 [![Version](https://img.shields.io/jetbrains/plugin/v/10650-json-parser.svg)](https://plugins.jetbrains.com/plugin/10650-json-parser)
 [![Downloads](https://img.shields.io/jetbrains/plugin/d/10650-json-parser.svg)](https://plugins.jetbrains.com/plugin/10650-json-parser)
-
-# JSON PARSER ISSUE
-
-There is an ongoing issue for this plugin. You can't open the JSON parser tool window, and if you tried there will be an
-error. I have released a new version of this plugin and it iw Waiting for approval. Here is the Link
-https://plugins.jetbrains.com/plugin/10650-json-parser/versions/stable/642454
 
 # JSON PARSER
 
@@ -18,10 +12,13 @@ Simple JSON Parser is an IntelliJ IDE plugin for validation and formatting JSON 
 
 ## Features
 
+- [x] Dart code generation
+- [x] Kotlin code generation
+- [x] Retrieve Json from web
+- [x] Load Json from local
 - [x] Pretty print Json
 - [x] Validate Json
 - [x] Single click formatting from logcat or console window
-- [x] Review the [Legal Agreements](https://plugins.jetbrains.com/docs/marketplace/legal-agreements.html).
 - [x] Tree model view, so user can easily hide or expand particular object
 
 ## Installation
@@ -34,7 +31,35 @@ Simple JSON Parser is an IntelliJ IDE plugin for validation and formatting JSON 
   Download the [latest release](https://github.com/godwinjk/Json_Parser/releases/latest) and install it manually using
   <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
 
+## Functions example
+
+<img src="assets/json_fn.gif" width="400">
+<img src="assets/json_tabs.gif" width="400">
+<img src="assets/retreive_web.gif" width="400">
+<img src="assets/parse_from_anywhere.gif" width="400">
+<img src="assets/load_from_file.gif" width="400">
+<img src="assets/json_gen_dart.gif" width="400">
+<img src="assets/kotlin_gen.gif" width="400">
+<img src="assets/dart_settings.gif" width="400">
+<img src="assets/kotlin_settings.gif" width="400">
+
+## Support My Work
+
+If you’ve found this project helpful or valuable, consider supporting its development!
+Your contributions help me dedicate more time to improving the project, adding features, and maintaining it for the
+community.
+Every donation, no matter the size, makes a difference and is deeply appreciated. ❤️
+
+[![](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://paypal.me/godwinj)
+
 ## Changelog
+
+### Version 1.8.0 🎉
+
+You wll love this.
+
+Json parser now support code generation. Yes you heard it right. Json Parser now support
+code generation from Kotlin and Dart.
 
 ### Version 1.7.4
 
