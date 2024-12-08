@@ -2,7 +2,10 @@ package com.godwin.jsonparser.util;
 
 import com.godwin.jsonparser.services.JsonPersistence;
 import com.intellij.ide.BrowserUtil;
-import com.intellij.notification.*;
+import com.intellij.notification.Notification;
+import com.intellij.notification.NotificationAction;
+import com.intellij.notification.NotificationType;
+import com.intellij.notification.Notifications;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import org.jetbrains.annotations.NotNull;
 
@@ -44,8 +47,7 @@ public class NotificationUtil {
                     JsonPersistence.Companion.getInstance().setStarClicked(1);
                 }
             });
-            Notifications.Bus.notify(notification
-            );
+            Notifications.Bus.notify(notification);
         }
     }
 }
