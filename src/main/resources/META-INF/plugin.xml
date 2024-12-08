@@ -2,7 +2,7 @@
 <idea-plugin>
     <id>com.godwin.json.parser</id>
     <name>Json Parser</name>
-    <version>1.7.4</version>
+    <version>1.8.0</version>
     <vendor email="godwinjoseph.k@gmail.com">Godwin</vendor>
 
     <description><![CDATA[
@@ -10,6 +10,16 @@
     ]]></description>
 
     <change-notes><![CDATA[
+    <h4> Version 1.8 </h4>
+    <br>
+    Introducing Code Generation. You can now generate code using Json Parser. Now Json Parser supports two main languages(my fav), Kotlin and Dart.
+
+    <ol>
+        <li>Kotlin data class generation from Json</li>
+        <li>Dart class generation from Json</li>
+        <li>Dart freezed and json_serializable support</li>
+        <li>Kotlin several packages support</li>
+    </ol>
     <h4> Version 1.7.4 </h4>
     <ol>
         <li>Retrieve from web</li>
