@@ -1,6 +1,5 @@
 package com.godwin.jsonparser.ui.action;
 
-import com.godwin.jsonparser.ParserToolWindowFactory;
 import com.godwin.jsonparser.common.Logger;
 import com.godwin.jsonparser.rx.Subscriber;
 import com.intellij.openapi.actionSystem.ActionUpdateThread;

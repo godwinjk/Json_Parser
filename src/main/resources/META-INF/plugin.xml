@@ -104,6 +104,12 @@
                 description="Convert a json string data into class code">
             <add-to-group group-id="NewGroup" anchor="after" relative-to-action="NewDir"/>
         </action>
+        <action id="com.godwin.jsonparser.action.OpenInParserAction"
+                class="com.godwin.jsonparser.action.OpenInParserAction" text="Json Parser"
+                icon="AllIcons.Json.Object"
+                description="Open In Json Parser">
+            <add-to-group group-id="RevealGroup" anchor="last"/>
+        </action>
     </actions>
     <applicationListeners>
         <listener class="com.godwin.jsonparser.listeners.MyProjectManagerListener"
