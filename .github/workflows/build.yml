@@ -3,7 +3,9 @@ name: Build
 # trigger this when push to main branch
 
 on:
-  push:        # Trigger on any push
+  push: # Trigger on any push
+    branches-ignore:
+      - main
   pull_request: # Trigger on pull requests targeting the main branch
     branches:
       - main
