@@ -7,7 +7,18 @@
 # JSON PARSER
 
 <!-- Plugin description -->
-Simple JSON Parser is an IntelliJ IDE plugin for validation and formatting JSON string<br>
+JSON Parser is a powerful tool that simplifies working with JSON, offering features like Dart and Kotlin code
+generation, easy data retrieval and loading, validation, formatting, and an intuitive tree view for seamless navigation.
+
+1. ✅ Generate Dart code efficiently and with precision.
+2. ✅ Create Kotlin code seamlessly using advanced tools.
+3. ✅ Retrieve JSON from web sources quickly and reliably.
+4. ✅ Load local JSON files effortlessly.
+5. ✅ Present JSON in a clean, readable format with automated pretty printing.
+6. ✅ Validate JSON for accuracy and integrity with ease.
+7. ✅ Streamline formatting of logcat or console outputs with a single click.
+8. ✅ Navigate JSON structures effortlessly using an intuitive tree view for expanding and collapsing objects.
+
 <!-- Plugin description end -->
 
 ## Features

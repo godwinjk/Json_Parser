@@ -102,7 +102,7 @@
                 text="Dart/Kotlin From Json"
                 icon="AllIcons.Json.Object"
                 description="Convert a json string data into class code">
-            <add-to-group group-id="NewGroup" anchor="before" relative-to-action="NewFile"/>
+            <add-to-group group-id="NewGroup" anchor="after" relative-to-action="NewDir"/>
         </action>
     </actions>
     <applicationListeners>
