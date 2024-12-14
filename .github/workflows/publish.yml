@@ -36,6 +36,12 @@ jobs:
       - name: Build Plugin
         run: ./gradlew build
 
+      - name: Check Disk Usage
+        run: df -h
+
+      - name: Clean Up
+        run: rm -rf ${{ runner.temp }} ${{ runner.tool_cache }}
+
       - name: Verify Plugin
         run: ./gradlew verifyPlugin
 

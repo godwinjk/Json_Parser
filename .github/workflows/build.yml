@@ -40,6 +40,12 @@ jobs:
       - name: Verify Plugin
         run: ./gradlew verifyPlugin
 
+      - name: Check Disk Usage
+        run: df -h
+
+      - name: Clean Up
+        run: rm -rf ${{ runner.temp }} ${{ runner.tool_cache }}
+
       - name: Upload Plugin Verification Artifact
         uses: actions/upload-artifact@v4
         with:
