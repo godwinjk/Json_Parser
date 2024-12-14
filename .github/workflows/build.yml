@@ -1,9 +1,10 @@
-name: Build and Publish Plugin
+name: Build
 
 # trigger this when push to main branch
 
 on:
-  push:
+  push:        # Trigger on any push
+  pull_request: # Trigger on pull requests targeting the main branch
     branches:
       - main
 
@@ -35,9 +36,3 @@ jobs:
 
       - name: Build Plugin
         run: ./gradlew build
-
-      - name: Publish Plugin
-        if: github.event.pull_request.merged == true
-        env:
-          JETBRAINS_TOKEN: ${{ secrets.JETBRAINS_TOKEN }}
-        run: ./gradlew publishPlugin
