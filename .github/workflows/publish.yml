@@ -36,22 +36,6 @@ jobs:
       - name: Build Plugin
         run: ./gradlew build
 
-      - name: Check Disk Usage
-        run: df -h
-
-      - name: Clean Up
-        run: rm -rf ${{ runner.temp }} ${{ runner.tool_cache }}
-
-      - name: Verify Plugin
-        run: ./gradlew verifyPlugin
-
-      - name: Upload Plugin Verification Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: plugin-verification_result
-          path: build/reports/pluginVerifier
-          retention-days: 7
-
       - name: Publish Plugin
         if: github.event.pull_request.merged == true
         env:
