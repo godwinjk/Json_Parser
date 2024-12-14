@@ -37,7 +37,6 @@ jobs:
         run: ./gradlew build
 
       - name: Publish Plugin
-        if: github.event.pull_request.merged == true
         env:
           JETBRAINS_TOKEN: ${{ secrets.JETBRAINS_TOKEN }}
         run: ./gradlew publishPlugin
