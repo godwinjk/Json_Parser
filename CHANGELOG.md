@@ -2,6 +2,10 @@
 
 # Json_Parser Changelog
 
+### Version 1.8.1
+
+Automation added
+
 ### Version 1.7.3
 
 1. Compatibility issue resolved
