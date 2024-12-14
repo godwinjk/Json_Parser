@@ -10,7 +10,14 @@
     ]]></description>
 
     <change-notes><![CDATA[
-    <h4> Version 1.8 </h4>
+    <h4> Version 1.8.1</h4>
+    <br>
+    <ol>
+        <li>Added open menu for Json files in "Open In" menu</li>
+        <li>Changed generate menu item to last</li>
+        <li>Minor bug fixes</li>
+    </ol>
+    <h4> Version 1.8.0 </h4>
     <br>
     Introducing Code Generation. You can now generate code using Json Parser. Now Json Parser supports two main languages(my fav), Kotlin and Dart.
 

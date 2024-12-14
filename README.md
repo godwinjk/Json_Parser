@@ -17,7 +17,8 @@ generation, easy data retrieval and loading, validation, formatting, and an intu
 5. ✅ Present JSON in a clean, readable format with automated pretty printing.
 6. ✅ Validate JSON for accuracy and integrity with ease.
 7. ✅ Streamline formatting of logcat or console outputs with a single click.
-8. ✅ Navigate JSON structures effortlessly using an intuitive tree view for expanding and collapsing objects.
+8. ✅ Directly open the JSON file in the JSON Parser from the "Open In" menu.
+9. ✅ Navigate JSON structures effortlessly using an intuitive tree view for expanding and collapsing objects.
 
 <!-- Plugin description end -->
 
@@ -30,6 +31,7 @@ generation, easy data retrieval and loading, validation, formatting, and an intu
 - [x] Pretty print Json
 - [x] Validate Json
 - [x] Single click formatting from logcat or console window
+- [x] Open Json Files in tool window
 - [x] Tree model view, so user can easily hide or expand particular object
 
 ## Installation
@@ -62,9 +64,18 @@ community.
 Every donation, no matter the size, makes a difference and is deeply appreciated. ❤️
 
 [![](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://paypal.me/godwinj)
-❤️[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/S6S0176OVQ)
+
+❤️❤️❤️❤️❤️
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/S6S0176OVQ)
 
 ## Changelog
+
+### Version 1.8.1
+
+1. Added open menu for Json files in "Open In" menu
+2. Changed generate menu item to last
+3. Minor bug fixes
 
 ### Version 1.8.0 🎉
 
