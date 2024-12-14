@@ -27,7 +27,7 @@ jobs:
           distribution: 'temurin'
 
       - name: Cache Gradle dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: ~/.gradle
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
@@ -36,3 +36,13 @@ jobs:
 
       - name: Build Plugin
         run: ./gradlew build
+
+      - name: Verify Plugin
+        run: ./gradlew verifyPlugin
+
+      - name: Upload Plugin Verification Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: plugin-verification_result
+          path: build/reports/pluginVerifier
+          retention-days: 7
