@@ -3,7 +3,7 @@ name: Build and Publish Plugin
 # trigger this when push to main branch
 
 on:
-  push:
+  pull_request:
     branches:
       - main
 
@@ -35,9 +35,3 @@ jobs:
 
       - name: Build Plugin
         run: ./gradlew build
-
-      - name: Publish Plugin
-        if: github.event.pull_request.merged == true
-        env:
-          JETBRAINS_TOKEN: ${{ secrets.JETBRAINS_TOKEN }}
-        run: ./gradlew publishPlugin
