@@ -1,4 +1,4 @@
-name: Build and Publish Plugin
+name: Build
 
 # trigger this when push to main branch
 
