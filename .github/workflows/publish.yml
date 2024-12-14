@@ -40,3 +40,11 @@ jobs:
         env:
           JETBRAINS_TOKEN: ${{ secrets.JETBRAINS_TOKEN }}
         run: ./gradlew publishPlugin
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifact
+          path: build/distributions/
+          retention-days: 7
+        continue-on-error: true # This prevents the workflow from failing if this step fails
