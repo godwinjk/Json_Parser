@@ -1,6 +1,6 @@
 # Json Parser
 
-[//]: # (![Build]&#40;https://github.com/godwinjk/Json_Parser/workflows/Build/badge.svg&#41;)
+![Build](https://github.com/godwinjk/Json_Parser/workflows/Build/badge.svg)
 [![Version](https://img.shields.io/jetbrains/plugin/v/10650-json-parser.svg)](https://plugins.jetbrains.com/plugin/10650-json-parser)
 [![Downloads](https://img.shields.io/jetbrains/plugin/d/10650-json-parser.svg)](https://plugins.jetbrains.com/plugin/10650-json-parser)
 
