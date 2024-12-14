@@ -35,6 +35,21 @@ jobs:
 
       - name: Build Plugin
         run: ./gradlew build
+      - name: Get Plugin Version from gradle.properties
+        run: |
+          VERSION=$(grep '^pluginVersion=' gradle.properties | cut -d'=' -f2)
+          echo "Plugin version from gradle.properties: $VERSION"
+          echo "PLUGIN_VERSION=$VERSION" >> $GITHUB_ENV  # Save plugin version as an environment variable
+        continue-on-error: true  # Allow this step to fail without stopping the workflow
+
+      # Step 4: Create Git tag based on the version from gradle.properties
+      - name: Create Git tag
+        run: |
+          TAG="v$PLUGIN_VERSION"
+          echo "Creating Git tag: $TAG"
+          git tag $TAG
+          git push origin $TAG  # Push the tag to the remote repository
+        continue-on-error: true  # Allow this step to fail without stopping the workflow
 
       - name: Publish Plugin
         env:
