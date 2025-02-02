@@ -1,7 +1,10 @@
 package com.godwin.jsonparser.generator.jsontodart.utils
 
 import com.godwin.jsonparser.constants.NOTIFICATION_GROUP_ID
+import com.godwin.jsonparser.constants.PLUGIN_NAME
+import com.godwin.jsonparser.constants.TOOL_WINDOW_ID
 import com.godwin.jsonparser.generator_kt.jsontokotlin.model.DartConfigManager
+import com.intellij.notification.Notification
 import com.intellij.notification.NotificationGroupManager
 import com.intellij.notification.NotificationType
 import com.intellij.notification.Notifications
@@ -10,7 +13,7 @@ import com.intellij.openapi.command.CommandProcessor
 import com.intellij.openapi.project.Project
 
 /**
- * File contains functions which simply other functions's invoke
+ * File contains functions which simply other function's invoke
  * Created by Godwin on 2024/12/20.
  */
 
@@ -55,7 +58,7 @@ fun getClassNameFromClassBlockString(classBlockString: String): String {
 }
 
 fun getFileNameFromClassBlockString(classBlockString: String): String {
-    var className = getClassNameFromClassBlockString(classBlockString)
+    val className = getClassNameFromClassBlockString(classBlockString)
     if (DartConfigManager.isDartModelClassName) {
         return camelCaseToSnakeCase(className)
     }
@@ -64,10 +67,15 @@ fun getFileNameFromClassBlockString(classBlockString: String): String {
 }
 
 fun showNotify(notifyMessage: String, project: Project?) {
+
     val notificationGroup = NotificationGroupManager.getInstance().getNotificationGroup(NOTIFICATION_GROUP_ID)
     ApplicationManager.getApplication().invokeLater {
-        val notification = notificationGroup.createNotification(notifyMessage, NotificationType.INFORMATION)
+        val notification =
+            notificationGroup?.createNotification(notifyMessage, NotificationType.INFORMATION) ?: Notification(
+                TOOL_WINDOW_ID, PLUGIN_NAME, notifyMessage, NotificationType.INFORMATION
+            )
         Notifications.Bus.notify(notification, project)
+
     }
 }
 
