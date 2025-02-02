@@ -86,7 +86,6 @@ data class DartClass(
                     .append(".fromJson(Map<String, dynamic> json) => _$$name(json);\n")
 
                 append(indent).append("Map<String, dynamic> toJson() =>  ").append("_$$name(json);\n")
-
             } else {
                 append(indent).append("factory ").append(name).append(".fromJson(Map<String, dynamic> json) {\n")
                 append(indent).append(indent).append("return ").append(name).append("(").append("\n")
@@ -96,14 +95,21 @@ data class DartClass(
                     append(p.name).append(": ")
 
                     val valueGetter = "json['${p.name}']"
-
                     when {
                         p.isListType() && p.getGenericType().isPrimitiveType() -> {
-                            append("$valueGetter != null ? new List<${p.getGenericType()}>.from($valueGetter) : null")
+                            if (DartConfigManager.isPropertyNullable) {
+                                append("$valueGetter != null ? List<${p.getGenericType()}>.from($valueGetter) : null")
+                            } else {
+                                append(" List<${p.getGenericType()}>.from($valueGetter)")
+                            }
                         }
 
                         p.isListType() && !p.getGenericType().isPrimitiveType() -> {
-                            append("$valueGetter != null ? ($valueGetter as List).map((i) => ${p.getGenericType()}.fromJson(i)).toList() : null")
+                            if (DartConfigManager.isPropertyNullable) {
+                                append("$valueGetter != null ? ($valueGetter as List).map((i) => ${p.getGenericType()}.fromJson(i)).toList() : null")
+                            } else {
+                                append("($valueGetter as List).map((i) => ${p.getGenericType()}.fromJson(i)).toList()")
+                            }
                         }
 
                         p.isPrimitiveType() -> {
@@ -111,7 +117,11 @@ data class DartClass(
                         }
 
                         else -> {
-                            append("$valueGetter != null ? ${p.type}.fromJson($valueGetter) : null")
+                            if (DartConfigManager.isPropertyNullable) {
+                                append("$valueGetter != null ? ${p.type}.fromJson($valueGetter) : null")
+                            } else {
+                                append("${p.type}.fromJson($valueGetter)")
+                            }
                         }
                     }
                     append(", ")
@@ -127,12 +137,12 @@ data class DartClass(
                 append("\n")
             } else if (!DartConfigManager.isFreezedAnnotation) {
                 append(indent).append("Map<String, dynamic> toJson() {\n")
-                append(indent).append(indent).append("final Map<String, dynamic> data = new Map<String, dynamic>();\n")
+                append(indent).append(indent).append("final Map<String, dynamic> data = <String, dynamic>{};\n")
 
                 properties.filter { it.isPrimitiveType() }.forEach { p ->
                     append(indent).append(indent)
                     val valueSetter = "data['${p.name}']"
-                    append(valueSetter).append(" = ").append("this.${p.name}")
+                    append(valueSetter).append(" = ").append(p.name)
                     append(";")
                     append("\n")
                 }
@@ -143,24 +153,39 @@ data class DartClass(
 
                     when {
                         p.isListType() && p.getGenericType().isPrimitiveType() -> {
-                            append("if (${p.name} != null) {\n")
-                            append(indent).append(indent).append(indent).append(valueSetter).append(" = ")
-                                .append("${p.name};\n")
-                            append(indent).append(indent).append("}\n")
+                            if (DartConfigManager.isPropertyNullable) {
+                                append("if (${p.name} != null) {\n")
+                                append(indent).append(indent).append(indent).append(valueSetter).append(" = ")
+                                    .append("${p.name};\n")
+                                append(indent).append(indent).append("}\n")
+                            } else {
+                                append(indent).append(indent).append(indent).append(valueSetter).append(" = ")
+                                    .append("${p.name};\n")
+                            }
                         }
 
                         p.isListType() && !p.getGenericType().isPrimitiveType() -> {
-                            append("if (${p.name} != null) {\n")
-                            append(indent).append(indent).append(indent).append(valueSetter).append(" = ")
-                                .append("${p.name}.map((v) => v.toJson()).toList();\n")
-                            append(indent).append(indent).append("}\n")
+                            if (DartConfigManager.isPropertyNullable) {
+                                append("if (${p.name} != null) {\n")
+                                append(indent).append(indent).append(indent).append(valueSetter).append(" = ")
+                                    .append("${p.name}!.map((v) => v.toJson()).toList();\n")
+                                append(indent).append(indent).append("}\n")
+                            } else {
+                                append(indent).append(indent).append(indent).append(valueSetter).append(" = ")
+                                    .append("${p.name}.map((v) => v.toJson()).toList();\n")
+                            }
                         }
 
                         else -> {
-                            append("if (${p.name} != null) {\n")
-                            append(indent).append(indent).append(indent).append(valueSetter).append(" = ")
-                                .append("${p.name}.toJson();\n")
-                            append(indent).append(indent).append("}\n")
+                            if (DartConfigManager.isPropertyNullable) {
+                                append("if (${p.name} != null) {\n")
+                                append(indent).append(indent).append(indent).append(valueSetter).append(" = ")
+                                    .append("${p.name}!.toJson();\n")
+                                append(indent).append(indent).append("}\n")
+                            } else {
+                                append(indent).append(indent).append(indent).append(valueSetter).append(" = ")
+                                    .append("${p.name}.toJson();\n")
+                            }
                         }
                     }
                 }

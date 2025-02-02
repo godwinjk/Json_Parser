@@ -39,7 +39,6 @@ class AdvancedDartAnnotationTab(isDoubleBuffered: Boolean) : JPanel(BorderLayout
             }
         }
         val dartPackagePanel = jGridLayout(1, 2) {
-
             jCheckBox("json_serializable", DartConfigManager.isJsonSerializationAnnotation, { isSelected ->
                 DartConfigManager.isJsonSerializationAnnotation = isSelected
                 if (isSelected || DartConfigManager.isFreezedAnnotation) {
@@ -78,6 +77,7 @@ class AdvancedDartAnnotationTab(isDoubleBuffered: Boolean) : JPanel(BorderLayout
                 add(customizeAnnotationConfigPanel)
                 customizeAnnotationConfigPanel.isVisible =
                     DartConfigManager.targetJsonConverterLib == TargetJsonConverter.Custom
+                dartPackagePanel.isVisible = DartConfigManager.targetJsonConverterLib == TargetJsonConverter.DartPackage
             }
         }.apply {
             verticalScrollBarPolicy =
@@ -100,9 +100,8 @@ class AdvancedDartAnnotationTab(isDoubleBuffered: Boolean) : JPanel(BorderLayout
 
                         callBack(TargetJsonConverter.None)
                     })
-                    jRadioButton("Package",
-                        TargetJsonConverter.DartPackage == DartConfigManager.targetJsonConverterLib,
-                        {
+                    jRadioButton(
+                        "Package", TargetJsonConverter.DartPackage == DartConfigManager.targetJsonConverterLib, {
                             DartConfigManager.isJsonSerializationAnnotation = false
                             DartConfigManager.isFreezedAnnotation = false
                             DartConfigManager.targetJsonConverterLib = TargetJsonConverter.DartPackage

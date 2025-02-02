@@ -14,7 +14,8 @@ data class Property(
     val isLast: Boolean,
     val refTypeId: Int = -1, // the id of property type,if can't reference in current generate classes ,use the default value -1
     val originName: String,
-    val originJsonValue: String? = ""
+    val originJsonValue: String? = "",
+    val nullability: Boolean = false,
 ) {
 
     //val genericType: String
@@ -26,7 +27,6 @@ data class Property(
     }
 
     fun getCode(): String {
-
         return buildString {
             if (annotations.isNotEmpty()) {
                 val annotationsCode = annotations.joinToString("\n") { it.getAnnotationString() }
@@ -37,7 +37,11 @@ data class Property(
             if (keyword.isNotEmpty()) {
                 append(keyword).append(" ")
             }
-            append(type).append(" ").append(name)
+            append(type)
+            if (nullability) {
+                append("?")
+            }
+            append(" ").append(name)
             if (value.isNotBlank()) {
                 append(" = ").append(value)
             }

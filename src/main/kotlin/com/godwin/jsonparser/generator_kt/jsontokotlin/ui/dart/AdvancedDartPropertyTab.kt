@@ -18,43 +18,52 @@ class AdvancedDartPropertyTab(isDoubleBuffered: Boolean) : JPanel(BorderLayout()
             jVerticalLinearLayout {
                 jLabel("Keyword")
                 jButtonGroup {
-                    jRadioButton("none",
+                    jRadioButton(
+                        "None",
                         !DartConfigManager.isPropertyFinal,
                         { DartConfigManager.isPropertyFinal = false })
-                    jRadioButton("final",
+                    jRadioButton(
+                        "Final",
                         DartConfigManager.isPropertyFinal,
                         { DartConfigManager.isPropertyFinal = true })
                 }
                 jLine()
                 jLabel("Null Safety")
                 jButtonGroup {
-                    jRadioButton("Non Nullable",
+                    jRadioButton(
+                        "Non Nullable",
                         !DartConfigManager.isPropertyNullable,
                         { DartConfigManager.isPropertyNullable = false })
-                    jRadioButton("Nullable",
+                    jRadioButton(
+                        "Nullable",
                         DartConfigManager.isPropertyNullable,
                         { DartConfigManager.isPropertyNullable = true })
                 }
                 jLine()
                 jLabel("Required or Optional")
                 jButtonGroup {
-                    jRadioButton("Optional",
+                    jRadioButton(
+                        "Optional",
                         !DartConfigManager.isPropertyOptional,
                         { DartConfigManager.isPropertyOptional = false })
-                    jRadioButton("Required",
+                    jRadioButton(
+                        "Required",
                         DartConfigManager.isPropertyOptional,
                         { DartConfigManager.isPropertyOptional = true })
                 }
                 jLine()
                 jLabel("Default Value Strategy")
                 jButtonGroup {
-                    jRadioButton("Don't Init With Default Value",
+                    jRadioButton(
+                        "Don't Init With Default Value",
                         DartConfigManager.defaultValueStrategy == DefaultValueStrategy.None,
                         { DartConfigManager.defaultValueStrategy = DefaultValueStrategy.None })
-                    jRadioButton("Init With Non-Null Default Value (Avoid Null)",
+                    jRadioButton(
+                        "Init With Non-Null Default Value (Avoid Null)",
                         DartConfigManager.defaultValueStrategy == DefaultValueStrategy.AvoidNull,
                         { DartConfigManager.defaultValueStrategy = DefaultValueStrategy.AvoidNull })
-                    jRadioButton("Init With Default Value Null When Property Is Nullable",
+                    jRadioButton(
+                        "Init With Default Value Null When Property Is Nullable",
                         DartConfigManager.defaultValueStrategy == DefaultValueStrategy.AllowNull,
                         { DartConfigManager.defaultValueStrategy = DefaultValueStrategy.AllowNull })
                 }

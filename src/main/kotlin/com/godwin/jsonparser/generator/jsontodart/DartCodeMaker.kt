@@ -148,7 +148,7 @@ class DartCodeMaker {
                             val subCode = try {
                                 DartCodeMaker(getChildType(getRawType(type)), jsonElementValue).makeDartClassData()
                             } catch (e: UnSupportJsonException) {
-                                type = e.adviceType
+                                type = DEFAULT_TYPE
                                 ""
                             }
                             toBeAppend.add(subCode)

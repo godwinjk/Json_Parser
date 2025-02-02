@@ -17,6 +17,9 @@ object InterceptorManager {
             if (DartConfigManager.isPropertyFinal) {
                 add(ChangePropertyKeywordToFinalInterceptor())
             }
+            if (DartConfigManager.isPropertyNullable) {
+                add(PropertyNullabilityInterceptor())
+            }
 
             if (DartConfigManager.defaultValueStrategy != DefaultValueStrategy.None) {
                 add(InitWithDefaultValueInterceptor())

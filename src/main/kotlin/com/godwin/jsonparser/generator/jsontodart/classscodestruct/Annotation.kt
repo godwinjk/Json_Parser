@@ -33,7 +33,6 @@ data class Annotation(val annotationTemplate: String, val rawName: String) {
             } else {
                 Annotation(annotationString, "")
             }
-
         }
 
         private fun fromMultipleLineAnnotationString(multipleLineString: String): Annotation {
