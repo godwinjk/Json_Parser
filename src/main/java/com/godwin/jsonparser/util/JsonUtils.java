@@ -1,5 +1,6 @@
 package com.godwin.jsonparser.util;
 
+import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.util.DefaultIndenter;
@@ -61,6 +62,80 @@ public class JsonUtils {
             // Handle unexpected cases (e.g., primitive values)
             throw new IllegalArgumentException("Unsupported JSON structure");
         }
+    }
+
+    /**
+     * Cleans up the JSON string by applying various cleanup methods.
+     * For now, it only ensures missing opening and closing braces are fixed.
+     * Other future methods that can be added are:
+     * 1. Missing only opening brace
+     * 2. Missing only closing brace
+     * 2. Missing comma
+     * 3. missing '"'
+     */
+    public static String cleanUpJsonString(String jsonString) {
+        jsonString = jsonString.trim();
+
+        // If it's already valid, return as is.
+        if (isValidJson(jsonString)) {
+            return jsonString;
+        }
+
+        //attempt to fix json
+
+        // Check if the start or end braces is missing
+        if (!jsonString.startsWith("{") || !jsonString.endsWith("}")) {
+            String fixedJsonString = fixMissingBraces(jsonString);
+
+            // Validate after adding missing braces
+            if (isValidJson(fixedJsonString)) {
+                return fixedJsonString;
+            }
+        }
+
+        //Return the JSON in the original form
+        return jsonString;
+    }
+
+    /**
+     * Checks if the given JSON string is valid.
+     * @param jsonString The JSON string to validate.
+     * @return true if the JSON is valid, false otherwise.
+     */
+    private static boolean isValidJson(String jsonString) {
+        try (JsonParser parser = new JsonFactory().createParser(jsonString)) {
+            //noinspection StatementWithEmptyBody
+            while (parser.nextToken() != null) {
+                // If we can iterate through tokens then it's valid JSON
+            }
+            return true;
+        } catch (Exception e) {
+            return false; // Invalid JSON
+        }
+    }
+
+    /**
+     * Fixes missing opening and closing braces in the JSON string.
+     * @param jsonString The JSON string to fix.
+     * @return A properly wrapped JSON string.
+     */
+    private static String fixMissingBraces(String jsonString) {
+        jsonString = jsonString.trim();
+
+        int openBracesCount = 0;
+        int closeBracesCount = 0;
+
+        // Count `{` and `}` braces
+        for (char ch : jsonString.toCharArray()) {
+            if (ch == '{') openBracesCount++;
+            if (ch == '}') closeBracesCount++;
+        }
+
+        if (openBracesCount == closeBracesCount && !jsonString.startsWith("{")) {
+            jsonString = "{" + jsonString + "}";
+        }
+
+        return jsonString;
     }
 
 /*    public static String minifyJson(String jsonStr) throws JsonProcessingException {
