@@ -124,11 +124,24 @@ public class JsonUtils {
 
         int openBracesCount = 0;
         int closeBracesCount = 0;
+        boolean inString = false;
 
-        // Count `{` and `}` braces
-        for (char ch : jsonString.toCharArray()) {
-            if (ch == '{') openBracesCount++;
-            if (ch == '}') closeBracesCount++;
+        // Count `{` and `}` braces outside of string values
+        for (int i = 0; i < jsonString.length(); i++) {
+            char ch = jsonString.charAt(i);
+
+            if (ch == '"') {
+                // Toggle inString when encountering an unescaped quote
+                boolean isEscaped = i > 0 && jsonString.charAt(i - 1) == '\\';
+                if (!isEscaped) {
+                    inString = !inString;
+                }
+            }
+
+            if (!inString) {
+                if (ch == '{') openBracesCount++;
+                if (ch == '}') closeBracesCount++;
+            }
         }
 
         if (openBracesCount == closeBracesCount && !jsonString.startsWith("{")) {
