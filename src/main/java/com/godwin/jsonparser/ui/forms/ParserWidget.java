@@ -7,6 +7,7 @@ import com.godwin.jsonparser.ui.dialog.OptionDialog;
 import com.godwin.jsonparser.util.JsonDownloader;
 import com.godwin.jsonparser.util.JsonUtils;
 import com.godwin.jsonparser.util.NotificationUtil;
+import com.intellij.ide.ui.LafManagerListener;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.command.WriteCommandAction;
@@ -27,6 +28,8 @@ import org.apache.http.util.TextUtils;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
+import javax.swing.plaf.basic.BasicSplitPaneDivider;
+import javax.swing.plaf.basic.BasicSplitPaneUI;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
@@ -68,6 +71,9 @@ public class ParserWidget implements Publisher {
         this.inputEditorContainer.add(mInputEditor.getComponent(), BorderLayout.CENTER);
         this.outputContainer.add(this.mBodyWidget.container, BorderLayout.CENTER);
 
+        hideSplitPaneDivider();
+
+
         setEventListeners();
     }
 
@@ -90,6 +96,44 @@ public class ParserWidget implements Publisher {
 
         return editor;
     }
+    /**
+     * Hides the white divider line in JSplitPane when in dark mode.
+     * This method:
+     * 1. Applies a custom UI to the JSplitPane to remove the visible divider.
+     * 2. Listens for IntelliJ Look and Feel (LaF) theme changes.
+     * 3. Reapplies the custom UI whenever the theme is switched to ensure the divider stays hidden.
+     * Fixes: <a href="https://github.com/godwinjk/Json_Parser/issues/12"</a>
+     */
+    private void hideSplitPaneDivider() {
+        customizeSplitPane(); // Apply initial customization
+
+         /*Subscribe to IntelliJ's Look and Feel (LaF) change events
+         Without this, the white line appears when a user switches to light theme and back to dark theme*/
+        ApplicationManager.getApplication().getMessageBus()
+                .connect(mParent).subscribe(LafManagerListener.TOPIC, (LafManagerListener)
+                        source -> SwingUtilities.invokeLater(this::customizeSplitPane));// Reapply fix when theme changes
+    }
+
+    /**
+     * Customizes the JSplitPane to completely hide the divider.
+     * This method overrides the default divider UI with a custom BasicSplitPaneDivider,
+     * preventing it from drawing any visible lines, effectively making it invisible.
+     */
+    private void customizeSplitPane() {
+        splitPane.setUI(new BasicSplitPaneUI() {
+            @Override
+            public BasicSplitPaneDivider createDefaultDivider() {
+                return new BasicSplitPaneDivider(this) {
+                    @Override
+                    public void paint(Graphics g) {
+                        // Empty implementation to fully hide the divider
+                    }
+                };
+            }
+        });
+    }
+
+
 
     private JPopupMenu setPopupMenu(JComponent component) {
         JPopupMenu popupMenu = new JPopupMenu();
