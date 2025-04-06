@@ -14,6 +14,9 @@ object InterceptorManager {
     fun getEnabledDartDataClassInterceptors(): List<IDartClassInterceptor> {
 
         return mutableListOf<IDartClassInterceptor>().apply {
+            //default enabled to remove the usage of dart keywords
+            add(MakeKeywordNamedPropertyValidInterceptor())
+            add(MakePropertiesNameToBeCamelCaseInterceptor())
             if (DartConfigManager.isPropertyFinal) {
                 add(ChangePropertyKeywordToFinalInterceptor())
             }
