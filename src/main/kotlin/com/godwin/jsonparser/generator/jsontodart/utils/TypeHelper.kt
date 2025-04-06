@@ -17,7 +17,7 @@ const val TYPE_INT = "int"
 const val TYPE_LONG = "int"
 const val TYPE_DOUBLE = "double"
 const val TYPE_BOOLEAN = "bool"
-const val TYPE_ANY = "Object"
+const val TYPE_ANY = "dynamic"
 
 const val MAP_DEFAULT_OBJECT_VALUE_TYPE = "MapValue"
 const val MAP_DEFAULT_ARRAY_ITEM_VALUE_TYPE = "Item"
@@ -44,7 +44,7 @@ fun getPrimitiveType(jsonPrimitive: JsonPrimitive): String {
 }
 
 fun String.isPrimitiveType(): Boolean {
-    return this == TYPE_STRING || this == TYPE_LONG || this == TYPE_INT || this == TYPE_DOUBLE || this == TYPE_BOOLEAN
+    return this == TYPE_STRING || this == TYPE_LONG || this == TYPE_INT || this == TYPE_DOUBLE || this == TYPE_BOOLEAN || this == TYPE_ANY
 }
 
 fun String.isListType(): Boolean {
@@ -52,7 +52,6 @@ fun String.isListType(): Boolean {
 }
 
 fun getJsonObjectType(type: String): String {
-
     return KClassName.getName(type)
 }
 
@@ -70,7 +69,9 @@ fun getRawType(outputType: String): String = outputType.replace("?", "").replace
 fun getArrayType(propertyName: String, jsonElementValue: JsonArray): String {
     val preSubType = adjustPropertyNameForGettingArrayChildType(propertyName)
     var subType = DEFAULT_TYPE
-
+    if (isArrayContainsDifferentTypes(jsonElementValue)) {
+        return "List<$subType>"
+    }
     val iterator = jsonElementValue.iterator()
     if (iterator.hasNext()) {
         val next = iterator.next()
@@ -83,6 +84,39 @@ fun getArrayType(propertyName: String, jsonElementValue: JsonArray): String {
         return "List<$subType>"
     }
     return "List<$subType>"
+}
+
+fun isArrayContainsDifferentTypes(jsonArray: JsonArray): Boolean {
+    val typesSet = mutableSetOf<String>()
+
+    // Iterate over all elements in the array
+    for (jsonElement in jsonArray) {
+        val type = when {
+            jsonElement.isJsonPrimitive -> {
+                when {
+                    jsonElement.asJsonPrimitive.isNumber -> "Number"  // for Int, Double, etc.
+                    jsonElement.asJsonPrimitive.isBoolean -> "Boolean"
+                    jsonElement.asJsonPrimitive.isString -> "String"
+                    else -> "UnknownPrimitive"
+                }
+            }
+
+            jsonElement.isJsonObject -> "jsonObject"
+            jsonElement.isJsonArray -> "jsonArray"
+            else -> "unknown"
+        }
+
+        // Add the detected type to the set
+        typesSet.add(type)
+
+        // If we already have more than one type, return true
+        if (typesSet.size > 1) {
+            return true
+        }
+    }
+
+    // If only one type is found, return false
+    return false
 }
 
 fun isExpectedJsonObjArrayType(jsonElementArray: JsonArray): Boolean {

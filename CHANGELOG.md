@@ -2,9 +2,20 @@
 
 # Json_Parser Changelog
 
+### Version 1.8.3
+
+1. Bug Fixes
+2. Code generation for dart issues fixed
+
+### Version 1.8.2
+
+1. Automation added
+
 ### Version 1.8.1
 
-Automation added
+1. Added open menu for Json files in "Open In" menu
+2. Changed generate menu item to last
+3. Minor bug fixes
 
 ### Version 1.7.3
 
