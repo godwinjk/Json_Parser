@@ -5,6 +5,7 @@ import com.godwin.jsonparser.rx.Subscriber;
 import com.godwin.jsonparser.ui.IParserWidget;
 import com.godwin.jsonparser.ui.dialog.OptionDialog;
 import com.godwin.jsonparser.util.JsonDownloader;
+import com.godwin.jsonparser.util.JsonUtils;
 import com.godwin.jsonparser.util.NotificationUtil;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.application.ApplicationManager;
@@ -120,6 +121,8 @@ public class ParserWidget implements Publisher {
         });
         parseButton.addActionListener(e -> {
             String jsonString = mInputEditor.getDocument().getText();
+            jsonString = JsonUtils.cleanUpJsonString(jsonString);
+
             showBody(jsonString);
             NotificationUtil.showDonateNotification();
         });
