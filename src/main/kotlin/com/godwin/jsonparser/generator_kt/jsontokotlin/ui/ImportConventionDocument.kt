@@ -9,7 +9,7 @@ import javax.swing.text.PlainDocument
 class ImportConventionDocument(maxLength: Int) : PlainDocument() {
     constructor() : this(252)
 
-    private val maxLength: Int = if (maxLength > 252 || maxLength <= 0) 252 else maxLength
+    private val maxLength: Int = if (maxLength !in 1..252) 252 else maxLength
     override fun insertString(offs: Int, str: String?, a: AttributeSet?) {
         str ?: return
         val take = maxLength - length

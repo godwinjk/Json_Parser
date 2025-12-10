@@ -11,7 +11,6 @@ class DartDataClassCodeMaker(
 
     fun makeDartDataClassCode(): String {
         val interceptors = InterceptorManager.getEnabledDartDataClassInterceptors()
-
         return makeDartDataClassCode(interceptors)
     }
 
