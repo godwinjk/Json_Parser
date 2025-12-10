@@ -1,11 +1,11 @@
 package com.godwin.jsonparser.generator.jsontodart.utils
 
-val KOTLIN_KEYWORD_LIST = listOf(
-        "as", "as?", "break", "class", "continue", "do", "else", "false", "for", "fun", "if", "in", "!in", "interface", "is", "!is", "null",
-        "object", "package", "return", "super", "this", "throw", "true", "try", "typealias", "val", "var", "when", "while",
-        "by", "catch", "constructor", "delegate", "dynamic", "field", "file", "finally", "get", "import", "init", "param",
-        "property", "receiver", "set", "setparam", "where", "actual", "abstract", "annotation", "companion", "const", "crossinline",
-        "data", "enum", "expect", "external", "final", "infix", "inline", "inner", "internal", "lateinit", "noinline", "open",
-        "operator", "out", "override", "private", "protected", "public", "reified", "sealed", "suspend", "tailrec", "vararg",
-        "field", "it"
+val DART_KEYWORD_LIST = listOf(
+    "abstract", "as", "assert", "async", "await", "break", "case", "catch", "class",
+    "const", "continue", "covariant", "default", "deferred", "do", "else", "enum",
+    "export", "extends", "extension", "external", "factory", "false", "final", "finally",
+    "for", "function", "get", "hide", "if", "implements", "import", "in", "interface",
+    "is", "late", "library", "mixin", "native", "new", "null", "on", "operator", "part",
+    "rethrow", "return", "set", "show", "static", "super", "switch", "sync", "this",
+    "throw", "true", "try", "typedef", "var", "void", "while", "with", "yield"
 )

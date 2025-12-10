@@ -2,7 +2,7 @@
 <idea-plugin>
     <id>com.godwin.json.parser</id>
     <name>Json Parser And Code Generation</name>
-    <version>1.8.2</version>
+    <version>1.8.3</version>
     <vendor email="godwinjoseph.k@gmail.com">Godwin</vendor>
 
     <description><![CDATA[
@@ -10,6 +10,13 @@
     ]]></description>
 
     <change-notes><![CDATA[
+
+   <h4>Version 1.8.3  </h4>
+    <ol>
+        <li>Bug Fixes</li>
+        <li>Code generation for dart issues fixed</li>
+    </ol>
+    <br>
     <h4> Version 1.8.1</h4>
     <br>
     <ol>

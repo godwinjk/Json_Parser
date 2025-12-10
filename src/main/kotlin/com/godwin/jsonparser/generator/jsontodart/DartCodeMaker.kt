@@ -21,8 +21,6 @@ class DartCodeMaker {
 
     private var originElement: JsonElement
 
-    private val indent = getIndent()
-
     private val toBeAppend = HashSet<String>()
 
     constructor(className: String, inputText: String) {
@@ -84,7 +82,10 @@ class DartCodeMaker {
                 if (originElement.asJsonArray.onlyHasOneElementRecursive()) {
                     val unSupportJsonException = UnSupportJsonException("Unsupported Json String")
                     val adviceType =
-                        getArrayType("Any", originElement.asJsonArray).replace(Regex("Int|Float|String|Boolean"), "Any")
+                        getArrayType("dynamic", originElement.asJsonArray).replace(
+                            Regex("Int|Float|String|Boolean"),
+                            "dynamic"
+                        )
                     unSupportJsonException.adviceType = adviceType
                     unSupportJsonException.advice =
                         """No need converting, just use $adviceType is enough for your json string"""
@@ -92,9 +93,9 @@ class DartCodeMaker {
                 } else {
                     //when [1,"a"]
                     val unSupportJsonException = UnSupportJsonException("Unsupported Json String")
-                    unSupportJsonException.adviceType = "List<Any>"
+                    unSupportJsonException.adviceType = "List<dynamic>"
                     unSupportJsonException.advice =
-                        """No need converting,  List<Any> may be a good class type for your json string"""
+                        """No need converting,  List<dynamic> may be a good class type for your json string"""
                     throw unSupportJsonException
                 }
             }

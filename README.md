@@ -44,6 +44,12 @@ generation, easy data retrieval and loading, validation, formatting, and an intu
   Download the [latest release](https://github.com/godwinjk/Json_Parser/releases/latest) and install it manually using
   <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
 
+[![](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://paypal.me/godwinj)
+
+❤️❤️❤️❤️❤️
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/S6S0176OVQ)
+
 ## Functions example
 
 <img src="assets/json_fn.gif" width="400">
@@ -63,19 +69,22 @@ Your contributions help me dedicate more time to improving the project, adding f
 community.
 Every donation, no matter the size, makes a difference and is deeply appreciated. ❤️
 
-[![](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://paypal.me/godwinj)
-
-❤️❤️❤️❤️❤️
-
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/S6S0176OVQ)
-
 ## Changelog
+
+### Version 1.8.3
+
+1. Bug Fixes
+2. Code generation for dart issues fixed
+
+### Version 1.8.2
+
+1. Automation added
 
 ### Version 1.8.1
 
 1. Added open menu for Json files in "Open In" menu
 2. Changed generate menu item to last
-3. Minor bug fixes
+3. Minor bug fixes`
 
 ### Version 1.8.0 🎉
 
@@ -155,3 +164,8 @@ Support for all platforms.
 
 Parse VALID JSON string only.
 
+[![](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://paypal.me/godwinj)
+
+❤️❤️❤️❤️❤️
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/S6S0176OVQ)
