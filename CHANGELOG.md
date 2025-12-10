@@ -2,6 +2,10 @@
 
 # Json_Parser Changelog
 
+### Version 1.8.3
+
+Support for Version 253 added
+
 ### Version 1.8.1
 
 Automation added
