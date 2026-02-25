@@ -1,6 +1,6 @@
 package com.godwin.jsonparser.generator.jsontodart.utils
 
-import com.godwin.jsonparser.generator.jsontodart.codeelements.KClassName
+import com.godwin.jsonparser.generator.jsontodart.specs.elements.KClassName
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser

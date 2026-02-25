@@ -1,11 +1,11 @@
 package com.godwin.jsonparser.generator.jsontodart.interceptor.annotations.custom
 
-import com.godwin.jsonparser.generator.jsontodart.classscodestruct.Annotation
-import com.godwin.jsonparser.generator.jsontodart.classscodestruct.DartClass
-import com.godwin.jsonparser.generator.jsontodart.codeannotations.CustomPropertyAnnotationTemplate
-import com.godwin.jsonparser.generator.jsontodart.codeelements.KPropertyName
-import com.godwin.jsonparser.generator.jsontodart.interceptor.IDartClassInterceptor
-import com.godwin.jsonparser.generator_kt.jsontokotlin.model.DartConfigManager
+import com.godwin.jsonparser.generator.jsontodart.interceptor.clazz.IDartClassInterceptor
+import com.godwin.jsonparser.generator.jsontodart.specs.annotations.CustomPropertyAnnotationTemplate
+import com.godwin.jsonparser.generator.jsontodart.specs.clazz.Annotation
+import com.godwin.jsonparser.generator.jsontodart.specs.clazz.DartClass
+import com.godwin.jsonparser.generator.jsontodart.specs.elements.KPropertyName
+import com.godwin.jsonparser.generator.jsontokotlin.model.DartConfigManager
 
 class AddCustomAnnotationInterceptor : IDartClassInterceptor {
 

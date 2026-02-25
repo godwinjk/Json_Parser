@@ -1,10 +1,10 @@
 package com.godwin.jsonparser.generator.jsontodart.interceptor.annotations.jsonserializable
 
-import com.godwin.jsonparser.generator.jsontodart.classscodestruct.DartClass
-import com.godwin.jsonparser.generator.jsontodart.codeannotations.JsonSerializableClassAnnotationTemplate
-import com.godwin.jsonparser.generator.jsontodart.codeannotations.JsonSerializablePropertyAnnotationTemplate
-import com.godwin.jsonparser.generator.jsontodart.interceptor.IDartClassInterceptor
-import com.godwin.jsonparser.generator_kt.jsontokotlin.model.DartConfigManager
+import com.godwin.jsonparser.generator.jsontodart.interceptor.clazz.IDartClassInterceptor
+import com.godwin.jsonparser.generator.jsontodart.specs.annotations.JsonSerializableClassAnnotationTemplate
+import com.godwin.jsonparser.generator.jsontodart.specs.annotations.JsonSerializablePropertyAnnotationTemplate
+import com.godwin.jsonparser.generator.jsontodart.specs.clazz.DartClass
+import com.godwin.jsonparser.generator.jsontokotlin.model.DartConfigManager
 
 class JsonSerializableInterceptor : IDartClassInterceptor {
 

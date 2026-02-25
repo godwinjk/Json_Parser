@@ -1,6 +1,6 @@
 package com.godwin.jsonparser.generator.jsontodart.utils.classblockparse
 
-import com.godwin.jsonparser.generator.jsontodart.classscodestruct.DartClass
+import com.godwin.jsonparser.generator.jsontodart.specs.clazz.DartClass
 import com.godwin.jsonparser.generator.jsontodart.utils.getClassesStringList
 
 class NormalClassesCodeParser(private val classesCode: String) {

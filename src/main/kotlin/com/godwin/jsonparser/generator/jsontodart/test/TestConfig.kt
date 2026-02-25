@@ -1,7 +1,7 @@
 package com.godwin.jsonparser.generator.jsontodart.test
 
-import com.godwin.jsonparser.generator_kt.jsontokotlin.model.DefaultValueStrategy
-import com.godwin.jsonparser.generator_kt.jsontokotlin.model.TargetJsonConverter
+import com.godwin.jsonparser.generator.jsontokotlin.model.DefaultValueStrategy
+import com.godwin.jsonparser.generator.jsontokotlin.model.TargetJsonConverter
 
 /**
  *
