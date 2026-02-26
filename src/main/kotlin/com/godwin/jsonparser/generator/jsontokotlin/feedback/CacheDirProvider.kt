@@ -1,6 +1,6 @@
 package com.godwin.jsonparser.generator.jsontokotlin.feedback
 
-import com.godwin.jsonparser.generator.jsontodart.utils.LogUtil
+import com.godwin.jsonparser.util.Log
 import java.lang.System.getProperty
 import java.nio.file.Files
 import java.nio.file.Path
@@ -32,7 +32,7 @@ class DefaultCacheDirProvider : CacheDirProvider {
             Files.exists(mac) -> mac
             else -> home
         }.also {
-            LogUtil.i("Cache directory is: $it")
+            Log.i("Cache directory is: $it")
         }
     }
 

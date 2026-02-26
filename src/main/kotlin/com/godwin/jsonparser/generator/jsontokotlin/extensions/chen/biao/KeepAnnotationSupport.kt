@@ -1,10 +1,10 @@
 package com.godwin.jsonparser.generator.jsontokotlin.extensions.chen.biao
 
-import com.godwin.jsonparser.generator.jsontokotlin.model.classscodestruct.DataClass
-import com.godwin.jsonparser.generator.jsontokotlin.model.classscodestruct.KotlinClass
 import com.godwin.jsonparser.generator.common.ui.jCheckBox
 import com.godwin.jsonparser.generator.common.ui.jHorizontalLinearLayout
 import com.godwin.jsonparser.generator.jsontokotlin.model.classscodestruct.Annotation
+import com.godwin.jsonparser.generator.jsontokotlin.model.classscodestruct.DataClass
+import com.godwin.jsonparser.generator.jsontokotlin.model.classscodestruct.KotlinClass
 import javax.swing.JPanel
 
 /**

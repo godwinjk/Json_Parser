@@ -1,9 +1,9 @@
 package com.godwin.jsonparser.generator.jsontokotlin.utils.classgenerator
 
-import com.godwin.jsonparser.generator.jsontodart.utils.LogUtil
 import com.godwin.jsonparser.generator.jsontokotlin.model.classscodestruct.GenericListClass
 import com.godwin.jsonparser.generator.jsontokotlin.model.classscodestruct.KotlinClass
 import com.godwin.jsonparser.generator.jsontokotlin.utils.*
+import com.godwin.jsonparser.util.Log
 import com.google.gson.Gson
 import com.google.gson.JsonArray
 
@@ -23,12 +23,12 @@ class GenericListClassGeneratorByJSONArray(private val jsonKey: String, jsonArra
 
         when {
             jsonArray.size() == 0 -> {
-                LogUtil.i("$tag jsonArray size is 0, return GenericListClass with generic type ANY")
+                Log.i("$tag jsonArray size is 0, return GenericListClass with generic type ANY")
                 return GenericListClass(generic = KotlinClass.ANY, nullableElements = true)
             }
 
             jsonArray.allItemAreNullElement() -> {
-                LogUtil.i("$tag jsonArray allItemAreNullElement, return GenericListClass with generic type ${KotlinClass.ANY.name}")
+                Log.i("$tag jsonArray allItemAreNullElement, return GenericListClass with generic type ${KotlinClass.ANY.name}")
                 return GenericListClass(generic = KotlinClass.ANY, nullableElements = true)
             }
 
@@ -39,7 +39,7 @@ class GenericListClassGeneratorByJSONArray(private val jsonKey: String, jsonArra
                 val p = jsonArrayExcludeNull[0].asJsonPrimitive
                 val elementKotlinClass =
                     if (p.isNumber) getKotlinNumberClass(jsonArrayExcludeNull) else p.toKotlinClass()
-                LogUtil.i("$tag jsonArray allElementAreSamePrimitiveType, return GenericListClass with generic type ${elementKotlinClass.name}")
+                Log.i("$tag jsonArray allElementAreSamePrimitiveType, return GenericListClass with generic type ${elementKotlinClass.name}")
                 return GenericListClass(generic = elementKotlinClass, nullableElements = hasNulls)
             }
 
@@ -47,7 +47,7 @@ class GenericListClassGeneratorByJSONArray(private val jsonKey: String, jsonArra
                 val fatJsonObject = jsonArrayExcludeNull.getFatJsonObject()
                 val itemObjClassName = getRecommendItemName(jsonKey)
                 val dataClassFromJsonObj = DataClassGeneratorByJSONObject(itemObjClassName, fatJsonObject).generate()
-                LogUtil.i("$tag jsonArray allItemAreObjectElement, return GenericListClass with generic type ${dataClassFromJsonObj.name}")
+                Log.i("$tag jsonArray allItemAreObjectElement, return GenericListClass with generic type ${dataClassFromJsonObj.name}")
                 return GenericListClass(generic = dataClassFromJsonObj, nullableElements = hasNulls)
             }
 
@@ -55,12 +55,12 @@ class GenericListClassGeneratorByJSONArray(private val jsonKey: String, jsonArra
                 val fatJsonArray = jsonArrayExcludeNull.getFatJsonArray()
                 val genericListClassFromFatJsonArray =
                     GenericListClassGeneratorByJSONArray(jsonKey, fatJsonArray.toString()).generate()
-                LogUtil.i("$tag jsonArray allItemAreArrayElement, return GenericListClass with generic type ${genericListClassFromFatJsonArray.name}")
+                Log.i("$tag jsonArray allItemAreArrayElement, return GenericListClass with generic type ${genericListClassFromFatJsonArray.name}")
                 return GenericListClass(generic = genericListClassFromFatJsonArray, nullableElements = hasNulls)
             }
 
             else -> {
-                LogUtil.i("$tag jsonArray exception shouldn't come here, return GenericListClass with generic type ANY")
+                Log.i("$tag jsonArray exception shouldn't come here, return GenericListClass with generic type ANY")
                 return GenericListClass(generic = KotlinClass.ANY, nullableElements = true)
             }
         }

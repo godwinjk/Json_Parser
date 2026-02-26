@@ -94,7 +94,7 @@
         <applicationService serviceImplementation="com.godwin.jsonparser.services.JsonPersistence"/>
     </extensions>
     <actions>
-        <action id="com.godwin.jsonparser.parseraction" class="com.godwin.jsonparser.ui.action.OpenParserAction"
+        <action id="com.godwin.jsonparser.parseraction" class="com.godwin.jsonparser.action.OpenParserAction"
                 text="Parse Json"
                 description="Open In json parser">
             <add-to-group group-id="ConsoleView.PopupMenu" anchor="first"/>

@@ -17,8 +17,8 @@ import com.godwin.jsonparser.generator.jsontokotlin.interceptor.annotations.mosh
 import com.godwin.jsonparser.generator.jsontokotlin.interceptor.annotations.moshi.AddMoshiCodeGenClassImportDeclarationInterceptor
 import com.godwin.jsonparser.generator.jsontokotlin.interceptor.annotations.serializable.AddSerializableAnnotationClassImportDeclarationInterceptor
 import com.godwin.jsonparser.generator.jsontokotlin.interceptor.annotations.serializable.AddSerializableAnnotationInterceptor
-import com.godwin.jsonparser.generator.jsontokotlin.model.KotlinConfigManager
 import com.godwin.jsonparser.generator.jsontokotlin.model.DefaultValueStrategy
+import com.godwin.jsonparser.generator.jsontokotlin.model.KotlinConfigManager
 import com.godwin.jsonparser.generator.jsontokotlin.model.TargetJsonConverter
 import com.godwin.jsonparser.generator.jsontokotlin.model.classscodestruct.KotlinClass
 

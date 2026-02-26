@@ -1,11 +1,11 @@
 package com.godwin.jsonparser.generator.jsontokotlin.interceptor.annotations.logansquare
 
 import com.godwin.jsonparser.generator.jsontokotlin.interceptor.IKotlinClassInterceptor
+import com.godwin.jsonparser.generator.jsontokotlin.model.classscodestruct.Annotation
 import com.godwin.jsonparser.generator.jsontokotlin.model.classscodestruct.DataClass
 import com.godwin.jsonparser.generator.jsontokotlin.model.classscodestruct.KotlinClass
 import com.godwin.jsonparser.generator.jsontokotlin.model.codeannotations.LoganSquarePropertyAnnotationTemplate
 import com.godwin.jsonparser.generator.jsontokotlin.model.codeelements.KPropertyName
-import com.godwin.jsonparser.generator.jsontokotlin.model.classscodestruct.Annotation
 
 class AddLoganSquareAnnotationInterceptor : IKotlinClassInterceptor<KotlinClass> {
 

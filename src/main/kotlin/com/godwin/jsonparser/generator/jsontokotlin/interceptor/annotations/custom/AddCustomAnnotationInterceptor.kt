@@ -2,11 +2,11 @@ package com.godwin.jsonparser.generator.jsontokotlin.interceptor.annotations.cus
 
 import com.godwin.jsonparser.generator.jsontokotlin.interceptor.IKotlinClassInterceptor
 import com.godwin.jsonparser.generator.jsontokotlin.model.KotlinConfigManager
+import com.godwin.jsonparser.generator.jsontokotlin.model.classscodestruct.Annotation
 import com.godwin.jsonparser.generator.jsontokotlin.model.classscodestruct.DataClass
 import com.godwin.jsonparser.generator.jsontokotlin.model.classscodestruct.KotlinClass
 import com.godwin.jsonparser.generator.jsontokotlin.model.codeannotations.CustomPropertyAnnotationTemplate
 import com.godwin.jsonparser.generator.jsontokotlin.model.codeelements.KPropertyName
-import com.godwin.jsonparser.generator.jsontokotlin.model.classscodestruct.Annotation
 
 class AddCustomAnnotationInterceptor : IKotlinClassInterceptor<KotlinClass> {
 

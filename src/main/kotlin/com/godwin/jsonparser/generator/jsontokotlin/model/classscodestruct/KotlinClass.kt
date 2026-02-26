@@ -1,9 +1,9 @@
 package com.godwin.jsonparser.generator.jsontokotlin.model.classscodestruct
 
-import com.godwin.jsonparser.generator.jsontodart.utils.LogUtil
 import com.godwin.jsonparser.generator.jsontokotlin.interceptor.IKotlinClassInterceptor
 import com.godwin.jsonparser.generator.jsontokotlin.model.builder.ICodeBuilder
 import com.godwin.jsonparser.generator.jsontokotlin.utils.IgnoreCaseStringSet
+import com.godwin.jsonparser.util.Log
 
 
 /**
@@ -82,7 +82,7 @@ interface KotlinClass {
             return allRefClasses
         }
         allRefClasses.addAll(referencedClasses)
-        LogUtil.i("getAllRefClassesRecursively added referenced class ${referencedClasses.map { it.name }}")
+        Log.i("getAllRefClassesRecursively added referenced class ${referencedClasses.map { it.name }}")
         allRefClasses.addAll(referencedClasses.flatMap { it.getAllRefClassesRecursively() })
         return allRefClasses
     }

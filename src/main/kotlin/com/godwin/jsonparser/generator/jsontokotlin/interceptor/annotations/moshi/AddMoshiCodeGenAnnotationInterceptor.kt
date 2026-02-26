@@ -1,12 +1,11 @@
 package com.godwin.jsonparser.generator.jsontokotlin.interceptor.annotations.moshi
 
 import com.godwin.jsonparser.generator.jsontokotlin.interceptor.IKotlinClassInterceptor
+import com.godwin.jsonparser.generator.jsontokotlin.model.classscodestruct.Annotation
 import com.godwin.jsonparser.generator.jsontokotlin.model.classscodestruct.DataClass
 import com.godwin.jsonparser.generator.jsontokotlin.model.classscodestruct.KotlinClass
 import com.godwin.jsonparser.generator.jsontokotlin.model.codeannotations.MoshiPropertyAnnotationTemplate
 import com.godwin.jsonparser.generator.jsontokotlin.model.codeelements.KPropertyName
-
-import com.godwin.jsonparser.generator.jsontokotlin.model.classscodestruct.Annotation
 
 /**
  * This interceptor try to add Moshi(code gen) annotation

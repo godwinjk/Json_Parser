@@ -1,9 +1,9 @@
 package com.godwin.jsonparser.generator.jsontokotlin.extensions.wu.seal
 
-import com.godwin.jsonparser.generator.jsontokotlin.model.classscodestruct.Annotation
-import com.godwin.jsonparser.generator.jsontokotlin.model.classscodestruct.KotlinClass
 import com.godwin.jsonparser.generator.common.ui.jCheckBox
 import com.godwin.jsonparser.generator.common.ui.jHorizontalLinearLayout
+import com.godwin.jsonparser.generator.jsontokotlin.model.classscodestruct.Annotation
+import com.godwin.jsonparser.generator.jsontokotlin.model.classscodestruct.KotlinClass
 import com.godwin.jsonparser.generator.jsontokotlin.utils.runWhenDataClass
 import javax.swing.JPanel
 

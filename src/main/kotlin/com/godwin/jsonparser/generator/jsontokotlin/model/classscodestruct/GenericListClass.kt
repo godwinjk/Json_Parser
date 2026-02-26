@@ -1,7 +1,7 @@
 package com.godwin.jsonparser.generator.jsontokotlin.model.classscodestruct
 
-import com.godwin.jsonparser.generator.jsontodart.utils.LogUtil
 import com.godwin.jsonparser.generator.jsontokotlin.interceptor.IKotlinClassInterceptor
+import com.godwin.jsonparser.util.Log
 
 
 /**
@@ -21,7 +21,7 @@ data class GenericListClass(override val generic: KotlinClass, val nullableEleme
         } else {
             val replacement = replaceRule[generic]
             if (replacement == null) {
-                LogUtil.i("Can't find replacement for ${generic.name}")
+                Log.i("Can't find replacement for ${generic.name}")
                 this
             } else {
                 copy(generic = replacement)

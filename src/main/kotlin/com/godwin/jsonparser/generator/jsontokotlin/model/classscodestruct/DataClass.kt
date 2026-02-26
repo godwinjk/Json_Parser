@@ -1,10 +1,10 @@
 package com.godwin.jsonparser.generator.jsontokotlin.model.classscodestruct
 
-import com.godwin.jsonparser.generator.jsontodart.utils.LogUtil
 import com.godwin.jsonparser.generator.jsontokotlin.interceptor.IKotlinClassInterceptor
 import com.godwin.jsonparser.generator.jsontokotlin.model.builder.IKotlinDataClassCodeBuilder
 import com.godwin.jsonparser.generator.jsontokotlin.model.builder.KotlinDataClassCodeBuilder
 import com.godwin.jsonparser.generator.jsontokotlin.model.codeelements.getDefaultValue
+import com.godwin.jsonparser.util.Log
 
 
 data class DataClass(
@@ -62,7 +62,7 @@ data class DataClass(
 
                     else -> it
                 }
-                LogUtil.i("replace type: ${property.type} to ${newTypObj.name}")
+                Log.i("replace type: ${property.type} to ${newTypObj.name}")
                 val typeSuffix = if (property.type.endsWith("?")) "?" else ""
                 return@let property.copy(
                     type = "${newTypObj.name}$typeSuffix",

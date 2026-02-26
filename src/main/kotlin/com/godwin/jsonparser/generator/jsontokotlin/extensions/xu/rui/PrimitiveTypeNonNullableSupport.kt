@@ -1,12 +1,12 @@
 package com.godwin.jsonparser.generator.jsontokotlin.extensions.xu.rui
 
-import com.godwin.jsonparser.generator.jsontokotlin.model.KotlinConfigManager
+import com.godwin.jsonparser.generator.common.ui.jCheckBox
+import com.godwin.jsonparser.generator.common.ui.jHorizontalLinearLayout
 import com.godwin.jsonparser.generator.jsontokotlin.model.DefaultValueStrategy
+import com.godwin.jsonparser.generator.jsontokotlin.model.KotlinConfigManager
 import com.godwin.jsonparser.generator.jsontokotlin.model.classscodestruct.DataClass
 import com.godwin.jsonparser.generator.jsontokotlin.model.classscodestruct.KotlinClass
 import com.godwin.jsonparser.generator.jsontokotlin.model.codeelements.getDefaultValue
-import com.godwin.jsonparser.generator.common.ui.jCheckBox
-import com.godwin.jsonparser.generator.common.ui.jHorizontalLinearLayout
 import com.godwin.jsonparser.generator.jsontokotlin.utils.NULLABLE_PRIMITIVE_TYPES
 import com.godwin.jsonparser.generator.jsontokotlin.utils.getNonNullPrimitiveType
 import javax.swing.JPanel

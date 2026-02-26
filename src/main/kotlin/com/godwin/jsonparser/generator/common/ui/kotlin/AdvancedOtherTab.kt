@@ -1,12 +1,6 @@
 package com.godwin.jsonparser.generator.common.ui.kotlin
 
-import com.godwin.jsonparser.generator.common.ui.addFocusLostListener
-import com.godwin.jsonparser.generator.common.ui.alignLeftComponent
-import com.godwin.jsonparser.generator.common.ui.jCheckBox
-import com.godwin.jsonparser.generator.common.ui.jHorizontalLinearLayout
-import com.godwin.jsonparser.generator.common.ui.jLabel
-import com.godwin.jsonparser.generator.common.ui.jTextInput
-import com.godwin.jsonparser.generator.common.ui.jVerticalLinearLayout
+import com.godwin.jsonparser.generator.common.ui.*
 import com.godwin.jsonparser.generator.jsontokotlin.model.KotlinConfigManager
 import com.intellij.util.ui.JBDimension
 import java.awt.BorderLayout

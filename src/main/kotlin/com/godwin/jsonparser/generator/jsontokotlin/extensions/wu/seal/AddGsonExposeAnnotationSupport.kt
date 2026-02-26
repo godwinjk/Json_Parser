@@ -1,12 +1,12 @@
 package com.godwin.jsonparser.generator.jsontokotlin.extensions.wu.seal
 
-import com.google.gson.annotations.Expose
-import com.godwin.jsonparser.generator.jsontokotlin.model.classscodestruct.DataClass
-import com.godwin.jsonparser.generator.jsontokotlin.model.classscodestruct.KotlinClass
 import com.godwin.jsonparser.generator.common.ui.addSelectListener
 import com.godwin.jsonparser.generator.common.ui.jCheckBox
-import com.godwin.jsonparser.generator.jsontokotlin.model.classscodestruct.Annotation
 import com.godwin.jsonparser.generator.common.ui.jHorizontalLinearLayout
+import com.godwin.jsonparser.generator.jsontokotlin.model.classscodestruct.Annotation
+import com.godwin.jsonparser.generator.jsontokotlin.model.classscodestruct.DataClass
+import com.godwin.jsonparser.generator.jsontokotlin.model.classscodestruct.KotlinClass
+import com.google.gson.annotations.Expose
 import javax.swing.JPanel
 
 object AddGsonExposeAnnotationSupport : com.godwin.jsonparser.generator.jsontokotlin.extensions.Extension() {

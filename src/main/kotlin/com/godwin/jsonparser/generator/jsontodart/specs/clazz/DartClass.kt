@@ -38,14 +38,16 @@ data class DartClass(
             if (!DartConfigManager.isFreezedAnnotation) {
                 append("\n$indent$name({")
                 properties.joinToString(", ") { p ->
-                    val required = if (!DartConfigManager.isPropertyOptional || DartConfigManager.isPropertyFinal) "required" else ""
+                    val required =
+                        if (!DartConfigManager.isPropertyOptional || DartConfigManager.isPropertyFinal) "required" else ""
                     "$required this.${p.name}"
                 }.also { append(it) }
                 append("});\n")
             } else {
                 append("\n${indent}factory $name({")
                 properties.forEachIndexed { index, p ->
-                    val constructorCode = p.getCodeForConstructor().split("\n").joinToString("\n") { indent + indent + it }
+                    val constructorCode =
+                        p.getCodeForConstructor().split("\n").joinToString("\n") { indent + indent + it }
                     append("\n").append(constructorCode)
                     if (index < properties.size - 1) append(",")
                 }
@@ -69,17 +71,17 @@ data class DartClass(
                     properties.forEach { p ->
                         val jsonKey = "json['${p.originName}']"
                         val value = when {
-                            p.isListType() && p.getGenericType().isPrimitiveType() -> 
+                            p.isListType() && p.getGenericType().isPrimitiveType() ->
                                 if (DartConfigManager.isPropertyNullable) "$jsonKey != null ? List<${p.getGenericType()}>.from($jsonKey) : null"
                                 else "List<${p.getGenericType()}>.from($jsonKey)"
 
-                            p.isListType() -> 
+                            p.isListType() ->
                                 if (DartConfigManager.isPropertyNullable) "$jsonKey != null ? ($jsonKey as List).map((i) => ${p.getGenericType()}.fromJson(i)).toList() : null"
                                 else "($jsonKey as List).map((i) => ${p.getGenericType()}.fromJson(i)).toList()"
 
                             p.isPrimitiveType() -> jsonKey
 
-                            else -> 
+                            else ->
                                 if (DartConfigManager.isPropertyNullable) "$jsonKey != null ? ${p.type}.fromJson($jsonKey) : null"
                                 else "${p.type}.fromJson($jsonKey)"
                         }

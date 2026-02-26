@@ -1,10 +1,10 @@
 package com.godwin.jsonparser.generator.jsontokotlin.extensions.ted.zeng
 
+import com.godwin.jsonparser.generator.common.ui.jCheckBox
+import com.godwin.jsonparser.generator.common.ui.jHorizontalLinearLayout
 import com.godwin.jsonparser.generator.jsontokotlin.model.classscodestruct.DataClass
 import com.godwin.jsonparser.generator.jsontokotlin.model.classscodestruct.KotlinClass
 import com.godwin.jsonparser.generator.jsontokotlin.model.classscodestruct.Property
-import com.godwin.jsonparser.generator.common.ui.jCheckBox
-import com.godwin.jsonparser.generator.common.ui.jHorizontalLinearLayout
 import javax.swing.JPanel
 
 /**

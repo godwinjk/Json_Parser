@@ -1,7 +1,7 @@
 package com.godwin.jsonparser.generator.jsontokotlin.interceptor
 
-import com.godwin.jsonparser.generator.jsontokotlin.model.KotlinConfigManager
 import com.godwin.jsonparser.generator.jsontokotlin.model.DefaultValueStrategy
+import com.godwin.jsonparser.generator.jsontokotlin.model.KotlinConfigManager
 import com.godwin.jsonparser.generator.jsontokotlin.model.classscodestruct.DataClass
 import com.godwin.jsonparser.generator.jsontokotlin.model.classscodestruct.KotlinClass
 import com.godwin.jsonparser.generator.jsontokotlin.model.codeelements.getDefaultValue

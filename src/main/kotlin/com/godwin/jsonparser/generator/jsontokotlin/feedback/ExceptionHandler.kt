@@ -1,6 +1,6 @@
 package com.godwin.jsonparser.generator.jsontokotlin.feedback
 
-import com.godwin.jsonparser.common.Logger
+import com.godwin.jsonparser.util.Log
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.intellij.openapi.ui.Messages
@@ -44,7 +44,7 @@ fun getUncaughtExceptionHandler(jsonString: String, callBack: () -> Unit): Threa
 
         logBuilder.append("Error Json String:\n")
         logBuilder.append(jsonString)
-        Logger.i(logBuilder.toString())
+        Log.i(logBuilder.toString())
 //        Thread {
 //            sendExceptionLog(logBuilder.toString())
 //        }.start()

@@ -1,14 +1,6 @@
 package com.godwin.jsonparser.generator.common.ui.dart
 
-import com.godwin.jsonparser.generator.common.ui.alignLeftComponent
-import com.godwin.jsonparser.generator.common.ui.jButtonGroup
-import com.godwin.jsonparser.generator.common.ui.jCheckBox
-import com.godwin.jsonparser.generator.common.ui.jGridLayout
-import com.godwin.jsonparser.generator.common.ui.jLabel
-import com.godwin.jsonparser.generator.common.ui.jRadioButton
-import com.godwin.jsonparser.generator.common.ui.jScrollPanel
-import com.godwin.jsonparser.generator.common.ui.jTextAreaInput
-import com.godwin.jsonparser.generator.common.ui.jVerticalLinearLayout
+import com.godwin.jsonparser.generator.common.ui.*
 import com.godwin.jsonparser.generator.jsontokotlin.model.DartConfigManager
 import com.godwin.jsonparser.generator.jsontokotlin.model.TargetJsonConverter
 import com.intellij.util.ui.JBDimension

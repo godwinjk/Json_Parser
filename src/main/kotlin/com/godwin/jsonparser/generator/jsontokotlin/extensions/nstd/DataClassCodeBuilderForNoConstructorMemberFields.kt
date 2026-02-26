@@ -1,6 +1,5 @@
 package com.godwin.jsonparser.generator.jsontokotlin.extensions.nstd
 
-import com.godwin.jsonparser.generator.jsontokotlin.extensions.wu.seal.BaseDataClassCodeBuilder
 import com.godwin.jsonparser.generator.jsontokotlin.model.builder.IKotlinDataClassCodeBuilder
 import com.godwin.jsonparser.generator.jsontokotlin.model.classscodestruct.DataClass
 import com.godwin.jsonparser.generator.jsontokotlin.utils.addIndent

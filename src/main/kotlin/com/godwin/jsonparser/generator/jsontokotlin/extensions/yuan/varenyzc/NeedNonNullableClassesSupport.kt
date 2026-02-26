@@ -1,10 +1,6 @@
 package com.godwin.jsonparser.generator.jsontokotlin.extensions.yuan.varenyzc
 
-import com.godwin.jsonparser.generator.common.ui.addFocusLostListener
-import com.godwin.jsonparser.generator.common.ui.jCheckBox
-import com.godwin.jsonparser.generator.common.ui.jHorizontalLinearLayout
-import com.godwin.jsonparser.generator.common.ui.jLabel
-import com.godwin.jsonparser.generator.common.ui.jTextInput
+import com.godwin.jsonparser.generator.common.ui.*
 import com.godwin.jsonparser.generator.jsontokotlin.model.classscodestruct.DataClass
 import com.godwin.jsonparser.generator.jsontokotlin.model.classscodestruct.KotlinClass
 import javax.swing.JPanel

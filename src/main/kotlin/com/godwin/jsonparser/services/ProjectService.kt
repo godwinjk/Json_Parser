@@ -1,10 +1,10 @@
 package com.godwin.jsonparser.services
 
+import com.godwin.jsonparser.action.AddTabAction
+import com.godwin.jsonparser.action.CloseTabAction
 import com.godwin.jsonparser.ui.IParserWidget
+import com.godwin.jsonparser.ui.ParserMainPanel
 import com.godwin.jsonparser.ui.ParserToolWindowPanel
-import com.godwin.jsonparser.ui.ParserWidget
-import com.godwin.jsonparser.ui.action.AddTabAction
-import com.godwin.jsonparser.ui.action.CloseTabAction
 import com.intellij.ide.util.PropertiesComponent
 import com.intellij.openapi.actionSystem.ActionManager
 import com.intellij.openapi.actionSystem.ActionPlaces
@@ -52,12 +52,12 @@ class ProjectService {
         val debuggerWidget = createContent(content)
         val toolBar = createToolBar(debuggerWidget)
         panel.toolbar = toolBar.component
-        panel.setContent(debuggerWidget.component)
+        panel.setContent(debuggerWidget.getComponent())
         return content
     }
 
     private fun createContent(content: Content): IParserWidget {
-        val debuggerWidget: IParserWidget = ParserWidget(project, content)
+        val debuggerWidget: IParserWidget = ParserMainPanel(project, content)
         debuggerWidget.createParserSession()
         return debuggerWidget
     }

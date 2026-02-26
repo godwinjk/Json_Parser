@@ -50,7 +50,9 @@ object ClassCodeFilter {
                     if (dartClasses.none { it == property.classPropertyTypeRef }) {
                         val similarClass = dartClasses.find { candidate ->
                             val currentSet = candidate.properties.map { it.propertyName to it.propertyType }.toSet()
-                            val targetSet = property.classPropertyTypeRef.properties.map { it.propertyName to it.propertyType }.toSet()
+                            val targetSet =
+                                property.classPropertyTypeRef.properties.map { it.propertyName to it.propertyType }
+                                    .toSet()
                             currentSet == targetSet
                         }
 
