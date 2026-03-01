@@ -9,28 +9,20 @@ import com.fasterxml.jackson.databind.ObjectMapper
 
 object JsonUtils {
 
-    private val mapper = CustomMapper()
+    private val mapper = CustomMapper().apply {
+        configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true)
+        configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true)
+        configure(JsonParser.Feature.ALLOW_COMMENTS, true)
+        configure(JsonParser.Feature.ALLOW_YAML_COMMENTS, true)
+    }
     private val prettyPrinter = CustomPrettyPrinter()
 
     fun formatJson(jsonStr: String): String {
-        mapper.apply {
-            configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true)
-            configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true)
-            configure(JsonParser.Feature.ALLOW_COMMENTS, true)
-            configure(JsonParser.Feature.ALLOW_YAML_COMMENTS, true)
-        }
         val jsonObject = mapper.readValue(jsonStr, Any::class.java)
         return mapper.writer(prettyPrinter).writeValueAsString(jsonObject)
     }
 
     fun getMap(jsonStr: String): Any {
-        mapper.apply {
-            configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true)
-            configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true)
-            configure(JsonParser.Feature.ALLOW_COMMENTS, true)
-            configure(JsonParser.Feature.ALLOW_YAML_COMMENTS, true)
-        }
-
         val node = mapper.readTree(jsonStr)
 
         return when {

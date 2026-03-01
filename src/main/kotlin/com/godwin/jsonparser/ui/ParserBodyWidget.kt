@@ -158,7 +158,7 @@ class ParserBodyWidget(
         }!!
     }
 
-    fun showPretty(text: String) {
+    fun showPretty(text: String, callback: (Exception) -> Unit) {
         try {
             val prettyJsonString = if (text.isEmpty()) "" else JsonUtils.formatJson(text)
             writeToEditor(prettyJsonString)
@@ -167,11 +167,13 @@ class ParserBodyWidget(
                 is JsonSyntaxException -> {
                     val message = e.message ?: e.cause?.message ?: ""
                     writeToEditor("$text\n\n\n$message")
+                    callback(e)
                 }
 
                 is JsonProcessingException -> {
                     writeToEditor(text)
                     EditorHintsNotifier.notifyError(prettyEditor, e.originalMessage, e.location.charOffset)
+                    callback(e)
                 }
             }
         }

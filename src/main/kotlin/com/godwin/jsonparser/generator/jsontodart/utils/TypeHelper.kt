@@ -52,7 +52,7 @@ fun String.isListType(): Boolean {
 }
 
 fun getJsonObjectType(type: String): String {
-    return KClassName.getName(type)
+    return KClassName.getName(toPascalCase(type))
 }
 
 
@@ -67,7 +67,7 @@ fun getChildType(arrayType: String): String = arrayType.replace(Regex("List<|>")
 fun getRawType(outputType: String): String = outputType.replace("?", "").replace(".*\\.".toRegex(), "")
 
 fun getArrayType(propertyName: String, jsonElementValue: JsonArray): String {
-    val preSubType = adjustPropertyNameForGettingArrayChildType(propertyName)
+    val preSubType = toPascalCase(adjustPropertyNameForGettingArrayChildType(propertyName))
     var subType = DEFAULT_TYPE
     if (isArrayContainsDifferentTypes(jsonElementValue)) {
         return "List<$subType>"

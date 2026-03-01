@@ -2,7 +2,7 @@
 <idea-plugin>
     <id>com.godwin.json.parser</id>
     <name>Json Parser &amp; Code Gen</name>
-    <version>1.8.3</version>
+    <version>1.9.0</version>
     <vendor email="godwinjoseph.k@gmail.com">Godwin</vendor>
 
     <description><![CDATA[
@@ -121,7 +121,7 @@
         <action id="com.godwin.jsonparser.action.OpenInParserAction"
                 class="com.godwin.jsonparser.action.OpenInParserAction" text="Json Parser"
                 icon="AllIcons.Json.Object"
-                description="Open In Json Parser">
+                description="Open in json parser">
             <add-to-group group-id="RevealGroup" anchor="last"/>
         </action>
     </actions>

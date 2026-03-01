@@ -57,12 +57,12 @@ data class DartClass(
             append("\n$indent")
             when {
                 DartConfigManager.isFreezedAnnotation -> {
-                    append("factory $name.fromJson(Map<String, dynamic> json) => _\$${name}FromJson(json);\n")
+                    append("factory $name.fromJson(Map<String, dynamic> json) => _\$$name" + "FromJson(json);\n")
                 }
 
                 DartConfigManager.isJsonSerializationAnnotation -> {
-                    append("factory $name.fromJson(Map<String, dynamic> json) => _\$${name}FromJson(json);\n")
-                    append("${indent}Map<String, dynamic> toJson() => _\$${name}ToJson(this);\n")
+                    append("factory $name.fromJson(Map<String, dynamic> json) => _\$$name" + "FromJson(json);\n")
+                    append("${indent}Map<String, dynamic> toJson() => _\$$name" + "ToJson(this);\n")
                 }
 
                 else -> {

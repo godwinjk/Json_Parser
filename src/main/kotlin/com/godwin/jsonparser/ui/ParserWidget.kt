@@ -1,15 +1,20 @@
 package com.godwin.jsonparser.ui
 
-import com.godwin.jsonparser.generator.common.ui.bottomContainer
-import com.godwin.jsonparser.generator.common.ui.jBorderLayout
-import com.godwin.jsonparser.generator.common.ui.jButton
-import com.godwin.jsonparser.generator.common.ui.jHorizontalLinearLayout
+import com.godwin.jsonparser.generator.common.ui.*
 import com.godwin.jsonparser.rx.Publisher
 import com.godwin.jsonparser.rx.Subscriber
 import com.godwin.jsonparser.ui.dialog.OptionDialog
 import com.godwin.jsonparser.util.JsonDownloader
 import com.godwin.jsonparser.util.JsonUtils
 import com.godwin.jsonparser.util.NotificationUtil
+import com.godwin.jsonparser.util.repair.JsonRepairEngine
+import com.intellij.diff.DiffContentFactory
+import com.intellij.diff.DiffDialogHints
+import com.intellij.diff.DiffManager
+import com.intellij.diff.DiffRequestFactory
+import com.intellij.diff.merge.MergeResult
+import com.intellij.diff.requests.SimpleDiffRequest
+import com.intellij.ide.BrowserUtil
 import com.intellij.ide.ui.LafManagerListener
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.application.ApplicationManager
@@ -25,19 +30,19 @@ import java.awt.BorderLayout
 import java.awt.Graphics
 import java.awt.Toolkit
 import java.awt.datatransfer.DataFlavor
+import java.net.URI
 import javax.swing.*
 import javax.swing.plaf.basic.BasicSplitPaneDivider
 import javax.swing.plaf.basic.BasicSplitPaneUI
 
 class ParserWidget(
-    private val project: Project,
-    private val parent: Disposable,
-    private val parserWidget: IParserWidget
+    private val project: Project, private val parent: Disposable, private val parserWidget: IParserWidget
 ) : Publisher {
 
     private val inputEditor: Editor = createEditor()
     private val bodyWidget = ParserBodyWidget(project)
-
+    private var repairButton: JButton? = null
+    private var jsonException: Exception? = null
     val container: JPanel = jBorderLayout {
         putCenterFill(createSplitPane())
     }
@@ -64,16 +69,32 @@ class ParserWidget(
         return jBorderLayout {
             putCenterFill(inputEditor.component)
             bottomContainer {
-                jHorizontalLinearLayout {
-                    jButton("Parse", { handleParse() })
-                    fillSpace()
-                    jButton("Options", { handleOptions() })
+                jVerticalLinearLayout {
+                    jHorizontalLinearLayout {
+                        jButton("Parse", { handleParse() })
+                        repairButton = JButton("Repair").apply {
+                            isVisible = false
+                            addActionListener { handleRepair() }
+                        }
+                        add(repairButton)
+                        fillSpace()
+                        jButton("Options", { handleOptions() })
+                    }
+                    jHorizontalLinearLayout {
+                        jButton("Support ❤️", { handleDonate() })
+                        fillSpace()
+
+                    }
                 }
             }
         }.apply {
             border = BorderFactory.createTitledBorder("Enter JSON string")
             toolTipText = "Enter raw json"
         }
+    }
+
+    private fun handleDonate() {
+        BrowserUtil.browse(URI.create("https://paypal.me/godwinj"))
     }
 
     private fun createOutputPanel(): JPanel {
@@ -115,8 +136,7 @@ class ParserWidget(
 
     private fun hideSplitPaneDivider(splitPane: JSplitPane) {
         customizeSplitPane(splitPane)
-        ApplicationManager.getApplication().messageBus
-            .connect(parent)
+        ApplicationManager.getApplication().messageBus.connect(parent)
             .subscribe(LafManagerListener.TOPIC, LafManagerListener {
                 SwingUtilities.invokeLater { customizeSplitPane(splitPane) }
             })
@@ -132,8 +152,11 @@ class ParserWidget(
 
     private fun handleParse() {
         val jsonString = JsonUtils.cleanUpJsonString(inputEditor.document.text)
-        showBody(jsonString)
-        NotificationUtil.showDonateNotification()
+        try {
+            showBody(jsonString)
+            NotificationUtil.showDonateNotification()
+        } catch (e: Exception) {
+        }
     }
 
     private fun handleOptions() {
@@ -148,15 +171,75 @@ class ParserWidget(
     }
 
     private fun showBody(jsonString: String) {
-        bodyWidget.showPretty(jsonString)
+        bodyWidget.showPretty(jsonString, { e ->
+            jsonException = e
+            showHideRepairButton(true)
+        })
         bodyWidget.showRaw(jsonString)
         bodyWidget.showTree(jsonString)
     }
 
+    private fun handleRepair() {
+        try {
+            val input = inputEditor.document.text
+            val repairedJson = JsonRepairEngine.repair(project, input)
+
+            showHideRepairButton(false)
+//            showDiff(input, repairedJson)
+            showMergeRepair(input, repairedJson)
+            handleParse()
+        } catch (e: Exception) {
+            Messages.showErrorDialog(project, "Failed to repair JSON: ${e.message}", "Repair Failed")
+        }
+    }
+
+    private fun showDiff(original: String, repaired: String) {
+        val request = SimpleDiffRequest(
+            "JSON Repair Preview",
+            DiffContentFactory.getInstance().create(original),
+            DiffContentFactory.getInstance().create(repaired),
+            "Original",
+            "Repaired"
+        )
+
+        DiffManager.getInstance().showDiff(project, request, DiffDialogHints.MODAL)
+    }
+
+    private fun showMergeRepair(original: String, repaired: String) {
+        val contentFactory = DiffContentFactory.getInstance()
+
+        // 1. Create contents
+        val localContent = contentFactory.create(original)
+        val baseContent = contentFactory.create(original)
+        val remoteContent = contentFactory.create(repaired)
+
+        // 2. IMPORTANT: Manually disable read-only mode for the center (base) document
+        // This allows the merge tool to write the user's choices into this buffer.
+        baseContent.document.setReadOnly(false)
+
+        val contents = listOf(localContent, baseContent, remoteContent)
+        val titles = listOf("Current Code", "Resulting Output", "AI Suggestion")
+
+        val request = DiffRequestFactory.getInstance().createMergeRequest(
+            project, null, baseContent.document, // The center document
+            contents.map { it.document.text }, "JSON Repair Merge", titles
+        ) { result ->
+            if (result != MergeResult.CANCEL) {
+                val finalJson = baseContent.document.text
+                WriteCommandAction.runWriteCommandAction(project) {
+                    inputEditor.document.setText(finalJson)
+                    handleParse()
+                }
+            }
+        }
+
+        DiffManager.getInstance().showMerge(project, request)
+    }
+
     override fun onMessage(message: String) {
         try {
-            val shouldUpdate = parserWidget.getTabs()?.getCurrentComponent() == container
-                    || parserWidget.getTabs() == null
+            val shouldUpdate =
+                parserWidget.getTabs()?.getCurrentComponent() == container || parserWidget.getTabs() == null
 
             if (shouldUpdate) {
                 WriteCommandAction.runWriteCommandAction(project) {
@@ -184,9 +267,7 @@ class ParserWidget(
 
     private fun actionChooseFile() {
         FileChooser.chooseFile(
-            FileChooserDescriptor(true, false, false, false, false, false),
-            project,
-            null
+            FileChooserDescriptor(true, false, false, false, false, false), project, null
         ) { file ->
             try {
                 val content = String(file.contentsToByteArray()).replace("\r\n", "\n")
@@ -223,6 +304,14 @@ class ParserWidget(
                 }
             }
             progressWindow.start()
+        }
+    }
+
+    private fun showHideRepairButton(isVisible: Boolean) {
+        SwingUtilities.invokeLater {
+            repairButton?.isVisible = isVisible
+            repairButton?.parent?.revalidate()
+            repairButton?.parent?.repaint()
         }
     }
 }

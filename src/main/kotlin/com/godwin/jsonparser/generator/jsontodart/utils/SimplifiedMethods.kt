@@ -91,6 +91,11 @@ fun getCommentCode(comment: String): String {
 }
 
 fun camelCaseToSnakeCase(input: String): String {
-    // Insert an underscore before each uppercase letter, then convert the entire string to lowercase
     return input.replace(Regex("([a-z0-9])([A-Z])"), "$1_$2").lowercase()
+}
+
+fun toPascalCase(input: String): String {
+    return input.split(Regex("[_\\s-]+"))
+        .joinToString("") { it.replaceFirstChar { c -> c.uppercase() } }
+        .replaceFirstChar { it.uppercase() }
 }

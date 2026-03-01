@@ -15,14 +15,13 @@ object NotificationUtil {
     fun showDonateNotification() {
         val now = System.currentTimeMillis()
         val persistence = JsonPersistence.getInstance()
-
-        val daysBack = if (persistence.starClicked == 1 || persistence.donateClicked == 1) {
-            now - (30L * 24 * 60 * 60 * 1000) // 30 days
-        } else {
-            now - (10L * 24 * 60 * 60 * 1000) // 10 days
-        }
-
         val lastShownTime = persistence.jsonParserLastDisplayTime
+
+        val daysBack = when {
+            persistence.donateClicked == 1 -> now - (7L * 24 * 60 * 60 * 1000) // Weekly
+            else -> now - (1L * 24 * 60 * 60 * 1000) // Daily
+            
+        }
 
         if (lastShownTime < daysBack) {
             persistence.apply {
