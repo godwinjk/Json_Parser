@@ -3,7 +3,7 @@ package com.godwin.jsonparser.generator.jsontodart.utils
 import com.godwin.jsonparser.constants.NOTIFICATION_GROUP_ID
 import com.godwin.jsonparser.constants.PLUGIN_NAME
 import com.godwin.jsonparser.constants.TOOL_WINDOW_ID
-import com.godwin.jsonparser.generator_kt.jsontokotlin.model.DartConfigManager
+import com.godwin.jsonparser.generator.jsontokotlin.model.DartConfigManager
 import com.intellij.notification.Notification
 import com.intellij.notification.NotificationGroupManager
 import com.intellij.notification.NotificationType
@@ -33,9 +33,7 @@ fun executeCouldRollBackAction(project: Project?, action: (Project?) -> Unit) {
  * get the indent when generate kotlin class code
  */
 fun getIndent(): String {
-
     return buildString {
-
         for (i in 1..DartConfigManager.indent) {
             append(" ")
         }
@@ -93,6 +91,11 @@ fun getCommentCode(comment: String): String {
 }
 
 fun camelCaseToSnakeCase(input: String): String {
-    // Insert an underscore before each uppercase letter, then convert the entire string to lowercase
     return input.replace(Regex("([a-z0-9])([A-Z])"), "$1_$2").lowercase()
+}
+
+fun toPascalCase(input: String): String {
+    return input.split(Regex("[_\\s-]+"))
+        .joinToString("") { it.replaceFirstChar { c -> c.uppercase() } }
+        .replaceFirstChar { it.uppercase() }
 }

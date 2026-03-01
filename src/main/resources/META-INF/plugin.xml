@@ -1,8 +1,8 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
     <id>com.godwin.json.parser</id>
-    <name>Json Parser And Code Generation</name>
-    <version>1.8.3</version>
+    <name>Json Parser &amp; Code Gen</name>
+    <version>1.9.0</version>
     <vendor email="godwinjoseph.k@gmail.com">Godwin</vendor>
 
     <description><![CDATA[
@@ -94,7 +94,7 @@
         <applicationService serviceImplementation="com.godwin.jsonparser.services.JsonPersistence"/>
     </extensions>
     <actions>
-        <action id="com.godwin.jsonparser.parseraction" class="com.godwin.jsonparser.ui.action.OpenParserAction"
+        <action id="com.godwin.jsonparser.parseraction" class="com.godwin.jsonparser.action.OpenParserAction"
                 text="Parse Json"
                 description="Open In json parser">
             <add-to-group group-id="ConsoleView.PopupMenu" anchor="first"/>
@@ -103,7 +103,7 @@
         </action>
 
         <action id="com.godwin.jsonparser.generator.insert"
-                class="com.godwin.jsonparser.generator_kt.jsontokotlin.InsertJsonClassAction"
+                class="com.godwin.jsonparser.generator.common.InsertJsonClassAction"
                 text="Dart/Kotlin From Json"
                 icon="AllIcons.Json.Object"
                 description="Convert a json string data into class code">
@@ -112,7 +112,7 @@
         </action>
 
         <action id="com.godwin.jsonparser.generator.generate"
-                class="com.godwin.jsonparser.generator_kt.jsontokotlin.GenerateJsonFileAction"
+                class="com.godwin.jsonparser.generator.common.GenerateJsonFileAction"
                 text="Dart/Kotlin From Json"
                 icon="AllIcons.Json.Object"
                 description="Convert a json string data into class code">
@@ -121,7 +121,7 @@
         <action id="com.godwin.jsonparser.action.OpenInParserAction"
                 class="com.godwin.jsonparser.action.OpenInParserAction" text="Json Parser"
                 icon="AllIcons.Json.Object"
-                description="Open In Json Parser">
+                description="Open in json parser">
             <add-to-group group-id="RevealGroup" anchor="last"/>
         </action>
     </actions>

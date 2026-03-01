@@ -1,18 +1,19 @@
 package com.godwin.jsonparser.generator.jsontodart.interceptor
 
-import com.godwin.jsonparser.generator.jsontodart.interceptor.annotations.FreezedAndJsonSerializableImportInterceptor
-import com.godwin.jsonparser.generator.jsontodart.interceptor.annotations.custom.AddCustomAnnotationClassImportDeclarationInterceptor
 import com.godwin.jsonparser.generator.jsontodart.interceptor.annotations.custom.AddCustomAnnotationInterceptor
 import com.godwin.jsonparser.generator.jsontodart.interceptor.annotations.freezed.FreezedInterceptor
 import com.godwin.jsonparser.generator.jsontodart.interceptor.annotations.jsonserializable.JsonSerializableInterceptor
-import com.godwin.jsonparser.generator_kt.jsontokotlin.model.DartConfigManager
-import com.godwin.jsonparser.generator_kt.jsontokotlin.model.DefaultValueStrategy
-import com.godwin.jsonparser.generator_kt.jsontokotlin.model.TargetJsonConverter
+import com.godwin.jsonparser.generator.jsontodart.interceptor.clazz.*
+import com.godwin.jsonparser.generator.jsontodart.interceptor.import_interceptor.AddCustomAnnotationClassImportDeclarationInterceptor
+import com.godwin.jsonparser.generator.jsontodart.interceptor.import_interceptor.FreezedAndJsonSerializableImportInterceptor
+import com.godwin.jsonparser.generator.jsontodart.interceptor.import_interceptor.IImportClassDeclarationInterceptor
+import com.godwin.jsonparser.generator.jsontodart.interceptor.import_interceptor.ParentClassClassImportDeclarationInterceptor
+import com.godwin.jsonparser.generator.jsontokotlin.model.DartConfigManager
+import com.godwin.jsonparser.generator.jsontokotlin.model.DefaultValueStrategy
+import com.godwin.jsonparser.generator.jsontokotlin.model.TargetJsonConverter
 
 object InterceptorManager {
-
     fun getEnabledDartDataClassInterceptors(): List<IDartClassInterceptor> {
-
         return mutableListOf<IDartClassInterceptor>().apply {
             //default enabled to remove the usage of dart keywords
             add(MakeKeywordNamedPropertyValidInterceptor())

@@ -1,0 +1,24 @@
+package com.godwin.jsonparser.generator.jsontokotlin.interceptor
+
+import com.godwin.jsonparser.generator.jsontokotlin.model.KotlinConfigManager
+import com.godwin.jsonparser.generator.jsontokotlin.utils.KOTLIN_KEYWORD_LIST
+
+
+/**
+ * insert parent class declaration code
+ */
+class ParentClassClassImportDeclarationInterceptor : IImportClassDeclarationInterceptor {
+
+    override fun intercept(originClassImportDeclaration: String): String {
+
+        val importClass = KotlinConfigManager.parenClassTemplate.substringBeforeLast("(").trim()
+
+        val legalImportClass = importClass.split(".").map {
+            if ((KOTLIN_KEYWORD_LIST.contains(it) || it.first().isDigit())) "`$it`" else it
+        }.joinToString(".")
+
+        val parentClassImportDeclaration = "import $legalImportClass"
+
+        return "$originClassImportDeclaration\n$parentClassImportDeclaration".trim()
+    }
+}

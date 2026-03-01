@@ -2,6 +2,11 @@
 
 # Json_Parser Changelog
 
+### Version 1.9.0
+
+1. Official Farewell to Java
+2. New Repair function added for malformed JSON
+
 ### Version 1.8.5
 
 Support for version 253

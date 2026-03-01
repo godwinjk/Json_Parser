@@ -1,7 +1,7 @@
 package com.godwin.jsonparser.generator.jsontodart.utils
 
-import com.godwin.jsonparser.generator.jsontodart.interceptor.IImportClassDeclarationInterceptor
 import com.godwin.jsonparser.generator.jsontodart.interceptor.InterceptorManager
+import com.godwin.jsonparser.generator.jsontodart.interceptor.import_interceptor.IImportClassDeclarationInterceptor
 
 /**
  *  class import declaration
@@ -13,7 +13,6 @@ object ClassImportDeclaration {
      * import class declaration getter
      */
     fun getImportClassDeclaration(fileName: String): String {
-
         return applyImportClassDeclarationInterceptors(
             InterceptorManager.getEnabledImportClassDeclarationInterceptors(), fileName
         )
@@ -22,9 +21,7 @@ object ClassImportDeclaration {
     fun applyImportClassDeclarationInterceptors(
         interceptors: List<IImportClassDeclarationInterceptor>, fileName: String
     ): String {
-
         var classImportDeclaration = ""
-
         interceptors.forEach {
             classImportDeclaration = it.intercept(classImportDeclaration, fileName)
         }
