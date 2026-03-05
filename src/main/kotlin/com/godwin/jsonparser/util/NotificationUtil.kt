@@ -20,7 +20,7 @@ object NotificationUtil {
         val daysBack = when {
             persistence.donateClicked == 1 -> now - (7L * 24 * 60 * 60 * 1000) // Weekly
             else -> now - (1L * 24 * 60 * 60 * 1000) // Daily
-            
+
         }
 
         if (lastShownTime < daysBack) {
@@ -54,4 +54,15 @@ object NotificationUtil {
             Notifications.Bus.notify(notification)
         }
     }
+
+    fun showJsonRepairFailed() {
+        val notification = Notification(
+            TOOL_WINDOW_ID,
+            "This json can't be fixed.",
+            "I coudn't fix your JSON file.",
+            NotificationType.ERROR
+        )
+        Notifications.Bus.notify(notification)
+    }
+
 }

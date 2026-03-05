@@ -1,6 +1,5 @@
 package com.godwin.jsonparser.util
 
-import com.fasterxml.jackson.core.JsonFactory
 import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.core.util.DefaultIndenter
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter
@@ -20,6 +19,15 @@ object JsonUtils {
     fun formatJson(jsonStr: String): String {
         val jsonObject = mapper.readValue(jsonStr, Any::class.java)
         return mapper.writer(prettyPrinter).writeValueAsString(jsonObject)
+    }
+
+    fun isValidJson(jsonStr: String): Boolean {
+        return try {
+            mapper.readTree(jsonStr)
+            true
+        } catch (_: Exception) {
+            false
+        }
     }
 
     fun getMap(jsonStr: String): Any {
@@ -47,19 +55,6 @@ object JsonUtils {
         }
 
         return trimmed
-    }
-
-    private fun isValidJson(jsonString: String): Boolean {
-        return try {
-            JsonFactory().createParser(jsonString).use { parser ->
-                while (parser.nextToken() != null) {
-                    // Iterate through tokens
-                }
-                true
-            }
-        } catch (e: Exception) {
-            false
-        }
     }
 
     private fun fixMissingBraces(jsonString: String): String {
