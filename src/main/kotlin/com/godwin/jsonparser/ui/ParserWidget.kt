@@ -186,6 +186,10 @@ class ParserWidget(
 
             showHideRepairButton(false)
 //            showDiff(input, repairedJson)
+            if (repairedJson == null) {
+                NotificationUtil.showJsonRepairFailed()
+                return
+            }
             showMergeRepair(input, repairedJson)
             handleParse()
         } catch (e: Exception) {
@@ -218,7 +222,7 @@ class ParserWidget(
         baseContent.document.setReadOnly(false)
 
         val contents = listOf(localContent, baseContent, remoteContent)
-        val titles = listOf("Current Code", "Resulting Output", "AI Suggestion")
+        val titles = listOf("Original", "Base", "Repaired")
 
         val request = DiffRequestFactory.getInstance().createMergeRequest(
             project, null, baseContent.document, // The center document

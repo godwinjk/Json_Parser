@@ -1,17 +1,20 @@
 package com.godwin.jsonparser.util.repair
 
 import com.godwin.jsonparser.common.exception.InputTooLargeException
+import com.godwin.jsonparser.util.JsonUtils
 import com.godwin.jsonparser.util.Log
+import com.godwin.jsonparser.util.repair.strategy.JsonAutoRepairStrategy
+import com.godwin.jsonparser.util.repair.strategy.PsiRepairStrategy
 import com.intellij.openapi.project.Project
 
 object JsonRepairEngine {
 
     private val strategies = listOf(
-        PsiRepairStrategy(),
-        JacksonRepairStrategy()
+        JsonAutoRepairStrategy(),
+        PsiRepairStrategy()
     )
 
-    fun repair(project: Project, input: String): String {
+    fun repair(project: Project, input: String): String? {
         if (input.length > 1_000_000) {
             throw InputTooLargeException("Input is too large")
         }
@@ -24,6 +27,8 @@ object JsonRepairEngine {
                 Log.e("${strategy.javaClass} Failed: ${e.message}")
             }
         }
-        return text
+        val result = JsonUtils.isValidJson(text)
+
+        return if (result) text else null
     }
 }

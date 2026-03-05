@@ -1,4 +1,4 @@
-package com.godwin.jsonparser.util.repair
+package com.godwin.jsonparser.util.repair.strategy
 
 import com.intellij.openapi.project.Project
 
