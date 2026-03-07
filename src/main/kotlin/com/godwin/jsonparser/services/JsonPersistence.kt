@@ -19,6 +19,7 @@ class JsonPersistence : PersistentStateComponent<JsonPersistence> {
     var jsonParserLastDisplayTime: Long = 0
     var donateClicked: Int = 0
     var starClicked: Int = 0
+    var analyticsEnabled: Boolean = true
     override fun getState(): JsonPersistence {
         return this
     }

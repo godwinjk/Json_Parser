@@ -7,13 +7,13 @@ import com.godwin.jsonparser.ui.dialog.OptionDialog
 import com.godwin.jsonparser.util.JsonDownloader
 import com.godwin.jsonparser.util.JsonUtils
 import com.godwin.jsonparser.util.NotificationUtil
+import com.godwin.jsonparser.util.analytics.Analytics
+import com.godwin.jsonparser.util.analytics.AnalyticsConstant
 import com.godwin.jsonparser.util.repair.JsonRepairEngine
 import com.intellij.diff.DiffContentFactory
-import com.intellij.diff.DiffDialogHints
 import com.intellij.diff.DiffManager
 import com.intellij.diff.DiffRequestFactory
 import com.intellij.diff.merge.MergeResult
-import com.intellij.diff.requests.SimpleDiffRequest
 import com.intellij.ide.BrowserUtil
 import com.intellij.ide.ui.LafManagerListener
 import com.intellij.openapi.Disposable
@@ -83,7 +83,6 @@ class ParserWidget(
                     jHorizontalLinearLayout {
                         jButton("Support ❤️", { handleDonate() })
                         fillSpace()
-
                     }
                 }
             }
@@ -94,6 +93,7 @@ class ParserWidget(
     }
 
     private fun handleDonate() {
+        Analytics.track(AnalyticsConstant.ACTION_DONATE)
         BrowserUtil.browse(URI.create("https://paypal.me/godwinj"))
     }
 
@@ -151,6 +151,7 @@ class ParserWidget(
     }
 
     private fun handleParse() {
+        Analytics.track(AnalyticsConstant.ACTION_PARSE)
         val jsonString = JsonUtils.cleanUpJsonString(inputEditor.document.text)
         try {
             showBody(jsonString)
@@ -160,6 +161,7 @@ class ParserWidget(
     }
 
     private fun handleOptions() {
+        Analytics.track(AnalyticsConstant.ACTION_OPTIONS)
         val options = listOf("Retrieve from URL", "Load from file")
         val dialog = OptionDialog(options)
         dialog.show()
@@ -180,6 +182,7 @@ class ParserWidget(
     }
 
     private fun handleRepair() {
+        Analytics.track(AnalyticsConstant.ACTION_REPAIR)
         try {
             val input = inputEditor.document.text
             val repairedJson = JsonRepairEngine.repair(project, input)
@@ -197,19 +200,8 @@ class ParserWidget(
         }
     }
 
-    private fun showDiff(original: String, repaired: String) {
-        val request = SimpleDiffRequest(
-            "JSON Repair Preview",
-            DiffContentFactory.getInstance().create(original),
-            DiffContentFactory.getInstance().create(repaired),
-            "Original",
-            "Repaired"
-        )
-
-        DiffManager.getInstance().showDiff(project, request, DiffDialogHints.MODAL)
-    }
-
     private fun showMergeRepair(original: String, repaired: String) {
+        Analytics.track(AnalyticsConstant.ACTION_MERGE_REPAIR)
         val contentFactory = DiffContentFactory.getInstance()
 
         // 1. Create contents
@@ -256,6 +248,7 @@ class ParserWidget(
     }
 
     private fun actionPaste() {
+        Analytics.track(AnalyticsConstant.ACTION_PASTE)
         val transferable = Toolkit.getDefaultToolkit().systemClipboard.getContents(null)
         if (transferable?.isDataFlavorSupported(DataFlavor.stringFlavor) == true) {
             try {
@@ -270,6 +263,7 @@ class ParserWidget(
     }
 
     private fun actionChooseFile() {
+        Analytics.track(AnalyticsConstant.ACTION_LOAD_FILE)
         FileChooser.chooseFile(
             FileChooserDescriptor(true, false, false, false, false, false), project, null
         ) { file ->
@@ -285,6 +279,7 @@ class ParserWidget(
     }
 
     private fun actionGetFromUrl() {
+        Analytics.track(AnalyticsConstant.ACTION_RETRIEVE_URL)
         val inputData = Messages.showMultilineInputDialog(
             project,
             "Retrieve Content from Http URL\n\nTip: Paste your header in NEXT LINE with a colon(:)",
