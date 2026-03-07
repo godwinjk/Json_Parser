@@ -92,6 +92,8 @@
         <toolWindow factoryClass="com.godwin.jsonparser.ParserToolWindowFactory" id="Json Parser" anchor="right"
                     icon="AllIcons.Json.Object"/>
         <applicationService serviceImplementation="com.godwin.jsonparser.services.JsonPersistence"/>
+        <applicationConfigurable instance="com.godwin.jsonparser.ui.settings.JsonParserSettingsConfigurable"
+                                 displayName="Json Parser"/>
     </extensions>
     <actions>
         <action id="com.godwin.jsonparser.parseraction" class="com.godwin.jsonparser.action.OpenParserAction"
