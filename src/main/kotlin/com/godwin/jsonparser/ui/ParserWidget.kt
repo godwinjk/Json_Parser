@@ -1,14 +1,15 @@
 package com.godwin.jsonparser.ui
 
 import com.godwin.jsonparser.generator.common.ui.*
+import com.godwin.jsonparser.generator.common.util.FileGenerationUtil
 import com.godwin.jsonparser.rx.Publisher
 import com.godwin.jsonparser.rx.Subscriber
 import com.godwin.jsonparser.ui.dialog.OptionDialog
 import com.godwin.jsonparser.util.JsonDownloader
 import com.godwin.jsonparser.util.JsonUtils
 import com.godwin.jsonparser.util.NotificationUtil
-import com.godwin.jsonparser.util.analytics.Analytics
 import com.godwin.jsonparser.util.analytics.AnalyticsConstant
+import com.godwin.jsonparser.util.analytics.AnalyticsService
 import com.godwin.jsonparser.util.repair.JsonRepairEngine
 import com.intellij.diff.DiffContentFactory
 import com.intellij.diff.DiffManager
@@ -42,6 +43,7 @@ class ParserWidget(
     private val inputEditor: Editor = createEditor()
     private val bodyWidget = ParserBodyWidget(project)
     private var repairButton: JButton? = null
+    private var generateCodeButton: JButton? = null
     private var jsonException: Exception? = null
     val container: JPanel = jBorderLayout {
         putCenterFill(createSplitPane())
@@ -78,6 +80,13 @@ class ParserWidget(
                         }
                         add(repairButton)
                         fillSpace()
+                        if (isAndroidStudioOrIntelliJ()) {
+                            generateCodeButton = JButton("Generate Code").apply {
+                                isEnabled = false
+                                addActionListener { handleGenerateCode() }
+                            }
+                            add(generateCodeButton)
+                        }
                         jButton("Options", { handleOptions() })
                     }
                     jHorizontalLinearLayout {
@@ -93,7 +102,7 @@ class ParserWidget(
     }
 
     private fun handleDonate() {
-        Analytics.track(AnalyticsConstant.ACTION_DONATE)
+        AnalyticsService.track(AnalyticsConstant.ACTION_DONATE)
         BrowserUtil.browse(URI.create("https://paypal.me/godwinj"))
     }
 
@@ -151,17 +160,20 @@ class ParserWidget(
     }
 
     private fun handleParse() {
-        Analytics.track(AnalyticsConstant.ACTION_PARSE)
+        AnalyticsService.track(AnalyticsConstant.ACTION_PARSE)
         val jsonString = JsonUtils.cleanUpJsonString(inputEditor.document.text)
         try {
             showBody(jsonString)
+            showHideGenerateCodeButton(true)
             NotificationUtil.showDonateNotification()
-        } catch (e: Exception) {
+        } catch (_: Exception) {
+            showHideGenerateCodeButton(false)
+            AnalyticsService.track(AnalyticsConstant.PARSE_FAILED)
         }
     }
 
     private fun handleOptions() {
-        Analytics.track(AnalyticsConstant.ACTION_OPTIONS)
+        AnalyticsService.track(AnalyticsConstant.ACTION_OPTIONS)
         val options = listOf("Retrieve from URL", "Load from file")
         val dialog = OptionDialog(options)
         dialog.show()
@@ -172,17 +184,52 @@ class ParserWidget(
         }
     }
 
+    private fun handleGenerateCode() {
+        AnalyticsService.track(AnalyticsConstant.ACTION_GENERATE_CODE)
+        val jsonString = inputEditor.document.text.trim()
+        if (jsonString.isEmpty()) {
+            Messages.showWarningDialog(project, "Please enter JSON first", "No JSON")
+            return
+        }
+
+        FileChooser.chooseFile(
+            FileChooserDescriptor(false, true, false, false, false, false),
+            project,
+            null
+        ) { directory ->
+            val psiDirectory =
+                com.intellij.psi.PsiManager.getInstance(project).findDirectory(directory) ?: return@chooseFile
+            val directoryFactory = com.intellij.psi.impl.file.PsiDirectoryFactory.getInstance(project)
+            val packageName = directoryFactory.getQualifiedName(psiDirectory, false)
+            val packageDeclare = if (packageName.isNotEmpty()) "package $packageName" else ""
+            val psiFileFactory = com.intellij.psi.PsiFileFactory.getInstance(project)
+
+            val inputDialog = JsonInputDialog("", project, jsonString)
+            inputDialog.show()
+            val className = inputDialog.getClassName()
+            if (className.isEmpty()) return@chooseFile
+
+            val fileType = inputDialog.getFileType()
+            FileGenerationUtil.generate(
+                className, jsonString, packageDeclare, project, psiFileFactory, psiDirectory, fileType
+            )
+            showHideGenerateCodeButton(false)
+        }
+    }
+
     private fun showBody(jsonString: String) {
         bodyWidget.showPretty(jsonString, { e ->
             jsonException = e
             showHideRepairButton(true)
+            showHideGenerateCodeButton(false)
+            AnalyticsService.track(AnalyticsConstant.PARSE_FAILED)
         })
         bodyWidget.showRaw(jsonString)
         bodyWidget.showTree(jsonString)
     }
 
     private fun handleRepair() {
-        Analytics.track(AnalyticsConstant.ACTION_REPAIR)
+        AnalyticsService.track(AnalyticsConstant.ACTION_REPAIR)
         try {
             val input = inputEditor.document.text
             val repairedJson = JsonRepairEngine.repair(project, input)
@@ -201,7 +248,7 @@ class ParserWidget(
     }
 
     private fun showMergeRepair(original: String, repaired: String) {
-        Analytics.track(AnalyticsConstant.ACTION_MERGE_REPAIR)
+        AnalyticsService.track(AnalyticsConstant.ACTION_MERGE_REPAIR)
         val contentFactory = DiffContentFactory.getInstance()
 
         // 1. Create contents
@@ -248,7 +295,7 @@ class ParserWidget(
     }
 
     private fun actionPaste() {
-        Analytics.track(AnalyticsConstant.ACTION_PASTE)
+        AnalyticsService.track(AnalyticsConstant.ACTION_PASTE)
         val transferable = Toolkit.getDefaultToolkit().systemClipboard.getContents(null)
         if (transferable?.isDataFlavorSupported(DataFlavor.stringFlavor) == true) {
             try {
@@ -263,7 +310,7 @@ class ParserWidget(
     }
 
     private fun actionChooseFile() {
-        Analytics.track(AnalyticsConstant.ACTION_LOAD_FILE)
+        AnalyticsService.track(AnalyticsConstant.ACTION_LOAD_FILE)
         FileChooser.chooseFile(
             FileChooserDescriptor(true, false, false, false, false, false), project, null
         ) { file ->
@@ -279,7 +326,7 @@ class ParserWidget(
     }
 
     private fun actionGetFromUrl() {
-        Analytics.track(AnalyticsConstant.ACTION_RETRIEVE_URL)
+        AnalyticsService.track(AnalyticsConstant.ACTION_RETRIEVE_URL)
         val inputData = Messages.showMultilineInputDialog(
             project,
             "Retrieve Content from Http URL\n\nTip: Paste your header in NEXT LINE with a colon(:)",
@@ -312,5 +359,16 @@ class ParserWidget(
             repairButton?.parent?.revalidate()
             repairButton?.parent?.repaint()
         }
+    }
+
+    private fun showHideGenerateCodeButton(isEnabled: Boolean) {
+        SwingUtilities.invokeLater {
+            generateCodeButton?.isEnabled = isEnabled
+        }
+    }
+
+    private fun isAndroidStudioOrIntelliJ(): Boolean {
+        val platformPrefix = System.getProperty("idea.platform.prefix") ?: ""
+        return platformPrefix.isEmpty() || platformPrefix == "Idea" || platformPrefix == "AndroidStudio"
     }
 }

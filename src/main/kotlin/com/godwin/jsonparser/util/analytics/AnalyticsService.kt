@@ -7,26 +7,28 @@ import java.net.URI
 import java.net.http.HttpClient
 import java.net.http.HttpRequest
 import java.net.http.HttpResponse
+import java.util.*
 
-object Analytics {
+object AnalyticsService {
     private const val WORKER_URL = "https://jsonparser.godwinjoseph-k.workers.dev/"
 
     private val client = HttpClient.newBuilder()
         .followRedirects(HttpClient.Redirect.NORMAL)
         .build()
+    val userId = PermanentInstallationID.get()
+    val ideVersion: String? = ApplicationInfo.getInstance().versionName
+    private val sessionId = UUID.randomUUID().toString()
 
     fun track(eventName: String) {
         if (!JsonPersistence.getInstance().analyticsEnabled) return
-        // Get the unique IntelliJ ID for this installation (Anonymized)
-        val userId = PermanentInstallationID.get()
-        val ideVersion = ApplicationInfo.getInstance().versionName
 
         // Create the JSON payload
         val json = """
             {
                 "event_name": "$eventName",
                 "ide_version": "$ideVersion",
-                "user_id": "$userId"
+                "user_id": "$userId",
+                "session_id": "$sessionId"
             }
         """.trimIndent()
 

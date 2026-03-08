@@ -1,6 +1,7 @@
 package com.godwin.jsonparser.util.analytics
 
 object AnalyticsConstant {
+
     const val REPAIR_FAILED = "reaoir_failed"
     const val NOTIFICATION_STAR_CLICKED = "notification_star_clicked"
     const val NOTIFICATION_DONATE_CLICKED = "notification_donate_clicked"
@@ -17,4 +18,6 @@ object AnalyticsConstant {
     const val ACTION_COPY_TO_CLIPBOARD = "copy_to_clipboard"
     const val ACTION_OPEN_IN_PARSER = "open_in_parser"
     const val ACTION_OPEN_PARSER = "open_parser"
+    const val PARSE_FAILED = "parse_failed"
+    const val ACTION_GENERATE_CODE = "action_generate_code"
 }

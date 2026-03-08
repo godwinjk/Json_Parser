@@ -5,7 +5,6 @@ import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import com.google.gson.JsonPrimitive
-import java.util.*
 
 /**
  * Type helper deal with type string
@@ -147,10 +146,10 @@ fun adjustPropertyNameForGettingArrayChildType(property: String): String {
 
         innerProperty.contains("list") -> {
             if (innerProperty == "list") {
-                innerProperty = "Item${Date().time.toString().last()}"
+                innerProperty = "Item${System.currentTimeMillis().toString().last()}"
             } else if (innerProperty.indexOf("list") == 0 && innerProperty.length >= 5) {
                 val end = innerProperty.substring(5)
-                val pre = (innerProperty[4] + "").lowercase(Locale.getDefault())
+                val pre = innerProperty[4].lowercaseChar().toString()
                 innerProperty = pre + end
             }
         }
@@ -173,8 +172,8 @@ fun maybeJsonObjectBeMapType(jsonObject: JsonObject): Boolean {
     } else {
         jsonObject.entrySet().forEach {
             val isPrimitiveNotStringType = try {
-                JsonParser().parse(it.key).asJsonPrimitive.isString.not()
-            } catch (e: Exception) {
+                JsonParser.parseString(it.key).asJsonPrimitive.isString.not()
+            } catch (_: Exception) {
                 false
             }
             maybeMapType = isPrimitiveNotStringType and maybeMapType
@@ -187,7 +186,7 @@ fun maybeJsonObjectBeMapType(jsonObject: JsonObject): Boolean {
  * get the Key Type of Map type converted from jsonObject
  */
 fun getMapKeyTypeConvertFromJsonObject(jsonObject: JsonObject): String {
-    return getPrimitiveType(JsonParser().parse(jsonObject.entrySet().first().key).asJsonPrimitive)
+    return getPrimitiveType(JsonParser.parseString(jsonObject.entrySet().first().key).asJsonPrimitive)
 }
 
 /**

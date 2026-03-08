@@ -91,7 +91,6 @@ object JsonUtils {
             _objectFieldValueSeparatorWithSpaces = ":"
             _objectIndenter = UNIX_LINE_FEED_INSTANCE
             _arrayIndenter = UNIX_LINE_FEED_INSTANCE
-            _spacesInObjectEntries = true
         }
 
         override fun createInstance() = CustomPrettyPrinter()

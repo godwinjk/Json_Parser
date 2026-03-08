@@ -1,8 +1,8 @@
 package com.godwin.jsonparser.action
 
 import com.godwin.jsonparser.rx.Subscriber.publishMessage
-import com.godwin.jsonparser.util.analytics.Analytics
 import com.godwin.jsonparser.util.analytics.AnalyticsConstant
+import com.godwin.jsonparser.util.analytics.AnalyticsService
 import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
@@ -14,7 +14,7 @@ import java.nio.charset.Charset
 
 class OpenInParserAction : AnAction("Open In Json Parser") {
     override fun actionPerformed(e: AnActionEvent) {
-        Analytics.track(AnalyticsConstant.ACTION_OPEN_IN_PARSER)
+        AnalyticsService.track(AnalyticsConstant.ACTION_OPEN_IN_PARSER)
         val project = e.project
         val virtualFile = e.getData(CommonDataKeys.VIRTUAL_FILE)
         try {

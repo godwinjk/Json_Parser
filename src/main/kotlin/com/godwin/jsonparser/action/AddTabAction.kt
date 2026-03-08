@@ -1,8 +1,8 @@
 package com.godwin.jsonparser.action
 
 import com.godwin.jsonparser.ui.IParserWidget
-import com.godwin.jsonparser.util.analytics.Analytics
 import com.godwin.jsonparser.util.analytics.AnalyticsConstant
+import com.godwin.jsonparser.util.analytics.AnalyticsService
 import com.intellij.icons.AllIcons
 import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnAction
@@ -14,7 +14,7 @@ class AddTabAction(private val parserWidget: IParserWidget) : AnAction(
     AllIcons.General.Add
 ) {
     override fun actionPerformed(e: AnActionEvent) {
-        Analytics.track(AnalyticsConstant.ACTION_ADD_TAB)
+        AnalyticsService.track(AnalyticsConstant.ACTION_ADD_TAB)
         parserWidget.createParserSession()
     }
 

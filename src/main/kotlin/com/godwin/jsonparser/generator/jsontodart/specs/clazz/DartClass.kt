@@ -17,12 +17,13 @@ data class DartClass(
 
     fun getCode(extraIndent: String = ""): String {
         val indent = getIndent()
+        val className = if (DartConfigManager.isDartModelClassName) toPascalCase(name) else name
 
         val code = buildString {
             annotations.mapNotNull { it.getAnnotationString().takeIf { str -> str.isNotBlank() } }
                 .forEach { append(it).append("\n") }
 
-            append("class $name")
+            append("class $className")
             if (parentClassTemplate.isNotBlank()) append(" extends $parentClassTemplate")
             if (mixinClass.isNotBlank()) append(" with $mixinClass")
             append(" {\n")
@@ -36,7 +37,7 @@ data class DartClass(
             }
 
             if (!DartConfigManager.isFreezedAnnotation) {
-                append("\n$indent$name({")
+                append("\n$indent$className({")
                 properties.joinToString(", ") { p ->
                     val required =
                         if (!DartConfigManager.isPropertyOptional || DartConfigManager.isPropertyFinal) "required" else ""
@@ -44,30 +45,30 @@ data class DartClass(
                 }.also { append(it) }
                 append("});\n")
             } else {
-                append("\n${indent}factory $name({")
+                append("\n${indent}factory $className({")
                 properties.forEachIndexed { index, p ->
                     val constructorCode =
                         p.getCodeForConstructor().split("\n").joinToString("\n") { indent + indent + it }
                     append("\n").append(constructorCode)
                     if (index < properties.size - 1) append(",")
                 }
-                append("\n$indent}) = _$name;\n")
+                append("\n$indent}) = _$className;\n")
             }
 
             append("\n$indent")
             when {
                 DartConfigManager.isFreezedAnnotation -> {
-                    append("factory $name.fromJson(Map<String, dynamic> json) => _\$$name" + "FromJson(json);\n")
+                    append("factory $className.fromJson(Map<String, dynamic> json) => _\$${className}FromJson(json);\n")
                 }
 
                 DartConfigManager.isJsonSerializationAnnotation -> {
-                    append("factory $name.fromJson(Map<String, dynamic> json) => _\$$name" + "FromJson(json);\n")
-                    append("${indent}Map<String, dynamic> toJson() => _\$$name" + "ToJson(this);\n")
+                    append("factory $className.fromJson(Map<String, dynamic> json) => _\$${className}FromJson(json);\n")
+                    append("${indent}Map<String, dynamic> toJson() => _\$${className}ToJson(this);\n")
                 }
 
                 else -> {
-                    append("factory $name.fromJson(Map<String, dynamic> json) {\n")
-                    append("$indent${indent}return $name(\n")
+                    append("factory $className.fromJson(Map<String, dynamic> json) {\n")
+                    append("$indent${indent}return $className(\n")
                     properties.forEach { p ->
                         val jsonKey = "json['${p.originName}']"
                         val value = when {
@@ -169,9 +170,9 @@ data class DartClass(
         val annotationCodeList = annotations.map { it.getAnnotationString() }
 
         val parsedProperties = properties.map { it.toParsedProperty() }
-        val fileName = if (DartConfigManager.isDartModelClassName) camelCaseToSnakeCase(name)
-        else name
-        return ParsedDartDataClass(annotationCodeList, name, fileName, parsedProperties)
+        val className = if (DartConfigManager.isDartModelClassName) toPascalCase(name) else name
+        val fileName = if (DartConfigManager.isDartModelClassName) camelCaseToSnakeCase(name) else name
+        return ParsedDartDataClass(annotationCodeList, className, fileName, parsedProperties)
     }
 
     companion object {

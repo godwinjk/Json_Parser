@@ -37,7 +37,7 @@ import javax.swing.text.JTextComponent
  */
 private val jsonInputDialogValidator: JsonInputDialogValidator = JsonInputDialogValidator()
 
-class JsonInputDialog(classsName: String, private val project: Project) :
+class JsonInputDialog(classsName: String, private val project: Project, private val initialJson: String = "") :
     Messages.InputDialog(
         project,
         "Please input the JSON String and class name to generate class",
@@ -84,7 +84,7 @@ class JsonInputDialog(classsName: String, private val project: Project) :
             override fun run() {
                 SwingUtilities.invokeLater {
                     executeCouldRollBackAction(project) {
-                        jsonContentEditor.document.setText("")
+                        jsonContentEditor.document.setText(initialJson)
                     }
                 }
             }

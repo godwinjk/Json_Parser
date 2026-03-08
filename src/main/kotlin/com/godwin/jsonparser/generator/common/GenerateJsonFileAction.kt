@@ -1,21 +1,12 @@
 package com.godwin.jsonparser.generator.common
 
 import com.godwin.jsonparser.common.exception.UnSupportJsonException
-import com.godwin.jsonparser.generator.common.filetype.GenFileType
 import com.godwin.jsonparser.generator.common.ui.JsonInputDialog
-import com.godwin.jsonparser.generator.jsontodart.code_gen.DartClassFileGenerator
-import com.godwin.jsonparser.generator.jsontodart.code_gen.DartCodeMaker
-import com.godwin.jsonparser.generator.jsontodart.utils.ClassCodeFilter
-import com.godwin.jsonparser.generator.jsontokotlin.interceptor.InterceptorManager
-import com.godwin.jsonparser.generator.jsontokotlin.model.KotlinConfigManager
-import com.godwin.jsonparser.generator.jsontokotlin.utils.KotlinClassFileGenerator
-import com.godwin.jsonparser.generator.jsontokotlin.utils.KotlinClassMaker
-import com.godwin.jsonparser.generator.jsontokotlin.utils.isJSONSchema
+import com.godwin.jsonparser.generator.common.util.FileGenerationUtil
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.LangDataKeys
 import com.intellij.openapi.actionSystem.PlatformDataKeys
-import com.intellij.openapi.project.Project
 import com.intellij.openapi.roots.ModuleRootManager
 import com.intellij.openapi.ui.Messages
 import com.intellij.psi.PsiDirectory
@@ -24,10 +15,6 @@ import com.intellij.psi.PsiFileFactory
 import com.intellij.psi.PsiManager
 import com.intellij.psi.impl.file.PsiDirectoryFactory
 
-
-/**
- * Created by Godwin on 2024/12/20
- */
 class GenerateJsonFileAction : AnAction("Dart/Kotlin from JSON") {
 
     override fun actionPerformed(event: AnActionEvent) {
@@ -58,82 +45,16 @@ class GenerateJsonFileAction : AnAction("Dart/Kotlin from JSON") {
             val inputString = inputDialog.inputString.takeIf { it.isNotEmpty() } ?: return
 
             val fileType = inputDialog.getFileType()
-            generate(
+            FileGenerationUtil.generate(
                 className, inputString, packageDeclare, project, psiFileFactory, directory, fileType
             )
         } catch (e: UnSupportJsonException) {
             val advice = e.advice
             Messages.showInfoMessage(dealWithHtmlConvert(advice), "Tip")
         } catch (e: Throwable) {
-//            dealWithException(jsonString, e)
             throw e
         }
     }
 
     private fun dealWithHtmlConvert(advice: String) = advice.replace("<", "&lt;").replace(">", "&gt;")
-
-    private fun generate(
-        className: String,
-        json: String,
-        packageDeclare: String,
-        project: Project?,
-        psiFileFactory: PsiFileFactory,
-        directory: PsiDirectory,
-        fileType: GenFileType
-    ) {
-        if (fileType == GenFileType.Kotlin) {
-            doGenerateKotlinDataClassFileAction(
-                className, json, packageDeclare, project, psiFileFactory, directory
-            )
-        } else {
-            doGenerateDartClass(
-                className, json, packageDeclare, project, psiFileFactory, directory
-            )
-        }
-    }
-
-    private fun doGenerateDartClass(
-        className: String,
-        json: String,
-        packageDeclare: String,
-        project: Project?,
-        psiFileFactory: PsiFileFactory,
-        directory: PsiDirectory,
-    ) {
-        val generatedClassesString = DartCodeMaker(className, json).makeDartClassData()
-
-        val removeDuplicateClassCode = ClassCodeFilter.removeDuplicateClassCode(generatedClassesString)
-
-        DartClassFileGenerator().generateMultipleDataClassFiles(
-            removeDuplicateClassCode, packageDeclare, project, psiFileFactory, directory, json
-        )
-    }
-
-    private fun doGenerateKotlinDataClassFileAction(
-        className: String,
-        json: String,
-        packageDeclare: String,
-        project: Project?,
-        psiFileFactory: PsiFileFactory,
-        directory: PsiDirectory,
-    ) {
-        val kotlinClass = KotlinClassMaker(className, json).makeKotlinClass()
-        val dataClassAfterApplyInterceptor =
-            kotlinClass.applyInterceptors(InterceptorManager.getEnabledKotlinDataClassInterceptors())
-        if (KotlinConfigManager.isInnerClassModel) {
-            KotlinClassFileGenerator().generateSingleKotlinClassFile(
-                packageDeclare, dataClassAfterApplyInterceptor, project, psiFileFactory, directory, json
-            )
-        } else {
-            KotlinClassFileGenerator().generateMultipleKotlinClassFiles(
-                dataClassAfterApplyInterceptor,
-                packageDeclare,
-                project,
-                psiFileFactory,
-                directory,
-                json.isJSONSchema(),
-                json
-            )
-        }
-    }
 }
