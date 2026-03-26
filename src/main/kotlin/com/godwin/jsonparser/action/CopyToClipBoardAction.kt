@@ -2,8 +2,8 @@ package com.godwin.jsonparser.action
 
 import com.godwin.jsonparser.util.EditorHintsNotifier
 import com.godwin.jsonparser.util.Log
-import com.godwin.jsonparser.util.analytics.Analytics
 import com.godwin.jsonparser.util.analytics.AnalyticsConstant
+import com.godwin.jsonparser.util.analytics.AnalyticsService
 import com.intellij.notification.Notification
 import com.intellij.notification.NotificationType
 import com.intellij.notification.Notifications
@@ -22,7 +22,7 @@ class CopyToClipBoardAction(
 ) : AnAction(text, description, icon) {
 
     override fun actionPerformed(e: AnActionEvent) {
-        Analytics.track(AnalyticsConstant.ACTION_COPY_TO_CLIPBOARD)
+        AnalyticsService.track(AnalyticsConstant.ACTION_COPY_TO_CLIPBOARD)
         try {
             val editor = e.getData(PlatformDataKeys.EDITOR)
             if (editor == null) {

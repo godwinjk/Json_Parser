@@ -1,14 +1,15 @@
 [versions]
-# Libraries
 junit = "4.13.2"
-
-# Gradle Plugins
+kotlinpoet = "2.0.0"
+jsonautorepair = "1.0.2"
 changelog = "2.2.1"
 intelliJPlatform = "2.2.1"
 kotlin = "1.9.25"
 
 [libraries]
-junit = { group = "junit", name = "junit", version.ref = "junit" }
+junit = { module = "junit:junit", version.ref = "junit" }
+squareup-kotlinpoet = { module = "com.squareup:kotlinpoet", version.ref = "kotlinpoet" }
+godwinjk-jsonautorepair = { module = "com.github.godwinjk:JsonAutoRepair", version.ref = "jsonautorepair" }
 
 [plugins]
 changelog = { id = "org.jetbrains.changelog", version.ref = "changelog" }

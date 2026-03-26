@@ -2,8 +2,8 @@ package com.godwin.jsonparser.util
 
 import com.godwin.jsonparser.constants.TOOL_WINDOW_ID
 import com.godwin.jsonparser.services.JsonPersistence
-import com.godwin.jsonparser.util.analytics.Analytics
 import com.godwin.jsonparser.util.analytics.AnalyticsConstant
+import com.godwin.jsonparser.util.analytics.AnalyticsService
 import com.intellij.ide.BrowserUtil
 import com.intellij.notification.Notification
 import com.intellij.notification.NotificationAction
@@ -41,7 +41,7 @@ object NotificationUtil {
 
             notification.addAction(object : NotificationAction("Donate") {
                 override fun actionPerformed(e: AnActionEvent, notification: Notification) {
-                    Analytics.track(AnalyticsConstant.NOTIFICATION_DONATE_CLICKED)
+                    AnalyticsService.track(AnalyticsConstant.NOTIFICATION_DONATE_CLICKED)
                     BrowserUtil.browse(URI.create("https://paypal.me/godwinj"))
                     persistence.donateClicked = 1
                 }
@@ -49,7 +49,7 @@ object NotificationUtil {
 
             notification.addAction(object : NotificationAction("Give it a star") {
                 override fun actionPerformed(e: AnActionEvent, notification: Notification) {
-                    Analytics.track(AnalyticsConstant.NOTIFICATION_STAR_CLICKED)
+                    AnalyticsService.track(AnalyticsConstant.NOTIFICATION_STAR_CLICKED)
                     BrowserUtil.browse(URI.create("https://plugins.jetbrains.com/plugin/10650-json-parser"))
                     persistence.starClicked = 1
                 }
@@ -60,7 +60,6 @@ object NotificationUtil {
     }
 
     fun showJsonRepairFailed() {
-        Analytics.track(AnalyticsConstant.REPAIR_FAILED)
         val notification = Notification(
             TOOL_WINDOW_ID,
             "This json can't be fixed.",

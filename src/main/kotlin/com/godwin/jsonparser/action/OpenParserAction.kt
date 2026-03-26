@@ -3,8 +3,8 @@ package com.godwin.jsonparser.action
 import com.godwin.jsonparser.constants.TOOL_WINDOW_ID
 import com.godwin.jsonparser.rx.Subscriber
 import com.godwin.jsonparser.util.Log
-import com.godwin.jsonparser.util.analytics.Analytics
 import com.godwin.jsonparser.util.analytics.AnalyticsConstant
+import com.godwin.jsonparser.util.analytics.AnalyticsService
 import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
@@ -13,7 +13,7 @@ import com.intellij.openapi.wm.ToolWindowManager
 
 class OpenParserAction : AnAction() {
     override fun actionPerformed(e: AnActionEvent) {
-        Analytics.track(AnalyticsConstant.ACTION_OPEN_PARSER)
+        AnalyticsService.track(AnalyticsConstant.ACTION_OPEN_PARSER)
         try {
             val project = e.project ?: return
             val editor = e.getData(PlatformDataKeys.EDITOR)

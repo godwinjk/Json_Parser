@@ -71,6 +71,31 @@ Every donation, no matter the size, makes a difference and is deeply appreciated
 
 ## Changelog
 
+### Version 1.9.3
+
+1. Improved the Analytics by adding session
+2. Imorived dart code generation
+3. Tracking JSON when repair failed(This will be removed in next versions)
+
+### Version 1.9.2
+
+1. Improved the Analytics
+2. Bug fixes
+3. Added the code generation button on main parser
+
+### Version 1.9.1
+
+1. Implemented Analytics
+
+### Version 1.9.0
+
+1. Official Farewell to Java
+2. New Repair function added for malformed JSON
+
+### Version 1.8.5
+
+Support for version 253
+
 ### Version 1.8.3
 
 1. Bug Fixes

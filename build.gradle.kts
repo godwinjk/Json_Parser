@@ -13,38 +13,37 @@ version = providers.gradleProperty("pluginVersion").get()
 
 // Set the JVM language level used to build the project.
 kotlin {
-    jvmToolchain(17)
+    jvmToolchain(21)
 }
 
 // Configure project's dependencies
 repositories {
     mavenCentral()
     maven { url = uri("https://jitpack.io") }
+    maven { url = uri("https://cache-redirector.jetbrains.com/intellij-dependencies") }
 
     // IntelliJ Platform Gradle Plugin Repositories Extension - read more: https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin-repositories-extension.html
     intellijPlatform {
         defaultRepositories()
         marketplace()
+        releases()
     }
 }
 
 // Dependencies are managed with Gradle version catalog - read more: https://docs.gradle.org/current/userguide/platforms.html#sub:version-catalog
 dependencies {
     testImplementation(libs.junit)
-
-    implementation("com.squareup:kotlinpoet:2.0.0")
-    implementation("com.github.godwinjk:JsonAutoRepair:1.0.2")
+    implementation(libs.squareup.kotlinpoet)
+    implementation(libs.godwinjk.jsonautorepair)
     // IntelliJ Platform Gradle Plugin Dependencies Extension - read more: https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin-dependencies-extension.html
     intellijPlatform {
         create(providers.gradleProperty("platformType"), providers.gradleProperty("platformVersion"))
-
         // Plugin Dependencies. Uses `platformBundledPlugins` property from the gradle.properties file for bundled IntelliJ Platform plugins.
         bundledPlugins(providers.gradleProperty("platformBundledPlugins").map { it.split(',') })
 
         // Plugin Dependencies. Uses `platformPlugins` property from the gradle.properties file for plugin from JetBrains Marketplace.
         plugins(providers.gradleProperty("platformPlugins").map { it.split(',') })
 
-        instrumentationTools()
         pluginVerifier()
         zipSigner()
         testFramework(TestFrameworkType.Platform)
@@ -53,7 +52,9 @@ dependencies {
 
 // Configure IntelliJ Platform Gradle Plugin - read more: https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin-extension.html
 intellijPlatform {
+
     pluginConfiguration {
+
         version = providers.gradleProperty("pluginVersion")
 
         // Extract the <!-- Plugin description --> section from README.md and provide for the plugin's manifest
@@ -69,18 +70,24 @@ intellijPlatform {
             }
         }
 
-//        val changelog = project.changelog // local variable for configuration cache compatibility
-//        // Get the latest available change notes from the changelog file
-//        changeNotes = providers.gradleProperty("pluginVersion").map { pluginVersion ->
-//            with(changelog) {
-//                renderItem(
-//                    (getOrNull(pluginVersion) ?: getUnreleased())
-//                        .withHeader(false)
-//                        .withEmptySections(false),
-//                    Changelog.OutputType.HTML,
-//                )
-//            }
-//        }
+        changeNotes = providers.fileContents(layout.projectDirectory.file("README.md")).asText.map {
+            val lines = it.lines()
+            val changelogStart = lines.indexOfFirst { line -> line.trim() == "## Changelog" }
+            if (changelogStart != -1) {
+                val versionLines = lines.drop(changelogStart + 1)
+                    .dropWhile { line -> line.isBlank() }
+                    .takeWhile { line -> !line.startsWith("##") || line.startsWith("###") }
+                    .take(20)
+                    .joinToString("\n")
+                if (versionLines.isNotBlank()) {
+                    markdownToHTML(versionLines)
+                } else {
+                    "Bug fixes and improvements"
+                }
+            } else {
+                "Bug fixes and improvements"
+            }
+        }
 
         ideaVersion {
             sinceBuild = providers.gradleProperty("pluginSinceBuild")
@@ -131,21 +138,5 @@ tasks {
 
 intellijPlatformTesting {
     runIde {
-        register("runIdeForUiTests") {
-            task {
-                jvmArgumentProviders += CommandLineArgumentProvider {
-                    listOf(
-                        "-Drobot-server.port=8082",
-                        "-Dide.mac.message.dialogs.as.sheets=false",
-                        "-Djb.privacy.policy.text=<!--999.999-->",
-                        "-Djb.consents.confirmation.enabled=false",
-                    )
-                }
-            }
-
-            plugins {
-                robotServerPlugin()
-            }
-        }
     }
 }

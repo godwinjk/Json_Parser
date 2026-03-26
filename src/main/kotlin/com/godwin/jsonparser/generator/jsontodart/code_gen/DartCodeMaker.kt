@@ -126,7 +126,7 @@ class DartCodeMaker {
     }
 
     private fun appendClassName(stringBuilder: StringBuilder) {
-        stringBuilder.append("class ").append(className).append(" {\n")
+        stringBuilder.append("class ").append(toPascalCase(className)).append(" {\n")
     }
 
     private fun appendCodeMember(stringBuilder: StringBuilder, jsonObject: JsonObject) {
