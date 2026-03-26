@@ -27,6 +27,7 @@ import com.intellij.openapi.fileChooser.FileChooserDescriptor
 import com.intellij.openapi.progress.util.DispatchThreadProgressWindow
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.Messages
+import com.intellij.openapi.vfs.LocalFileSystem
 import java.awt.BorderLayout
 import java.awt.Graphics
 import java.awt.Toolkit
@@ -195,7 +196,7 @@ class ParserWidget(
         FileChooser.chooseFile(
             FileChooserDescriptor(false, true, false, false, false, false),
             project,
-            null
+            LocalFileSystem.getInstance().findFileByPath(project.basePath ?: "")
         ) { directory ->
             val psiDirectory =
                 com.intellij.psi.PsiManager.getInstance(project).findDirectory(directory) ?: return@chooseFile
@@ -230,13 +231,14 @@ class ParserWidget(
 
     private fun handleRepair() {
         AnalyticsService.track(AnalyticsConstant.ACTION_REPAIR)
+        val input = inputEditor.document.text
         try {
-            val input = inputEditor.document.text
             val repairedJson = JsonRepairEngine.repair(project, input)
 
             showHideRepairButton(false)
 //            showDiff(input, repairedJson)
             if (repairedJson == null) {
+                AnalyticsService.track(AnalyticsConstant.REPAIR_FAILED, jsonData = input)
                 NotificationUtil.showJsonRepairFailed()
                 return
             }
@@ -244,6 +246,7 @@ class ParserWidget(
             handleParse()
         } catch (e: Exception) {
             Messages.showErrorDialog(project, "Failed to repair JSON: ${e.message}", "Repair Failed")
+            AnalyticsService.track(AnalyticsConstant.REPAIR_FAILED, jsonData = input)
         }
     }
 

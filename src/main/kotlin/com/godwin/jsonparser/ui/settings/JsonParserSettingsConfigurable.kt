@@ -11,6 +11,7 @@ import javax.swing.JPanel
 
 class JsonParserSettingsConfigurable : Configurable {
     private var analyticsCheckBox: JCheckBox? = null
+    private var errorJsonTracking: JCheckBox? = null
 
     override fun getDisplayName() = "Json Parser"
 
@@ -19,12 +20,17 @@ class JsonParserSettingsConfigurable : Configurable {
             "Enable analytics (helps improve the plugin)",
             JsonPersistence.getInstance().analyticsEnabled
         )
-        
-        val noteLabel = JBLabel("<html><i>Note: We only track feature usage. Your JSON data is never logged or transmitted.</i></html>")
+        errorJsonTracking = JCheckBox(
+            "Enable logging of json string when repair doesn't worked",
+            JsonPersistence.getInstance().analyticsErrorJsonEnabled
+        )
+
+        val noteLabel = JBLabel("<html><i>Note: Your string will be logged when repair doesn't worked. You can disabled this anytime.</i></html>")
         
         return JPanel().apply {
             layout = BoxLayout(this, BoxLayout.Y_AXIS)
             add(analyticsCheckBox)
+            add(errorJsonTracking)
             add(noteLabel)
         }
     }

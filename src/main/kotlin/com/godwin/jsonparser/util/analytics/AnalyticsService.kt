@@ -19,16 +19,21 @@ object AnalyticsService {
     val ideVersion: String? = ApplicationInfo.getInstance().versionName
     private val sessionId = UUID.randomUUID().toString()
 
-    fun track(eventName: String) {
+    fun track(eventName: String, additionaldata: String? = null, jsonData: String? = null) {
         if (!JsonPersistence.getInstance().analyticsEnabled) return
 
+        val errorJson =
+            if (jsonData != null && JsonPersistence.getInstance().analyticsErrorJsonEnabled) jsonData else null
         // Create the JSON payload
+
         val json = """
             {
                 "event_name": "$eventName",
                 "ide_version": "$ideVersion",
                 "user_id": "$userId",
-                "session_id": "$sessionId"
+                "session_id": "$sessionId",
+                "json_data": "$errorJson",
+                "additional_data": "$additionaldata"
             }
         """.trimIndent()
 

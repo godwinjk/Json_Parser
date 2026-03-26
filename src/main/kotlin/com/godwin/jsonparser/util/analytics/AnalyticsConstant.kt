@@ -2,7 +2,7 @@ package com.godwin.jsonparser.util.analytics
 
 object AnalyticsConstant {
 
-    const val REPAIR_FAILED = "reaoir_failed"
+    const val REPAIR_FAILED = "repair_failed"
     const val NOTIFICATION_STAR_CLICKED = "notification_star_clicked"
     const val NOTIFICATION_DONATE_CLICKED = "notification_donate_clicked"
     const val ACTION_PARSE = "parse"

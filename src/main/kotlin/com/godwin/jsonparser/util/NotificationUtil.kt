@@ -60,7 +60,6 @@ object NotificationUtil {
     }
 
     fun showJsonRepairFailed() {
-        AnalyticsService.track(AnalyticsConstant.REPAIR_FAILED)
         val notification = Notification(
             TOOL_WINDOW_ID,
             "This json can't be fixed.",

@@ -71,7 +71,7 @@ Every donation, no matter the size, makes a difference and is deeply appreciated
 
 ## Changelog
 
-### Version 1.9.1
+### Version 1.9.2
 
 1. Improved the Analytics
 2. Bug fixes
