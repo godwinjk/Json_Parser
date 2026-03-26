@@ -47,6 +47,13 @@ object TestConfig {
 
     var autoDetectJsonScheme = true
 
+    var isDartModelClassName = false
+    var isFreezedAnnotation = false
+    var isJsonSerializationAnnotation = false
+    var isPropertiesNullable = false
+    var isPropertiesOptional = false
+    var isPropertiesFinal = false
+
     private var state = State()
 
     fun setToTestInitState() {

@@ -43,7 +43,7 @@ fun getPrimitiveType(jsonPrimitive: JsonPrimitive): String {
 }
 
 fun String.isPrimitiveType(): Boolean {
-    return this == TYPE_STRING || this == TYPE_LONG || this == TYPE_INT || this == TYPE_DOUBLE || this == TYPE_BOOLEAN || this == TYPE_ANY
+    return this == TYPE_STRING || this == TYPE_LONG || this == TYPE_INT || this == TYPE_DOUBLE || this == TYPE_BOOLEAN || this == TYPE_ANY || this.startsWith("Map")
 }
 
 fun String.isListType(): Boolean {

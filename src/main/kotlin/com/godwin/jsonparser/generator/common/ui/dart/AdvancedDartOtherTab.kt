@@ -28,10 +28,7 @@ class AdvancedDartOtherTab(isDoubleBuffered: Boolean) : JPanel(BorderLayout(), i
                     "Enable Order By Alphabetical",
                     DartConfigManager.isOrderByAlphabetical,
                     { isSelected -> DartConfigManager.isOrderByAlphabetical = isSelected })
-                jCheckBox(
-                    "Enable dart file name convention",
-                    DartConfigManager.isDartModelClassName,
-                    { isSelected -> DartConfigManager.isDartModelClassName = isSelected })
+
                 jCheckBox(
                     "Enable inner class generation",
                     DartConfigManager.isInnerClassModel,

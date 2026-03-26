@@ -120,32 +120,33 @@ object DartConfigManager : IConfigManager {
         }
 
     var isPropertyFinal: Boolean
-        get() = if (isTestModel) TestConfig.isPropertiesVar else PropertiesComponent.getInstance().isTrueValue(
+        get() = if (isTestModel) TestConfig.isPropertiesFinal else PropertiesComponent.getInstance().isTrueValue(
             IS_PROPERTIES_FINAL
         )
         set(value) = if (isTestModel) {
-            TestConfig.isPropertiesVar = value
+            TestConfig.isPropertiesFinal = value
         } else {
-            PropertiesComponent.getInstance().setValue(IS_PROPERTIES_FINAL, value)
+            PropertiesComponent.getInstance().setValue(IS_PROPERTIES_FINAL, value, false)
         }
 
     var isPropertyNullable: Boolean
-        get() = if (isTestModel) TestConfig.isPropertiesVar else PropertiesComponent.getInstance().isTrueValue(
+        get() = if (isTestModel) TestConfig.isPropertiesNullable else PropertiesComponent.getInstance().isTrueValue(
             IS_PROPERTIES_NULLABLE
         )
         set(value) = if (isTestModel) {
-            TestConfig.isPropertiesVar = value
+            TestConfig.isPropertiesNullable = value
         } else {
-            PropertiesComponent.getInstance().setValue(IS_PROPERTIES_NULLABLE, value)
+            PropertiesComponent.getInstance().setValue(IS_PROPERTIES_NULLABLE, value, false)
         }
+
     var isPropertyOptional: Boolean
-        get() = if (isTestModel) TestConfig.isPropertiesVar else PropertiesComponent.getInstance().isTrueValue(
+        get() = if (isTestModel) TestConfig.isPropertiesOptional else PropertiesComponent.getInstance().isTrueValue(
             IS_PROPERTIES_OPTIONAL
         )
         set(value) = if (isTestModel) {
-            TestConfig.isPropertiesVar = value
+            TestConfig.isPropertiesOptional = value
         } else {
-            PropertiesComponent.getInstance().setValue(IS_PROPERTIES_OPTIONAL, value)
+            PropertiesComponent.getInstance().setValue(IS_PROPERTIES_OPTIONAL, value, false)
         }
 
     var isAppendOriginalJson: Boolean
@@ -155,7 +156,7 @@ object DartConfigManager : IConfigManager {
         set(value) = if (isTestModel) {
             TestConfig.isAppendOriginalJson = value
         } else {
-            PropertiesComponent.getInstance().setValue(IS_APPEND_ORIGINAL_JSON, value)
+            PropertiesComponent.getInstance().setValue(IS_APPEND_ORIGINAL_JSON, value, false)
         }
 
     var isCommentOff: Boolean
@@ -277,24 +278,31 @@ object DartConfigManager : IConfigManager {
         set(value) = if (isTestModel) {
             TestConfig.isNestedClassModel = value
         } else {
-            PropertiesComponent.getInstance().setValue(INNER_CLASS_MODEL_KEY, value)
+            PropertiesComponent.getInstance().setValue(INNER_CLASS_MODEL_KEY, value, true)
         }
 
     var isDartModelClassName: Boolean
-        get() = PropertiesComponent.getInstance().getBoolean(
+        get() = if (isTestModel) TestConfig.isDartModelClassName else PropertiesComponent.getInstance().getBoolean(
             DART_MODEL_CLASS_NAME, true
         )
-        set(value) = PropertiesComponent.getInstance().setValue(DART_MODEL_CLASS_NAME, value)
+        set(value) = if (isTestModel) {
+            TestConfig.isDartModelClassName = value
+        } else PropertiesComponent.getInstance().setValue(DART_MODEL_CLASS_NAME, value, true)
 
     var isFreezedAnnotation: Boolean
-        get() = PropertiesComponent.getInstance().getBoolean(
+        get() = if (isTestModel) TestConfig.isFreezedAnnotation else PropertiesComponent.getInstance().getBoolean(
             FREEZED_ANNOTATION, false
         )
-        set(value) = PropertiesComponent.getInstance().setValue(FREEZED_ANNOTATION, value)
+        set(value) = if (isTestModel) {
+            TestConfig.isFreezedAnnotation = value
+        } else PropertiesComponent.getInstance().setValue(FREEZED_ANNOTATION, value, false)
+
     var isJsonSerializationAnnotation: Boolean
-        get() = PropertiesComponent.getInstance().getBoolean(
+        get() = if (isTestModel) TestConfig.isJsonSerializationAnnotation else PropertiesComponent.getInstance().getBoolean(
             JSON_SERIALIZATION_ANNOTATION, false
         )
-        set(value) = PropertiesComponent.getInstance().setValue(JSON_SERIALIZATION_ANNOTATION, value)
+        set(value) = if (isTestModel) {
+            TestConfig.isJsonSerializationAnnotation = value
+        } else PropertiesComponent.getInstance().setValue(JSON_SERIALIZATION_ANNOTATION, value, false)
 
 }
