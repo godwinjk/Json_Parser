@@ -15,7 +15,6 @@ object JsonRepairEngine {
     )
 
     fun repair(project: Project, input: String): String? {
-        return null;
         if (input.length > 1_000_000) {
             throw InputTooLargeException("Input is too large")
         }
