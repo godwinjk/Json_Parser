@@ -33,7 +33,7 @@ object JsonUtils {
 
     fun isValidJsonError(jsonStr: String): String? {
         return try {
-            mapper.readTree(jsonStr)
+            ObjectMapper().readTree(jsonStr)
             null
         } catch (e: Exception) {
             return if (e is JsonProcessingException) {

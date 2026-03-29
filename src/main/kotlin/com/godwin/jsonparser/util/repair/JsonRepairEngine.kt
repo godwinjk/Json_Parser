@@ -5,17 +5,17 @@ import com.godwin.jsonparser.util.JsonUtils
 import com.godwin.jsonparser.util.Log
 import com.godwin.jsonparser.util.repair.strategy.AiRepairStrategy
 import com.godwin.jsonparser.util.repair.strategy.JsonAutoRepairStrategy
-import com.intellij.openapi.project.Project
+import com.godwin.jsonparser.util.repair.strategy.RepairStrategy
 import java.util.concurrent.CompletableFuture
 
 object JsonRepairEngine {
 
-    private val strategies = listOf(
-        JsonAutoRepairStrategy(),
-        AiRepairStrategy()
-    )
-
-    fun repair( input: String): CompletableFuture<String?> {
+    fun repair(
+        input: String, strategies: List<RepairStrategy> = listOf(
+            JsonAutoRepairStrategy(),
+            AiRepairStrategy()
+        )
+    ): CompletableFuture<String?> {
         if (input.length > 1_000_000) {
             return CompletableFuture.failedFuture(InputTooLargeException("Input is too large"))
         }
