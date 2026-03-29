@@ -1,6 +1,7 @@
 package com.godwin.jsonparser.util
 
 import com.fasterxml.jackson.core.JsonParser
+import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.core.util.DefaultIndenter
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter
 import com.fasterxml.jackson.databind.DeserializationFeature
@@ -29,6 +30,20 @@ object JsonUtils {
             false
         }
     }
+
+    fun isValidJsonError(jsonStr: String): String? {
+        return try {
+            mapper.readTree(jsonStr)
+            null
+        } catch (e: Exception) {
+            return if (e is JsonProcessingException) {
+                e.originalMessage
+            } else {
+                e.message
+            }
+        }
+    }
+
 
     fun getMap(jsonStr: String): Any {
         val node = mapper.readTree(jsonStr)

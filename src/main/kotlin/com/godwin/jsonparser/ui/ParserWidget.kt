@@ -4,6 +4,7 @@ import com.godwin.jsonparser.generator.common.ui.*
 import com.godwin.jsonparser.generator.common.util.FileGenerationUtil
 import com.godwin.jsonparser.rx.Publisher
 import com.godwin.jsonparser.rx.Subscriber
+import com.godwin.jsonparser.ui.components.CircularProgress
 import com.godwin.jsonparser.ui.dialog.OptionDialog
 import com.godwin.jsonparser.util.JsonDownloader
 import com.godwin.jsonparser.util.JsonUtils
@@ -44,6 +45,7 @@ class ParserWidget(
     private val inputEditor: Editor = createEditor()
     private val bodyWidget = ParserBodyWidget(project)
     private var repairButton: JButton? = null
+    private var repairLoadingIndicator: CircularProgress? = null
     private var generateCodeButton: JButton? = null
     private var jsonException: Exception? = null
     val container: JPanel = jBorderLayout {
@@ -80,6 +82,17 @@ class ParserWidget(
                             addActionListener { handleRepair() }
                         }
                         add(repairButton)
+                        repairLoadingIndicator = CircularProgress().apply {
+                            isVisible = false
+                            preferredSize = java.awt.Dimension(18, 18)
+                            toolTipText = "Repairing JSON..."
+                        }
+                        add(repairLoadingIndicator)
+                        fillSpace()
+                        jButton("Options", { handleOptions() })
+                    }
+                    jHorizontalLinearLayout {
+                        jButton("Support ❤️", { handleDonate() })
                         fillSpace()
                         if (isAndroidStudioOrIntelliJ()) {
                             generateCodeButton = JButton("Generate Code").apply {
@@ -88,11 +101,6 @@ class ParserWidget(
                             }
                             add(generateCodeButton)
                         }
-                        jButton("Options", { handleOptions() })
-                    }
-                    jHorizontalLinearLayout {
-                        jButton("Support ❤️", { handleDonate() })
-                        fillSpace()
                     }
                 }
             }
@@ -165,7 +173,6 @@ class ParserWidget(
         val jsonString = JsonUtils.cleanUpJsonString(inputEditor.document.text)
         try {
             showBody(jsonString)
-            showHideGenerateCodeButton(true)
             NotificationUtil.showDonateNotification()
         } catch (_: Exception) {
             showHideGenerateCodeButton(false)
@@ -225,6 +232,7 @@ class ParserWidget(
             showHideGenerateCodeButton(false)
             AnalyticsService.track(AnalyticsConstant.PARSE_FAILED)
         })
+        showHideGenerateCodeButton(true)
         bodyWidget.showRaw(jsonString)
         bodyWidget.showTree(jsonString)
     }
@@ -232,21 +240,44 @@ class ParserWidget(
     private fun handleRepair() {
         AnalyticsService.track(AnalyticsConstant.ACTION_REPAIR)
         val input = inputEditor.document.text
-        try {
-            val repairedJson = JsonRepairEngine.repair(project, input)
 
-            showHideRepairButton(false)
-//            showDiff(input, repairedJson)
-            if (repairedJson == null) {
-                AnalyticsService.track(AnalyticsConstant.REPAIR_FAILED, jsonData = input)
-                NotificationUtil.showJsonRepairFailed()
-                return
+        setRepairLoading(true)
+
+        JsonRepairEngine.repair(input).thenAccept { repairedJson ->
+            SwingUtilities.invokeLater {
+                setRepairLoading(false)
+                if (repairedJson == null) {
+                    AnalyticsService.track(AnalyticsConstant.REPAIR_FAILED, jsonData = input)
+                    NotificationUtil.showJsonRepairFailed()
+                    return@invokeLater
+                }
+                showHideRepairButton(false)
+                showMergeRepair(input, repairedJson)
+                handleParse()
             }
-            showMergeRepair(input, repairedJson)
-            handleParse()
-        } catch (e: Exception) {
-            Messages.showErrorDialog(project, "Failed to repair JSON: ${e.message}", "Repair Failed")
-            AnalyticsService.track(AnalyticsConstant.REPAIR_FAILED, jsonData = input)
+        }.exceptionally { e ->
+            SwingUtilities.invokeLater {
+                setRepairLoading(false)
+                Messages.showErrorDialog(project, "Failed to repair JSON: ${e.message}", "Repair Failed")
+                AnalyticsService.track(
+                    AnalyticsConstant.REPAIR_FAILED, jsonData = input, additionaldata = e.message
+                )
+            }
+            null
+        }
+    }
+
+    private fun setRepairLoading(loading: Boolean) {
+        SwingUtilities.invokeLater {
+            repairButton?.isVisible = !loading
+            repairLoadingIndicator?.isVisible = loading
+            repairLoadingIndicator?.parent?.revalidate()
+            repairLoadingIndicator?.parent?.repaint()
+            if (loading) {
+                repairLoadingIndicator?.start()
+            } else {
+                repairLoadingIndicator?.stop()
+            }
         }
     }
 
@@ -315,7 +346,16 @@ class ParserWidget(
     private fun actionChooseFile() {
         AnalyticsService.track(AnalyticsConstant.ACTION_LOAD_FILE)
         FileChooser.chooseFile(
-            FileChooserDescriptor(true, false, false, false, false, false), project, null
+            FileChooserDescriptor(
+                true,
+                false,
+                false,
+                false,
+                false,
+                false
+            ),
+            project,
+            null
         ) { file ->
             try {
                 val content = String(file.contentsToByteArray()).replace("\r\n", "\n")
