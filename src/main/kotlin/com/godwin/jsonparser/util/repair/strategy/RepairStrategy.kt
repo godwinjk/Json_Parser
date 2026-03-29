@@ -1,7 +1,7 @@
 package com.godwin.jsonparser.util.repair.strategy
 
-import com.intellij.openapi.project.Project
+import java.util.concurrent.CompletableFuture
 
 abstract class RepairStrategy {
-    abstract fun repair(project: Project, input: String): String
+    abstract fun repair( input: String,error: String?): CompletableFuture<String>
 }

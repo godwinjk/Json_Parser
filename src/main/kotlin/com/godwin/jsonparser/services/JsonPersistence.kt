@@ -21,6 +21,8 @@ class JsonPersistence : PersistentStateComponent<JsonPersistence> {
     var starClicked: Int = 0
     var analyticsEnabled: Boolean = true
     var analyticsErrorJsonEnabled: Boolean = true
+    var repairUsingAi: Boolean = true
+    
     override fun getState(): JsonPersistence {
         return this
     }

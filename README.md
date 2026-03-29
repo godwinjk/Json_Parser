@@ -71,10 +71,14 @@ Every donation, no matter the size, makes a difference and is deeply appreciated
 
 ## Changelog
 
+### Version 1.9.4
+
+1. Adding repair using AI(You can disable it in settings)
+
 ### Version 1.9.3
 
 1. Improved the Analytics by adding session
-2. Imorived dart code generation
+2. Improved dart code generation
 3. Tracking JSON when repair failed(This will be removed in next versions)
 
 ### Version 1.9.2
