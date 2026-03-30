@@ -2,6 +2,10 @@ package com.godwin.jsonparser.services
 
 import com.godwin.jsonparser.action.AddTabAction
 import com.godwin.jsonparser.action.CloseTabAction
+import com.godwin.jsonparser.action.DiffCheckerAction
+import com.godwin.jsonparser.action.GenerateDummyJsonAction
+import com.godwin.jsonparser.action.LoadFromFileAction
+import com.godwin.jsonparser.action.LoadFromUrlAction
 import com.godwin.jsonparser.ui.IParserWidget
 import com.godwin.jsonparser.ui.ParserMainPanel
 import com.godwin.jsonparser.ui.ParserToolWindowPanel
@@ -10,6 +14,7 @@ import com.intellij.openapi.actionSystem.ActionManager
 import com.intellij.openapi.actionSystem.ActionPlaces
 import com.intellij.openapi.actionSystem.ActionToolbar
 import com.intellij.openapi.actionSystem.DefaultActionGroup
+import com.intellij.openapi.actionSystem.Separator
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.wm.ToolWindow
@@ -64,9 +69,19 @@ class ProjectService {
 
     private fun createToolBar(debuggerWidget: IParserWidget): ActionToolbar {
         val group = DefaultActionGroup()
+        // Group 1: tab management
         group.add(AddTabAction(debuggerWidget))
         group.add(CloseTabAction(debuggerWidget))
-        //        group.add(new NewWindowAction(debuggerWidget));
+        group.add(Separator.getInstance())
+        // Group 2: load JSON
+        group.add(LoadFromFileAction(debuggerWidget))
+        group.add(LoadFromUrlAction(debuggerWidget))
+        group.add(Separator.getInstance())
+        // Group 3: generate
+        group.add(GenerateDummyJsonAction(debuggerWidget))
+        group.add(Separator.getInstance())
+        // Group 4: tools
+        group.add(DiffCheckerAction(debuggerWidget))
         val toolbar = ActionManager.getInstance().createActionToolbar(ActionPlaces.TOOLBAR, group, false)
         toolbar.orientation = SwingConstants.VERTICAL
         return toolbar

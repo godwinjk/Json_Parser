@@ -1,6 +1,7 @@
 package com.godwin.jsonparser.util.repair.strategy
 
 import com.godwin.jsonparser.services.JsonPersistence
+import com.google.gson.JsonParser
 import java.net.URI
 import java.net.http.HttpClient
 import java.net.http.HttpRequest
@@ -37,9 +38,9 @@ class AiRepairStrategy : RepairStrategy() {
 
         val result = CompletableFuture<String>()
         client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
-            .whenComplete { response, error ->
+            .whenComplete { response, apiError ->
                 when {
-                    error != null -> result.complete(input)
+                    apiError != null -> result.complete(input)
                     response.statusCode() == 200 -> {
                         // Response body: {"success": true, "repaired": "..."}
                         val repaired = extractRepaired(response.body()) ?: input
@@ -54,7 +55,7 @@ class AiRepairStrategy : RepairStrategy() {
 
     private fun extractRepaired(body: String): String? {
         return try {
-            com.google.gson.JsonParser.parseString(body)
+            JsonParser.parseString(body)
                 .asJsonObject
                 .get("repaired")
                 ?.asString

@@ -1,5 +1,6 @@
 package com.godwin.jsonparser.ui
 
+import com.godwin.jsonparser.rx.Subscriber
 import com.godwin.jsonparser.ui.tabs.IParserTabs
 import com.godwin.jsonparser.ui.tabs.ParserTabsImpl
 import com.intellij.openapi.Disposable
@@ -25,6 +26,11 @@ class ParserMainPanel(
         setupTabs(innerWidget)
     }
 
+    override fun createParserSessionWithContent(json: String) {
+        createParserSession()
+        Subscriber.publishMessage(json)
+    }
+
     private fun setupTabs(nextComponent: JComponent) {
         if (tabs == null) {
             tabs = ParserTabsImpl(project, parent).apply {
@@ -42,10 +48,10 @@ class ParserMainPanel(
 
     private fun generateUniqueName(tabs: IParserTabs): String {
         val names = (0 until tabs.getTabCount()).mapTo(mutableSetOf()) { tabs.getTitleAt(it) }
-        var newName = "Parser"
+        var newName = "JSON"
         var i = 0
         while (newName in names) {
-            newName = "Parser (${++i})"
+            newName = "JSON (${++i})"
         }
         return newName
     }

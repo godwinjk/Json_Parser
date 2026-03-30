@@ -5,7 +5,7 @@ import com.godwin.jsonparser.generator.common.util.FileGenerationUtil
 import com.godwin.jsonparser.rx.Publisher
 import com.godwin.jsonparser.rx.Subscriber
 import com.godwin.jsonparser.ui.components.CircularProgress
-import com.godwin.jsonparser.ui.dialog.OptionDialog
+import com.godwin.jsonparser.ui.dialog.ParserSettingsDialog
 import com.godwin.jsonparser.util.JsonDownloader
 import com.godwin.jsonparser.util.JsonUtils
 import com.godwin.jsonparser.util.NotificationUtil
@@ -16,6 +16,7 @@ import com.intellij.diff.DiffContentFactory
 import com.intellij.diff.DiffManager
 import com.intellij.diff.DiffRequestFactory
 import com.intellij.diff.merge.MergeResult
+import com.intellij.icons.AllIcons
 import com.intellij.ide.BrowserUtil
 import com.intellij.ide.ui.LafManagerListener
 import com.intellij.openapi.Disposable
@@ -29,6 +30,9 @@ import com.intellij.openapi.progress.util.DispatchThreadProgressWindow
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.Messages
 import com.intellij.openapi.vfs.LocalFileSystem
+import com.intellij.openapi.editor.event.DocumentEvent
+import com.intellij.openapi.editor.event.DocumentListener
+import com.intellij.ui.InplaceButton
 import java.awt.BorderLayout
 import java.awt.Graphics
 import java.awt.Toolkit
@@ -48,12 +52,23 @@ class ParserWidget(
     private var repairLoadingIndicator: CircularProgress? = null
     private var generateCodeButton: JButton? = null
     private var jsonException: Exception? = null
+    private var autoParseTimer: javax.swing.Timer? = null
     val container: JPanel = jBorderLayout {
         putCenterFill(createSplitPane())
     }
 
     init {
         Subscriber.add(this)
+        setupAutoparse()
+    }
+
+    private fun setupAutoparse() {
+        autoParseTimer = javax.swing.Timer(600) { handleParse() }.apply { isRepeats = false }
+        inputEditor.document.addDocumentListener(object : DocumentListener {
+            override fun documentChanged(event: DocumentEvent) {
+                autoParseTimer?.restart()
+            }
+        })
     }
 
     private fun createSplitPane(): JSplitPane {
@@ -89,7 +104,10 @@ class ParserWidget(
                         }
                         add(repairLoadingIndicator)
                         fillSpace()
-                        jButton("Options", { handleOptions() })
+                        val settingsBtn = InplaceButton("Parser settings", AllIcons.General.Settings) { handleSettings() }
+                        settingsBtn.preferredSize = java.awt.Dimension(22, 22)
+                        settingsBtn.maximumSize = java.awt.Dimension(22, 22)
+                        add(settingsBtn)
                     }
                     jHorizontalLinearLayout {
                         jButton("Support ❤️", { handleDonate() })
@@ -108,6 +126,10 @@ class ParserWidget(
             border = BorderFactory.createTitledBorder("Enter JSON string")
             toolTipText = "Enter raw json"
         }
+    }
+
+    private fun handleSettings() {
+        ParserSettingsDialog().show()
     }
 
     private fun handleDonate() {
@@ -138,8 +160,20 @@ class ParserWidget(
         }
 
         editor.component.componentPopupMenu = createPopupMenu()
+        installPopupMenu(editor)
 
         return editor
+    }
+
+    private fun installPopupMenu(editor: Editor) {
+        val popup = createPopupMenu()
+        editor.contentComponent.addMouseListener(object : java.awt.event.MouseAdapter() {
+            override fun mousePressed(e: java.awt.event.MouseEvent) = maybeShow(e)
+            override fun mouseReleased(e: java.awt.event.MouseEvent) = maybeShow(e)
+            private fun maybeShow(e: java.awt.event.MouseEvent) {
+                if (e.isPopupTrigger) popup.show(e.component, e.x, e.y)
+            }
+        })
     }
 
     private fun createPopupMenu() = JPopupMenu().apply {
@@ -177,18 +211,6 @@ class ParserWidget(
         } catch (_: Exception) {
             showHideGenerateCodeButton(false)
             AnalyticsService.track(AnalyticsConstant.PARSE_FAILED)
-        }
-    }
-
-    private fun handleOptions() {
-        AnalyticsService.track(AnalyticsConstant.ACTION_OPTIONS)
-        val options = listOf("Retrieve from URL", "Load from file")
-        val dialog = OptionDialog(options)
-        dialog.show()
-
-        when (dialog.selectedIndex) {
-            0 -> actionGetFromUrl()
-            1 -> actionChooseFile()
         }
     }
 
@@ -233,7 +255,10 @@ class ParserWidget(
             AnalyticsService.track(AnalyticsConstant.PARSE_FAILED)
         })
         showHideGenerateCodeButton(true)
-        bodyWidget.showRaw(jsonString)
+        bodyWidget.showMinify(jsonString)
+        bodyWidget.showYaml(jsonString)
+        bodyWidget.showSchema(jsonString)
+        bodyWidget.showStats(jsonString)
         bodyWidget.showTree(jsonString)
     }
 

@@ -1,7 +1,12 @@
 package com.godwin.jsonparser.ui.tabs
 
 import com.godwin.jsonparser.util.Log
+import com.intellij.icons.AllIcons
 import com.intellij.openapi.Disposable
+import com.intellij.openapi.actionSystem.ActionPlaces
+import com.intellij.openapi.actionSystem.AnAction
+import com.intellij.openapi.actionSystem.AnActionEvent
+import com.intellij.openapi.actionSystem.DefaultActionGroup
 import com.intellij.openapi.project.Project
 import com.intellij.ui.tabs.TabInfo
 import com.intellij.ui.tabs.TabsListener
@@ -26,6 +31,15 @@ class ParserTabsImpl(project: Project, parent: Disposable) : IParserTabs {
 
     override fun addTab(component: JComponent, name: String): IParserTabs {
         val tabInfo = TabInfo(component).setText(name)
+        val closeAction = object : AnAction("Close", "Close tab", AllIcons.Actions.Close) {
+            override fun actionPerformed(e: AnActionEvent) {
+                if (tabs.tabCount > 1) tabs.removeTab(tabInfo)
+            }
+        }
+        tabInfo.setTabLabelActions(
+            DefaultActionGroup(closeAction),
+            ActionPlaces.EDITOR_TAB
+        )
         tabs.addTab(tabInfo)
         tabs.select(tabInfo, true)
         return this
