@@ -37,7 +37,6 @@ dependencies {
     implementation(libs.godwinjk.jsonautorepair)
     implementation(libs.jayway.jsonpath)
     implementation(libs.burtwald.jmespath)
-    implementation(libs.datafaker)
     implementation(libs.jackson.yaml)
     // IntelliJ Platform Gradle Plugin Dependencies Extension - read more: https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin-dependencies-extension.html
     intellijPlatform {
@@ -52,6 +51,7 @@ dependencies {
         zipSigner()
         testFramework(TestFrameworkType.Platform)
     }
+    implementation(kotlin("stdlib-jdk8"))
 }
 
 // Configure IntelliJ Platform Gradle Plugin - read more: https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin-extension.html

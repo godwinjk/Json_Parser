@@ -2,6 +2,7 @@ package com.godwin.jsonparser.ui.dialog
 
 import com.godwin.jsonparser.services.JsonPersistence
 import com.intellij.openapi.ui.DialogWrapper
+import com.intellij.util.ui.JBUI
 import java.awt.GridBagConstraints
 import java.awt.GridBagLayout
 import java.awt.Insets
@@ -22,7 +23,7 @@ class ParserSettingsDialog : DialogWrapper(true) {
     override fun createCenterPanel(): JComponent {
         val panel = JPanel(GridBagLayout())
         val gbc = GridBagConstraints().apply {
-            insets = Insets(6, 8, 6, 8)
+            insets = JBUI.insets(6, 8)
             anchor = GridBagConstraints.WEST
             fill = GridBagConstraints.HORIZONTAL
         }
@@ -35,6 +36,7 @@ class ParserSettingsDialog : DialogWrapper(true) {
         gbc.gridx = 0; gbc.gridy = 1; gbc.gridwidth = 2
         panel.add(sortKeysCheckbox, gbc)
 
+        panel.add(JSeparator(), gbc)
         return panel
     }
 

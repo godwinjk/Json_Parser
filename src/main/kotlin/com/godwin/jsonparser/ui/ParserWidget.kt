@@ -4,9 +4,9 @@ import com.godwin.jsonparser.generator.common.ui.*
 import com.godwin.jsonparser.generator.common.util.FileGenerationUtil
 import com.godwin.jsonparser.rx.Publisher
 import com.godwin.jsonparser.rx.Subscriber
+import com.godwin.jsonparser.services.JsonPersistence
 import com.godwin.jsonparser.ui.components.CircularProgress
-import com.godwin.jsonparser.ui.dialog.ParserSettingsDialog
-import com.godwin.jsonparser.util.JsonDownloader
+import com.godwin.jsonparser.ui.dialog.HttpClientDialog
 import com.godwin.jsonparser.util.JsonUtils
 import com.godwin.jsonparser.util.NotificationUtil
 import com.godwin.jsonparser.util.analytics.AnalyticsConstant
@@ -16,7 +16,6 @@ import com.intellij.diff.DiffContentFactory
 import com.intellij.diff.DiffManager
 import com.intellij.diff.DiffRequestFactory
 import com.intellij.diff.merge.MergeResult
-import com.intellij.icons.AllIcons
 import com.intellij.ide.BrowserUtil
 import com.intellij.ide.ui.LafManagerListener
 import com.intellij.openapi.Disposable
@@ -24,15 +23,13 @@ import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.EditorFactory
+import com.intellij.openapi.editor.event.DocumentEvent
+import com.intellij.openapi.editor.event.DocumentListener
 import com.intellij.openapi.fileChooser.FileChooser
 import com.intellij.openapi.fileChooser.FileChooserDescriptor
-import com.intellij.openapi.progress.util.DispatchThreadProgressWindow
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.Messages
 import com.intellij.openapi.vfs.LocalFileSystem
-import com.intellij.openapi.editor.event.DocumentEvent
-import com.intellij.openapi.editor.event.DocumentListener
-import com.intellij.ui.InplaceButton
 import java.awt.BorderLayout
 import java.awt.Graphics
 import java.awt.Toolkit
@@ -60,10 +57,18 @@ class ParserWidget(
     init {
         Subscriber.add(this)
         setupAutoparse()
+        registerTutorialComponents()
+    }
+
+    private fun registerTutorialComponents() {
+        com.godwin.jsonparser.ui.onboarding.TutorialSteps.inputEditor = inputEditor.component as? javax.swing.JComponent
     }
 
     private fun setupAutoparse() {
-        autoParseTimer = javax.swing.Timer(600) { handleParse() }.apply { isRepeats = false }
+        autoParseTimer = Timer(600) {
+            handleParse()
+            saveSession()
+        }.apply { isRepeats = false }
         inputEditor.document.addDocumentListener(object : DocumentListener {
             override fun documentChanged(event: DocumentEvent) {
                 autoParseTimer?.restart()
@@ -91,12 +96,14 @@ class ParserWidget(
             bottomContainer {
                 jVerticalLinearLayout {
                     jHorizontalLinearLayout {
-                        jButton("Parse", { handleParse() })
+                        val parseBtn = jButton("Parse", { handleParse() })
+                        com.godwin.jsonparser.ui.onboarding.TutorialSteps.parseButton = parseBtn
                         repairButton = JButton("Repair").apply {
                             isVisible = false
                             addActionListener { handleRepair() }
                         }
                         add(repairButton)
+                        com.godwin.jsonparser.ui.onboarding.TutorialSteps.repairButton = repairButton
                         repairLoadingIndicator = CircularProgress().apply {
                             isVisible = false
                             preferredSize = java.awt.Dimension(18, 18)
@@ -104,12 +111,9 @@ class ParserWidget(
                         }
                         add(repairLoadingIndicator)
                         fillSpace()
-                        val settingsBtn = InplaceButton("Parser settings", AllIcons.General.Settings) { handleSettings() }
-                        settingsBtn.preferredSize = java.awt.Dimension(22, 22)
-                        settingsBtn.maximumSize = java.awt.Dimension(22, 22)
-                        add(settingsBtn)
+                        jButton("Support ❤️", { handleDonate() })
                     }
-                    jHorizontalLinearLayout {
+                    /*jHorizontalLinearLayout {
                         jButton("Support ❤️", { handleDonate() })
                         fillSpace()
                         if (isAndroidStudioOrIntelliJ()) {
@@ -119,17 +123,13 @@ class ParserWidget(
                             }
                             add(generateCodeButton)
                         }
-                    }
+                    }*/
                 }
             }
         }.apply {
             border = BorderFactory.createTitledBorder("Enter JSON string")
             toolTipText = "Enter raw json"
         }
-    }
-
-    private fun handleSettings() {
-        ParserSettingsDialog().show()
     }
 
     private fun handleDonate() {
@@ -312,7 +312,7 @@ class ParserWidget(
 
         // 1. Create contents
         val localContent = contentFactory.create(original)
-        val baseContent = contentFactory.create(original)
+        val baseContent = contentFactory.create(repaired)
         val remoteContent = contentFactory.create(repaired)
 
         // 2. IMPORTANT: Manually disable read-only mode for the center (base) document
@@ -395,30 +395,12 @@ class ParserWidget(
 
     private fun actionGetFromUrl() {
         AnalyticsService.track(AnalyticsConstant.ACTION_RETRIEVE_URL)
-        val inputData = Messages.showMultilineInputDialog(
-            project,
-            "Retrieve Content from Http URL\n\nTip: Paste your header in NEXT LINE with a colon(:)",
-            "URL",
-            null,
-            null,
-            null
-        )
-
-        if (!inputData.isNullOrEmpty()) {
-            val progressWindow = DispatchThreadProgressWindow(false, project)
-            progressWindow.isIndeterminate = true
-            progressWindow.setRunnable {
-                try {
-                    val data = JsonDownloader.getData(inputData)
-                    ApplicationManager.getApplication().runWriteAction {
-                        inputEditor.document.setText(data)
-                    }
-                } finally {
-                    progressWindow.stop()
-                }
+        val dialog = HttpClientDialog(project) { json ->
+            ApplicationManager.getApplication().runWriteAction {
+                inputEditor.document.setText(json)
             }
-            progressWindow.start()
         }
+        dialog.isVisible = true
     }
 
     private fun showHideRepairButton(isVisible: Boolean) {
@@ -433,6 +415,27 @@ class ParserWidget(
         SwingUtilities.invokeLater {
             generateCodeButton?.isEnabled = isEnabled
         }
+    }
+
+
+    private fun saveSession() {
+        try {
+            val prefs = JsonPersistence.getInstance()
+            val index = getTabIndex()
+            if (index < 0) return
+            val json = inputEditor.document.text
+            while (prefs.tabSessions.size <= index) prefs.tabSessions.add("")
+            prefs.tabSessions[index] = json
+        } catch (_: Exception) {
+        }
+    }
+
+    private fun getTabIndex(): Int {
+        val tabs = parserWidget.getTabs() ?: return 0
+        for (i in 0 until tabs.getTabCount()) {
+            if (tabs.getTabAt(i).component == container) return i
+        }
+        return -1
     }
 
     private fun isAndroidStudioOrIntelliJ(): Boolean {

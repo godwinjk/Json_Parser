@@ -2,7 +2,6 @@ package com.godwin.jsonparser.ui
 
 import com.fasterxml.jackson.core.JsonProcessingException
 import com.godwin.jsonparser.action.CopyToClipBoardAction
-import com.godwin.jsonparser.action.JBRadioAction
 import com.godwin.jsonparser.generator.common.ui.jBorderLayout
 import com.godwin.jsonparser.util.EditorHintsNotifier
 import com.godwin.jsonparser.util.JsonUtils
@@ -17,8 +16,7 @@ import com.intellij.ide.highlighter.XmlFileType
 import com.intellij.json.JsonFileType
 import com.intellij.json.highlighting.JsonSyntaxHighlighterFactory
 import com.intellij.lang.Language
-import com.intellij.openapi.actionSystem.*
-import com.intellij.openapi.command.WriteCommandAction
+import com.intellij.openapi.actionSystem.*import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.EditorFactory
 import com.intellij.openapi.editor.colors.EditorColorsManager
@@ -33,8 +31,11 @@ import com.intellij.psi.tree.IElementType
 import com.intellij.ui.InplaceButton
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.treeStructure.Tree
+import org.jetbrains.yaml.YAMLFileType
+import org.jetbrains.yaml.YAMLSyntaxHighlighter
 import java.awt.BorderLayout
 import java.awt.CardLayout
+import java.awt.Dimension
 import javax.swing.*
 import javax.swing.tree.DefaultMutableTreeNode
 import javax.swing.tree.DefaultTreeCellRenderer
@@ -48,8 +49,15 @@ class ParserBodyWidget(private val project: Project) {
     private val yamlEditor: Editor = createEditor()
     private val schemaEditor: Editor = createEditor()
     private val outputTree = Tree()
+    private val treeSearchField = JTextField().apply {
+        toolTipText = "Search keys or values..."
+        maximumSize = Dimension(Int.MAX_VALUE, 28)
+    }
+    private val treePathLabel = JLabel(" ").apply {
+        border = BorderFactory.createEmptyBorder(2, 6, 2, 6)
+        font = font.deriveFont(11f)
+    }
     private val previewTypeCardLayout = CardLayout()
-    private val buttonGroup = ButtonGroup()
     private val statsBar = JLabel(" ").apply {
         border = BorderFactory.createEmptyBorder(2, 6, 2, 6)
         font = font.deriveFont(11f)
@@ -95,14 +103,25 @@ class ParserBodyWidget(private val project: Project) {
 
     private fun createToolbar(previewTypeListener: (String) -> Unit): JComponent {
         val simpleToolWindowPanel = SimpleToolWindowPanel(true, true)
+        var currentTab = "Pretty"
+
+        fun tabAction(name: String, tooltip: String, icon: javax.swing.Icon) =
+            object : ToggleAction(tooltip, tooltip, icon) {
+                override fun isSelected(e: AnActionEvent) = currentTab == name
+                override fun setSelected(e: AnActionEvent, state: Boolean) {
+                    if (state) { currentTab = name; previewTypeListener(name) }
+                }
+                override fun getActionUpdateThread() = com.intellij.openapi.actionSystem.ActionUpdateThread.EDT
+            }
 
         val group = DefaultActionGroup(
-            JBRadioAction("Pretty", "Pretty", buttonGroup, { previewTypeListener(it.actionCommand) }, true),
-            JBRadioAction("Tree", "Tree", buttonGroup, { previewTypeListener(it.actionCommand) }),
-            JBRadioAction("Minify", "Minify", buttonGroup, { previewTypeListener(it.actionCommand) }),
-            JBRadioAction("Query", "Query", buttonGroup, { previewTypeListener(it.actionCommand) }),
-            JBRadioAction("YAML", "YAML", buttonGroup, { previewTypeListener(it.actionCommand) }),
-            JBRadioAction("Schema", "Schema", buttonGroup, { previewTypeListener(it.actionCommand) }),
+            tabAction("Pretty", "Pretty", AllIcons.FileTypes.Json),
+            tabAction("Tree", "Tree", AllIcons.Actions.ShowAsTree),
+            tabAction("YAML", "YAML", AllIcons.FileTypes.Yaml),
+            tabAction("Query", "Query", AllIcons.Actions.Find),
+            tabAction("Minify", "Minify", AllIcons.Actions.Collapseall),
+            tabAction("Schema", "Schema", AllIcons.FileTypes.JsonSchema),
+            Separator.getInstance(),
             CopyToClipBoardAction(
                 "Copy to Clipboard",
                 "Click to copy selected text to clipboard",
@@ -110,7 +129,7 @@ class ParserBodyWidget(private val project: Project) {
             ),
             object : AnAction("Use Soft Wraps", "Toggle soft wraps", AllIcons.Actions.ToggleSoftWrap) {
                 override fun actionPerformed(e: AnActionEvent) {
-                    val editor = when (buttonGroup.selection?.actionCommand?.lowercase()) {
+                    val editor = when (currentTab.lowercase()) {
                         "pretty" -> prettyEditor
                         "minify" -> minifyEditor
                         "query" -> queryEditor
@@ -124,7 +143,12 @@ class ParserBodyWidget(private val project: Project) {
         )
 
         val toolbar = ActionManager.getInstance().createActionToolbar(ActionPlaces.TOOLBAR, group, true)
+        toolbar.targetComponent = simpleToolWindowPanel
         simpleToolWindowPanel.toolbar = toolbar.component
+
+        // Register toolbar component for tutorial (the whole toolbar panel)
+        com.godwin.jsonparser.ui.onboarding.TutorialSteps.prettyTabButton = simpleToolWindowPanel
+
         return simpleToolWindowPanel
     }
 
@@ -165,7 +189,86 @@ class ParserBodyWidget(private val project: Project) {
         add(queryEditor.component, BorderLayout.CENTER)
     }
 
-    private fun createTreePanel() = JBScrollPane(outputTree)
+    private fun createTreePanel(): JComponent {
+        val searchBar = JPanel(BorderLayout(4, 0)).apply {
+            border = BorderFactory.createEmptyBorder(2, 2, 2, 2)
+            val clearBtn = JButton("×").apply {
+                preferredSize = Dimension(24, 24)
+                addActionListener { treeSearchField.text = ""; applyTreeSearch("") }
+            }
+            add(treeSearchField, BorderLayout.CENTER)
+            add(clearBtn, BorderLayout.EAST)
+        }
+        treeSearchField.document.addDocumentListener(object : javax.swing.event.DocumentListener {
+            override fun insertUpdate(e: javax.swing.event.DocumentEvent) = applyTreeSearch(treeSearchField.text)
+            override fun removeUpdate(e: javax.swing.event.DocumentEvent) = applyTreeSearch(treeSearchField.text)
+            override fun changedUpdate(e: javax.swing.event.DocumentEvent) = applyTreeSearch(treeSearchField.text)
+        })
+        outputTree.addTreeSelectionListener { e ->
+            val path = e.path ?: return@addTreeSelectionListener
+            val jsonPath = buildJsonPath(path)
+            treePathLabel.text = "  $jsonPath"
+        }
+        return JPanel(BorderLayout()).apply {
+            add(searchBar, BorderLayout.NORTH)
+            add(JBScrollPane(outputTree), BorderLayout.CENTER)
+            add(treePathLabel, BorderLayout.SOUTH)
+        }
+    }
+
+    private fun buildJsonPath(treePath: javax.swing.tree.TreePath): String {
+        val parts = mutableListOf<String>()
+        for (i in 1 until treePath.pathCount) {
+            val node = treePath.getPathComponent(i).toString()
+            // node text is like "key: value" or "key {n}" — extract key
+            val key = node.substringBefore(":").substringBefore("{").trim()
+            if (key.isNotBlank()) parts.add(key)
+        }
+        return if (parts.isEmpty()) "$" else "$.${parts.joinToString(".")}"
+    }
+
+    private fun applyTreeSearch(query: String) {
+        val model = outputTree.model as? javax.swing.tree.DefaultTreeModel ?: return
+        val root = model.root as? javax.swing.tree.DefaultMutableTreeNode ?: return
+        if (query.isBlank()) {
+            // Restore full tree
+            expandAllNodes(outputTree, 0, outputTree.rowCount)
+            outputTree.cellRenderer = null
+            changeIcon()
+            return
+        }
+        val lower = query.lowercase()
+        // Set custom renderer to highlight matches
+        outputTree.setCellRenderer(object : javax.swing.tree.DefaultTreeCellRenderer() {
+            override fun getTreeCellRendererComponent(
+                tree: javax.swing.JTree, value: Any?, sel: Boolean,
+                expanded: Boolean, leaf: Boolean, row: Int, hasFocus: Boolean
+            ): java.awt.Component {
+                val comp = super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus)
+                val text = value.toString()
+                if (text.lowercase().contains(lower)) {
+                    foreground = java.awt.Color(0, 120, 215)
+                    font = font.deriveFont(java.awt.Font.BOLD)
+                } else {
+                    foreground = if (sel) textSelectionColor else textNonSelectionColor
+                    font = font.deriveFont(java.awt.Font.PLAIN)
+                }
+                return comp
+            }
+        })
+        // Expand all and scroll to first match
+        expandAllNodes(outputTree, 0, outputTree.rowCount)
+        for (i in 0 until outputTree.rowCount) {
+            val path = outputTree.getPathForRow(i)
+            val node = path?.lastPathComponent?.toString() ?: continue
+            if (node.lowercase().contains(lower)) {
+                outputTree.scrollPathToVisible(path)
+                outputTree.selectionPath = path
+                break
+            }
+        }
+        outputTree.repaint()
+    }
 
     private fun executeQuery() {
         if (currentJson.isEmpty()) return
@@ -250,6 +353,7 @@ class ParserBodyWidget(private val project: Project) {
             HtmlFileType.INSTANCE -> HtmlFileHighlighter()
             XmlFileType.INSTANCE -> XmlFileHighlighter()
             JsonFileType.INSTANCE -> JsonSyntaxHighlighterFactory.getSyntaxHighlighter(fileType, project, null)
+            YAMLFileType.YML -> YAMLSyntaxHighlighter()
             else -> PlainSyntaxHighlighter()
         }!!
     }
@@ -315,6 +419,10 @@ class ParserBodyWidget(private val project: Project) {
         try {
             val yaml = if (text.isEmpty()) "" else JsonUtils.toYaml(text)
             writeToReadOnlyEditor(yamlEditor, yaml)
+            val yamlFileType = FileTypeManager.getInstance().findFileTypeByName("YAML")
+            if (yamlFileType is LanguageFileType) {
+                (yamlEditor as EditorEx).highlighter = createHighlighter(yamlFileType)
+            }
         } catch (e: Exception) {
             Log.e("YAML error: ${e.message}")
         }

@@ -7,7 +7,6 @@ import com.fasterxml.jackson.core.util.DefaultPrettyPrinter
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper
 import com.godwin.jsonparser.services.JsonPersistence
 
@@ -21,13 +20,34 @@ object JsonUtils {
     }
 
     fun formatJson(jsonStr: String): String {
-        val prefs = JsonPersistence.getInstance()
-        val printer = CustomPrettyPrinter(prefs.indentSize)
+        val (indentSize, sortKeys) = try {
+            val prefs = JsonPersistence.getInstance()
+            prefs.indentSize to prefs.sortKeys
+        } catch (_: Exception) {
+            2 to false
+        }
+        val printer = CustomPrettyPrinter(indentSize)
         val node = mapper.readTree(jsonStr)
-        val writeMapper = if (prefs.sortKeys) {
-            mapper.copy().configure(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS, true)
-        } else mapper
-        return writeMapper.writer(printer).writeValueAsString(node)
+        val finalNode = if (sortKeys) sortNode(node) else node
+        return mapper.writer(printer).writeValueAsString(finalNode)
+    }
+
+    private fun sortNode(node: JsonNode): JsonNode {
+        return when {
+            node.isObject -> {
+                val sorted = mapper.createObjectNode()
+                node.fields().asSequence()
+                    .sortedBy { it.key }
+                    .forEach { (k, v) -> sorted.set<JsonNode>(k, sortNode(v)) }
+                sorted
+            }
+            node.isArray -> {
+                val arr = mapper.createArrayNode()
+                node.forEach { arr.add(sortNode(it)) }
+                arr
+            }
+            else -> node
+        }
     }
 
     fun isValidJson(jsonStr: String): Boolean {
@@ -191,7 +211,7 @@ object JsonUtils {
         return result
     }
 
-    private class CustomPrettyPrinter(indentSize: Int = 2) : DefaultPrettyPrinter() {
+    private class CustomPrettyPrinter(private val indentSize: Int = 2) : DefaultPrettyPrinter() {
         init {
             _objectFieldValueSeparatorWithSpaces = ":"
             val indent = " ".repeat(indentSize)
@@ -199,7 +219,7 @@ object JsonUtils {
             _arrayIndenter = DefaultIndenter(indent, "\n")
         }
 
-        override fun createInstance() = CustomPrettyPrinter()
+        override fun createInstance() = CustomPrettyPrinter(indentSize)
     }
 
     class CustomMapper : ObjectMapper() {

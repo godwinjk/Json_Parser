@@ -14,22 +14,12 @@ class DiffCheckerAction(private val parserWidget: IParserWidget) : AnAction(
 ) {
     override fun actionPerformed(e: AnActionEvent) {
         val project = e.project ?: return
-        val currentJson = parserWidget.getTabs()
-            ?.getCurrentComponent()
-            ?.let { it as? javax.swing.JPanel }
-            ?.let { getCurrentJson(it) } ?: ""
-        JsonDiffDialog(project, currentJson).show()
+        val currentJson = findEditorText(parserWidget.getTabs()?.getCurrentComponent()) ?: ""
+        JsonDiffDialog.show(project, currentJson)
     }
 
-    // Walk the component tree to find the ParserWidget's input editor text
-    private fun getCurrentJson(panel: javax.swing.JPanel): String {
-        // ParserWidget publishes via Subscriber — we read from the active tab's editor
-        // by accessing the stored text through the widget interface
-        return parserWidget.getTabs()?.getCurrentComponent()
-            ?.let { findEditorText(it) } ?: ""
-    }
-
-    private fun findEditorText(component: java.awt.Component): String? {
+    private fun findEditorText(component: java.awt.Component?): String? {
+        component ?: return null
         if (component is com.intellij.openapi.editor.impl.EditorComponentImpl) {
             return component.editor.document.text
         }

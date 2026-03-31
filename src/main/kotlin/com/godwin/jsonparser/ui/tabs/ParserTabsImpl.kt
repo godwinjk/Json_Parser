@@ -8,6 +8,7 @@ import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.DefaultActionGroup
 import com.intellij.openapi.project.Project
+import com.intellij.ui.InplaceButton
 import com.intellij.ui.tabs.TabInfo
 import com.intellij.ui.tabs.TabsListener
 import com.intellij.ui.tabs.impl.JBEditorTabs
@@ -19,6 +20,7 @@ class ParserTabsImpl(project: Project, parent: Disposable) : IParserTabs {
     }
 
     private var listener: DebuggerTabListener? = null
+    var removeSessionCallback: ((Int) -> Unit)? = null
 
     init {
         tabs.addListener(createListener())
@@ -85,9 +87,11 @@ class ParserTabsImpl(project: Project, parent: Disposable) : IParserTabs {
         }
 
         override fun tabRemoved(tabInfo: TabInfo) {
+            val index = tabs.tabs.indexOf(tabInfo)
             if (listener != null && getTabCount() == 1) {
                 listener?.onLast()
             }
+            removeSessionCallback?.invoke(index)
         }
 
         override fun tabsMoved() {}

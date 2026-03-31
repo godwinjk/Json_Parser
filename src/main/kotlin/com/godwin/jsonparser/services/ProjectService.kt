@@ -6,9 +6,12 @@ import com.godwin.jsonparser.action.DiffCheckerAction
 import com.godwin.jsonparser.action.GenerateDummyJsonAction
 import com.godwin.jsonparser.action.LoadFromFileAction
 import com.godwin.jsonparser.action.LoadFromUrlAction
+import com.godwin.jsonparser.action.ParserSettingsAction
+import com.godwin.jsonparser.action.StartOnboardingAction
 import com.godwin.jsonparser.ui.IParserWidget
 import com.godwin.jsonparser.ui.ParserMainPanel
 import com.godwin.jsonparser.ui.ParserToolWindowPanel
+import com.godwin.jsonparser.ui.onboarding.TutorialSteps
 import com.intellij.ide.util.PropertiesComponent
 import com.intellij.openapi.actionSystem.ActionManager
 import com.intellij.openapi.actionSystem.ActionPlaces
@@ -62,26 +65,35 @@ class ProjectService {
     }
 
     private fun createContent(content: Content): IParserWidget {
-        val debuggerWidget: IParserWidget = ParserMainPanel(project, content)
-        debuggerWidget.createParserSession()
+        val debuggerWidget = ParserMainPanel(project, content)
+        debuggerWidget.restoreSessionsOrDefault()
         return debuggerWidget
     }
 
     private fun createToolBar(debuggerWidget: IParserWidget): ActionToolbar {
         val group = DefaultActionGroup()
-        // Group 1: tab management
-        group.add(AddTabAction(debuggerWidget))
-        group.add(CloseTabAction(debuggerWidget))
+        val addTab = AddTabAction(debuggerWidget)
+        val closeTab = CloseTabAction(debuggerWidget)
+        val loadFile = LoadFromFileAction(debuggerWidget)
+        val loadUrl = LoadFromUrlAction(debuggerWidget)
+        val generate = GenerateDummyJsonAction(debuggerWidget)
+        val diff = DiffCheckerAction(debuggerWidget)
+        val settings = ParserSettingsAction()
+
+
+        group.add(addTab)
+        group.add(closeTab)
         group.add(Separator.getInstance())
-        // Group 2: load JSON
-        group.add(LoadFromFileAction(debuggerWidget))
-        group.add(LoadFromUrlAction(debuggerWidget))
+        group.add(loadFile)
+        group.add(loadUrl)
         group.add(Separator.getInstance())
-        // Group 3: generate
-        group.add(GenerateDummyJsonAction(debuggerWidget))
+        group.add(generate)
         group.add(Separator.getInstance())
-        // Group 4: tools
-        group.add(DiffCheckerAction(debuggerWidget))
+        group.add(diff)
+        group.add(Separator.getInstance())
+        group.add(settings)
+        group.add(Separator.getInstance())
+        group.add(StartOnboardingAction())
         val toolbar = ActionManager.getInstance().createActionToolbar(ActionPlaces.TOOLBAR, group, false)
         toolbar.orientation = SwingConstants.VERTICAL
         return toolbar

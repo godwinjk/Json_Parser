@@ -24,6 +24,7 @@ class JsonPersistence : PersistentStateComponent<JsonPersistence> {
     var repairUsingAi: Boolean = true
     var indentSize: Int = 2
     var sortKeys: Boolean = false
+    var tabSessions: MutableList<String> = mutableListOf()
     
     override fun getState(): JsonPersistence {
         return this

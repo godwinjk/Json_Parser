@@ -2,7 +2,6 @@ package com.godwin.jsonparser.ui
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
-import java.awt.Point
 import java.awt.event.KeyEvent
 import java.awt.event.KeyListener
 import javax.swing.*
@@ -22,7 +21,6 @@ class QueryAutoComplete(
     private var allPaths: List<String> = emptyList()
     private var suppressListener = false
 
-    // Syntax token suggestions per query type
     private val jsonPathTokens = listOf("[*]", "[0]", "[?(@.)]", "..", "length()", "keys()", "min()", "max()", "avg()")
     private val jmesPathTokens = listOf("[*]", "[0]", "[?()]", "length()", "keys(@)", "values(@)", "sort(@)", "reverse(@)", "to_array(@)")
 
@@ -37,11 +35,7 @@ class QueryAutoComplete(
             override fun keyPressed(e: KeyEvent) {
                 when (e.keyCode) {
                     KeyEvent.VK_ESCAPE -> popup.isVisible = false
-                    KeyEvent.VK_DOWN -> {
-                        if (popup.isVisible && popup.componentCount > 0) {
-                            (popup.getComponent(0) as? JList<*>)?.requestFocusInWindow()
-                        }
-                    }
+                    KeyEvent.VK_DOWN -> (popup.getComponent(0) as? JList<*>)?.requestFocusInWindow()
                     else -> {}
                 }
             }
@@ -53,7 +47,7 @@ class QueryAutoComplete(
     fun updateJson(json: String) {
         allPaths = try {
             if (json.isBlank()) emptyList()
-            else extractPaths(mapper.readTree(json), "", queryTypeProvider())
+            else extractPaths(mapper.readTree(json), queryTypeProvider())
         } catch (_: Exception) {
             emptyList()
         }
@@ -68,21 +62,17 @@ class QueryAutoComplete(
         val tokens = if (isJsonPath) jsonPathTokens else jmesPathTokens
         val paths = if (isJsonPath) allPaths else allPaths.map { it.removePrefix("$.") }
 
-        val suggestions = buildSuggestions(text, paths, tokens)
-        showPopup(suggestions)
+        showPopup(buildSuggestions(text, paths, tokens))
     }
 
     private fun buildSuggestions(text: String, paths: List<String>, tokens: List<String>): List<String> {
         val lower = text.lowercase()
-        // Paths that start with the typed text
         val matchingPaths = paths.filter { it.lowercase().startsWith(lower) && it != text }
-        // Tokens that could follow the current text (user typed a dot or bracket)
         val matchingTokens = if (text.endsWith(".") || text.endsWith("[")) {
-            tokens
+            tokens.map { text + it }
         } else {
-            tokens.filter { it.lowercase().startsWith(lower) }
-        }.map { text + it }
-
+            tokens.filter { it.lowercase().startsWith(lower) }.map { text + it }
+        }
         return (matchingPaths + matchingTokens).distinct().take(12)
     }
 
@@ -114,9 +104,6 @@ class QueryAutoComplete(
 
         popup.add(JScrollPane(list))
         popup.isFocusable = false
-
-        val pos: Point = field.locationOnScreen
-        SwingUtilities.convertPointFromScreen(pos, field.parent ?: field)
         popup.show(field, 0, field.height)
     }
 
@@ -130,26 +117,30 @@ class QueryAutoComplete(
         field.caretPosition = field.text.length
     }
 
-    private fun extractPaths(node: JsonNode, prefix: String, queryType: String): List<String> {
+    private fun extractPaths(node: JsonNode, queryType: String): List<String> {
         val paths = mutableListOf<String>()
         val isJsonPath = queryType == "JSONPath"
-        val root = if (isJsonPath) "$" else ""
+        val dollarDot = "$" + "."
 
         fun walk(n: JsonNode, path: String) {
             when {
-                n.isObject -> n.fields().forEach { (key, child) ->
-                    val childPath = if (path.isEmpty()) key else "$path.$key"
-                    val fullPath = if (isJsonPath) "$$childPath" else childPath
-                    paths.add(fullPath)
-                    walk(child, childPath)
+                n.isObject -> {
+                    val iter = n.fields()
+                    while (iter.hasNext()) {
+                        val entry = iter.next()
+                        val key = entry.key
+                        val child = entry.value
+                        val childPath = if (path.isEmpty()) key else "$path.$key"
+                        paths.add(if (isJsonPath) dollarDot + childPath else childPath)
+                        walk(child, childPath)
+                    }
                 }
                 n.isArray -> {
-                    val arrayPath = if (isJsonPath) "$path[*]" else "$path[*]"
-                    val fullPath = if (isJsonPath) "$$arrayPath" else arrayPath
-                    paths.add(fullPath)
+                    val arrayPath = "$path[*]"
+                    paths.add(if (isJsonPath) dollarDot + arrayPath else arrayPath)
                     if (n.size() > 0) walk(n[0], "$path[0]")
                 }
-                else -> {} // leaf — already added by parent
+                else -> {}
             }
         }
 
