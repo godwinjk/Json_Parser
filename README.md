@@ -4,6 +4,8 @@
 [![Version](https://img.shields.io/jetbrains/plugin/v/10650-json-parser.svg)](https://plugins.jetbrains.com/plugin/10650-json-parser)
 [![Downloads](https://img.shields.io/jetbrains/plugin/d/10650-json-parser.svg)](https://plugins.jetbrains.com/plugin/10650-json-parser)
 
+[![](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://paypal.me/godwinj)  OR 
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/S6S0176OVQ)
 # JSON PARSER
 
 <!-- Plugin description -->
@@ -27,6 +29,7 @@ JSON Parser is a powerful tool that simplifies working with JSON — from instan
 16. Repair malformed JSON automatically using built-in and AI-powered strategies.
 17. Generate Dart code efficiently and with precision.
 18. Create Kotlin code seamlessly using advanced tools.
+19. Your JSON input is automatically saved locally and restored on restart — no cloud sync, fully private.
 
 <!-- Plugin description end -->
 
@@ -37,6 +40,7 @@ JSON Parser is a powerful tool that simplifies working with JSON — from instan
 - [x] Validate Json
 - [x] Load Json from local (dedicated sidebar button)
 - [x] Retrieve Json from web (dedicated sidebar button)
+- [x] JSON data persistance(Data will saved locally)
 - [x] Multiple tabs with per-tab close button
 - [x] Tree model view
 - [x] JSONPath & JMESPath query with autocomplete suggestions
@@ -69,6 +73,21 @@ JSON Parser is a powerful tool that simplifies working with JSON — from instan
 
 ## Functions example
 
+<img src="assets/pretty.gif" width="400">
+<img src="assets/input.gif" width="400">
+<img src="assets/repair.gif" width="400">
+<img src="assets/tree.gif" width="400">
+<img src="assets/yaml.gif" width="400">
+<img src="assets/query.gif" width="400">
+<img src="assets/minify.gif" width="400">
+<img src="assets/schema.gif" width="400">
+<img src="assets/softwrap.gif" width="400">
+<img src="assets/diff.gif" width="400">
+<img src="assets/dummy.gif" width="400">
+<img src="assets/add_tabs.gif" width="400">
+<img src="assets/close_tab.gif" width="400">
+<img src="assets/load_file.gif" width="400">
+<img src="assets/load_url.gif" width="400">
 <img src="assets/json_fn.gif" width="400">
 <img src="assets/json_tabs.gif" width="400">
 <img src="assets/retreive_web.gif" width="400">
@@ -98,28 +117,47 @@ A massive update packed with new tools for power users.
 - Inline help popup with syntax reference and examples for both query languages
 
 **Views**
-- YAML tab — convert any JSON to YAML instantly
+- YAML tab — convert any JSON to YAML instantly with syntax highlighting
 - Schema tab — infer a JSON Schema from your JSON structure automatically
 - Minify tab — collapse JSON to a single line
-- Statistics bar — see key count, nesting depth, object/array counts, and file size at a glance
+- Statistics bar — key count, nesting depth, object/array counts, and file size at a glance
 
-**Dummy JSON Generator**
-- Generate realistic fake JSON data for testing
-- Choose Object or Array, set property count (1–100), nesting depth (1–10), and array size
-- Powered by DataFaker — names, emails, addresses, numbers, and more
+**HTTP Client**
+- Full HTTP client dialog replacing the basic URL input
+- Supports GET/POST with custom headers table and request body
+- Response loads into a new tab automatically
 
 **JSON Diff**
-- Side-by-side diff checker in the sidebar
-- Left panel pre-filled with your current tab's JSON
-- Paste any JSON on the right — it auto-formats and shows structural differences instantly
+- Side-by-side editable diff viewer using IntelliJ's native diff engine
+- Inline line-level highlighting — same as git merge view
+- Auto-formats pasted JSON on the right side
+
+**Dummy JSON Generator**
+- Generate realistic fake JSON for testing — no external library required
+- Choose Object or Array, set property count (1–100), nesting depth (1–10), and array size
+
+**Tab Persistence**
+- Sessions saved and restored across IDE restarts (up to 10 tabs)
+- Tab content auto-saved on every parse
+
+**Tree Search**
+- Search bar above the tree view — filters and highlights matching nodes
+- Shows JSONPath of the selected node in a label below the tree
+
+**Onboarding Tutorial**
+- Interactive tutorial with GIFs for every feature
+- Auto-shows on first install, accessible anytime from the sidebar
 
 **Quality of Life**
 - Auto-parse — results update as you type, no need to press Parse
 - Load from file or URL opens a new tab automatically
-- Close button on each tab — no more hunting for the close action
-- Custom indentation size (1–8 spaces) and alphabetical key sorting in parser settings
-- Settings gear icon in the input panel for quick access
-- AI-powered JSON repair with fallback to local repair engine
+- Custom indentation size (1–8 spaces) and alphabetical key sorting
+- Sort keys now correctly sorts nested objects recursively
+- Settings moved to sidebar for quick access
+- Dart freezed code generation fixed — correct `_$ClassName` mixin and `fromJson` generation
+- `JsonPersistence` boolean setters fixed — settings now persist correctly across restarts
+- File chooser opens at project root instead of home directory
+- Toolbar creation warning resolved by setting `targetComponent`
 
 ### Version 1.9.4
 
