@@ -8,7 +8,7 @@ import com.godwin.jsonparser.util.analytics.AnalyticsService
 import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
-import com.intellij.openapi.actionSystem.PlatformDataKeys
+import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.wm.ToolWindowManager
 
 class OpenParserAction : AnAction() {
@@ -16,7 +16,7 @@ class OpenParserAction : AnAction() {
         AnalyticsService.track(AnalyticsConstant.ACTION_OPEN_PARSER)
         try {
             val project = e.project ?: return
-            val editor = e.getData(PlatformDataKeys.EDITOR)
+            val editor = FileEditorManager.getInstance(project).selectedTextEditor
             if (editor == null) {
                 Log.i("Not in editor window")
                 return

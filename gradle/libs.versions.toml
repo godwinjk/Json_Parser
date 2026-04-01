@@ -5,11 +5,17 @@ jsonautorepair = "1.0.2"
 changelog = "2.2.1"
 intelliJPlatform = "2.2.1"
 kotlin = "1.9.25"
+jsonpath = "2.9.0"
+jmespath = "0.6.0"
+jackson-yaml = "2.17.2"
 
 [libraries]
 junit = { module = "junit:junit", version.ref = "junit" }
 squareup-kotlinpoet = { module = "com.squareup:kotlinpoet", version.ref = "kotlinpoet" }
 godwinjk-jsonautorepair = { module = "com.github.godwinjk:JsonAutoRepair", version.ref = "jsonautorepair" }
+jayway-jsonpath = { module = "com.jayway.jsonpath:json-path", version.ref = "jsonpath" }
+burtwald-jmespath = { module = "io.burt:jmespath-jackson", version.ref = "jmespath" }
+jackson-yaml = { module = "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml", version.ref = "jackson-yaml" }
 
 [plugins]
 changelog = { id = "org.jetbrains.changelog", version.ref = "changelog" }

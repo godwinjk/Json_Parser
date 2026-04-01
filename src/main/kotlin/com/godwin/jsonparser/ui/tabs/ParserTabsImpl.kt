@@ -1,7 +1,13 @@
 package com.godwin.jsonparser.ui.tabs
 
+import com.godwin.jsonparser.action.CloseTabAction
 import com.godwin.jsonparser.util.Log
+import com.intellij.icons.AllIcons
 import com.intellij.openapi.Disposable
+import com.intellij.openapi.actionSystem.ActionPlaces
+import com.intellij.openapi.actionSystem.AnAction
+import com.intellij.openapi.actionSystem.AnActionEvent
+import com.intellij.openapi.actionSystem.DefaultActionGroup
 import com.intellij.openapi.project.Project
 import com.intellij.ui.tabs.TabInfo
 import com.intellij.ui.tabs.TabsListener
@@ -14,6 +20,7 @@ class ParserTabsImpl(project: Project, parent: Disposable) : IParserTabs {
     }
 
     private var listener: DebuggerTabListener? = null
+    var removeSessionCallback: ((Int) -> Unit)? = null
 
     init {
         tabs.addListener(createListener())
@@ -24,8 +31,11 @@ class ParserTabsImpl(project: Project, parent: Disposable) : IParserTabs {
         return this
     }
 
+    private var pendingRemoveIndex = -1
+
     override fun addTab(component: JComponent, name: String): IParserTabs {
         val tabInfo = TabInfo(component).setText(name)
+
         tabs.addTab(tabInfo)
         tabs.select(tabInfo, true)
         return this
@@ -37,13 +47,16 @@ class ParserTabsImpl(project: Project, parent: Disposable) : IParserTabs {
 
     override fun closeTab(index: Int): IParserTabs {
         if (index in 0 until tabs.tabCount) {
+            pendingRemoveIndex = index
             tabs.removeTab(tabs.getTabAt(index))
         }
         return this
     }
 
     override fun closeCurrentTab(): IParserTabs {
-        tabs.removeTab(tabs.selectedInfo)
+        val selected = tabs.selectedInfo ?: return this
+        pendingRemoveIndex = tabs.tabs.indexOf(selected)
+        tabs.removeTab(selected)
         return this
     }
 
@@ -57,22 +70,20 @@ class ParserTabsImpl(project: Project, parent: Disposable) : IParserTabs {
 
     private fun createListener() = object : TabsListener {
         override fun selectionChanged(oldTab: TabInfo?, newTab: TabInfo?) {
-            try {
-                Log.i("On Tab selection change: ${oldTab?.text} to ${newTab?.text}")
-            } catch (ignored: Exception) {
-            }
+            try { Log.i("On Tab selection change: ${oldTab?.text} to ${newTab?.text}") }
+            catch (ignored: Exception) {}
         }
 
         override fun beforeSelectionChanged(oldTab: TabInfo?, newTab: TabInfo?) {
-            try {
-                Log.i("On before Tab selection change: ${oldTab?.text} to ${newTab?.text}")
-            } catch (ignored: Exception) {
-            }
+            try { Log.i("On before Tab selection change: ${oldTab?.text} to ${newTab?.text}") }
+            catch (ignored: Exception) {}
         }
 
         override fun tabRemoved(tabInfo: TabInfo) {
-            if (listener != null && getTabCount() == 1) {
-                listener?.onLast()
+            if (listener != null && getTabCount() == 1) listener?.onLast()
+            if (pendingRemoveIndex >= 0) {
+                removeSessionCallback?.invoke(pendingRemoveIndex)
+                pendingRemoveIndex = -1
             }
         }
 
