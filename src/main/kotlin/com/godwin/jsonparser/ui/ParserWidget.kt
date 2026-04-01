@@ -61,7 +61,8 @@ class ParserWidget(
     }
 
     private fun registerTutorialComponents() {
-        com.godwin.jsonparser.ui.onboarding.TutorialSteps.inputEditor = inputEditor.component as? javax.swing.JComponent
+        com.godwin.jsonparser.ui.tutorial.TutorialSteps.inputEditor =
+            inputEditor.component as? javax.swing.JComponent
     }
 
     private fun setupAutoparse() {
@@ -97,13 +98,13 @@ class ParserWidget(
                 jVerticalLinearLayout {
                     jHorizontalLinearLayout {
                         val parseBtn = jButton("Parse", { handleParse() })
-                        com.godwin.jsonparser.ui.onboarding.TutorialSteps.parseButton = parseBtn
+                        com.godwin.jsonparser.ui.tutorial.TutorialSteps.parseButton = parseBtn
                         repairButton = JButton("Repair").apply {
                             isVisible = false
                             addActionListener { handleRepair() }
                         }
                         add(repairButton)
-                        com.godwin.jsonparser.ui.onboarding.TutorialSteps.repairButton = repairButton
+                        com.godwin.jsonparser.ui.tutorial.TutorialSteps.repairButton = repairButton
                         repairLoadingIndicator = CircularProgress().apply {
                             isVisible = false
                             preferredSize = java.awt.Dimension(18, 18)

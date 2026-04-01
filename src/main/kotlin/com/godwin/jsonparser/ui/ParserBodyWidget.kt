@@ -147,7 +147,7 @@ class ParserBodyWidget(private val project: Project) {
         simpleToolWindowPanel.toolbar = toolbar.component
 
         // Register toolbar component for tutorial (the whole toolbar panel)
-        com.godwin.jsonparser.ui.onboarding.TutorialSteps.prettyTabButton = simpleToolWindowPanel
+        com.godwin.jsonparser.ui.tutorial.TutorialSteps.toolbarComponent = simpleToolWindowPanel
 
         return simpleToolWindowPanel
     }

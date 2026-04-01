@@ -1,29 +1,20 @@
 package com.godwin.jsonparser.services
 
-import com.godwin.jsonparser.action.AddTabAction
-import com.godwin.jsonparser.action.CloseTabAction
-import com.godwin.jsonparser.action.DiffCheckerAction
-import com.godwin.jsonparser.action.GenerateDummyJsonAction
-import com.godwin.jsonparser.action.LoadFromFileAction
-import com.godwin.jsonparser.action.LoadFromUrlAction
-import com.godwin.jsonparser.action.ParserSettingsAction
-import com.godwin.jsonparser.action.StartOnboardingAction
+import com.godwin.jsonparser.action.*
 import com.godwin.jsonparser.ui.IParserWidget
 import com.godwin.jsonparser.ui.ParserMainPanel
 import com.godwin.jsonparser.ui.ParserToolWindowPanel
-import com.godwin.jsonparser.ui.onboarding.TutorialSteps
+import com.godwin.jsonparser.ui.tutorial.TutorialManager
+import com.godwin.jsonparser.ui.tutorial.TutorialSteps
 import com.intellij.ide.util.PropertiesComponent
-import com.intellij.openapi.actionSystem.ActionManager
-import com.intellij.openapi.actionSystem.ActionPlaces
-import com.intellij.openapi.actionSystem.ActionToolbar
-import com.intellij.openapi.actionSystem.DefaultActionGroup
-import com.intellij.openapi.actionSystem.Separator
+import com.intellij.openapi.actionSystem.*
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.ui.content.Content
 import com.intellij.ui.content.ContentFactory
 import javax.swing.SwingConstants
+import javax.swing.Timer
 
 @Service(value = [Service.Level.PROJECT])
 class ProjectService {
@@ -79,6 +70,7 @@ class ProjectService {
         val generate = GenerateDummyJsonAction(debuggerWidget)
         val diff = DiffCheckerAction(debuggerWidget)
         val settings = ParserSettingsAction()
+        val tutorial = StartTutorialAction()
 
 
         group.add(addTab)
@@ -93,9 +85,14 @@ class ProjectService {
         group.add(Separator.getInstance())
         group.add(settings)
         group.add(Separator.getInstance())
-        group.add(StartOnboardingAction())
+        group.add(tutorial)
         val toolbar = ActionManager.getInstance().createActionToolbar(ActionPlaces.TOOLBAR, group, false)
         toolbar.orientation = SwingConstants.VERTICAL
+        // Store for tutorial component resolution
+        javax.swing.SwingUtilities.invokeLater {
+            TutorialSteps.toolbarComponent =
+                toolbar.component
+        }
         return toolbar
     }
 

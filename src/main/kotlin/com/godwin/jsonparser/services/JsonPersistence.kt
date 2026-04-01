@@ -25,6 +25,7 @@ class JsonPersistence : PersistentStateComponent<JsonPersistence> {
     var indentSize: Int = 2
     var sortKeys: Boolean = false
     var tabSessions: MutableList<String> = mutableListOf()
+    var onboardingShown: Boolean = false
     
     override fun getState(): JsonPersistence {
         return this

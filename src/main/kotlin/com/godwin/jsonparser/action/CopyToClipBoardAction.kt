@@ -10,7 +10,8 @@ import com.intellij.notification.Notifications
 import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
-import com.intellij.openapi.actionSystem.PlatformDataKeys
+import com.intellij.openapi.actionSystem.CommonDataKeys
+import com.intellij.openapi.fileEditor.FileEditorManager
 import java.awt.Toolkit
 import java.awt.datatransfer.StringSelection
 import javax.swing.Icon
@@ -24,7 +25,20 @@ class CopyToClipBoardAction(
     override fun actionPerformed(e: AnActionEvent) {
         AnalyticsService.track(AnalyticsConstant.ACTION_COPY_TO_CLIPBOARD)
         try {
-            val editor = e.getData(PlatformDataKeys.EDITOR)
+            val project = e.project ?: return
+
+            // 1. Try the standard way
+            var editor = e.getData(CommonDataKeys.EDITOR)
+
+            // 2. Try the "Even if Inactive" way
+            if (editor == null) {
+                editor = e.getData(CommonDataKeys.EDITOR_EVEN_IF_INACTIVE)
+            }
+
+            // 3. FORCE IT from the FileEditorManager (The ultimate fallback)
+            if (editor == null) {
+                editor = FileEditorManager.getInstance(project).selectedTextEditor
+            }
             if (editor == null) {
                 Log.i("Not in editor window")
                 Notifications.Bus.notifyAndHide(
@@ -50,6 +64,14 @@ class CopyToClipBoardAction(
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    override fun update(e: AnActionEvent) {
+        val project = e.project
+        val editor = e.getData(CommonDataKeys.EDITOR) ?: FileEditorManager.getInstance(project!!).selectedTextEditor
+
+        // Set visibility/enabled state based on whether ANY editor exists
+        e.presentation.isEnabledAndVisible = (editor != null)
     }
 
     override fun getActionUpdateThread() = ActionUpdateThread.BGT
