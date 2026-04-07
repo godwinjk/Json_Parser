@@ -1,39 +1,101 @@
-# JSON PARSER
-
-> [!NOTE]  
-> This repo is moved to a private repo. But this will open for issue tracking and broadcast Feature updates. 
-> You can still request features and report issues here. 
+# Advanced JSON Studio
 
 ![Build](https://github.com/godwinjk/Json_Parser/workflows/Build/badge.svg)
 [![Version](https://img.shields.io/jetbrains/plugin/v/10650-json-parser.svg)](https://plugins.jetbrains.com/plugin/10650-json-parser)
 [![Downloads](https://img.shields.io/jetbrains/plugin/d/10650-json-parser.svg)](https://plugins.jetbrains.com/plugin/10650-json-parser)
 
-[![](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://paypal.me/godwinj)  OR 
+[![](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://paypal.me/godwinj)  OR
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/S6S0176OVQ)
-# JSON PARSER
+
+# Advanced JSON Studio v2026.1.1
+
+The Intelligent JSON Workspace for IntelliJ
+
+**JSON Parser** has evolved. We are proud to introduce **Advanced JSON Studio**—a complete engineering environment
+designed to handle everything from massive API responses to broken configuration files. It’s the last JSON tool you’ll
+ever need.
+
+<kbd>Auto-Parse</kbd> <kbd>Pretty-Print</kbd> <kbd>Validator</kbd> <kbd>Local-Load</kbd> <kbd>Web-Fetch</kbd> <kbd>
+Persistence</kbd> <kbd>Tabs</kbd><kbd>Tree-View</kbd> <kbd>Graph-View</kbd> <kbd>JSONPath</kbd> <kbd>
+JMESPath</kbd> <kbd>Autocomplete</kbd>
+<kbd>YAML</kbd> <kbd>XML</kbd> <kbd>TOML</kbd> <kbd>Properties</kbd> <kbd>CBOR</kbd> <kbd>BSON</kbd> <kbd>Export</kbd>
+<kbd>Schema-Inference</kbd> <kbd>Minifier</kbd> <kbd>Sorting</kbd> <kbd>Stats-Bar</kbd> <kbd>Diff-Checker</kbd> <kbd>
+Mock-Data</kbd> <kbd>AI-Repair</kbd><kbd>Dart</kbd> <kbd>Kotlin</kbd>
+
+## 🚀 What's New in this Version?
+
+Stop wrestling with malformed data. Elevate your development workflow with these powerful new capabilities:
+
+## 🧠 Intelligent Parsing & Repair
+
+* **Live Auto-parse**: Results update instantly as you type—no "Process" button required.
+* **AI-Powered Repair**: Automatically fix malformed JSON using built-in heuristics or AI strategies (can be disabled in
+  settings).
+* **Multi-Format Support**: Seamlessly handle JSON5, JSON, YAML, XML, and TOML in a single unified interface.
+
+## 🔄 Instant Conversions
+
+* Transform your data structures with one click:
+* **To Code**: Generate Dart and Kotlin models with precision.
+* **To Config:** Export to YAML, XML, TOML, or .properties.
+* **To Binary**: Convert to CBOR or BSON instantly.
+* **Schema Inference**: Automatically generate a JSON Schema from any structure.
+
+## 🛠️ Professional Engineering Tools
+
+* **JSONPath & JMESPath**: Query your data with live autocomplete support.
+* **Structural Diff**: Compare two JSON documents side-by-side with smart highlighting.
+* **Data Generation**: Create realistic dummy JSON for testing (customize structure, depth, and size).
+* **Web Retrieval**: Fetch JSON from URLs with support for custom headers.
+* **Local File Access**: Effortless loading via the new dedicated sidebar.
+
+## 🎨 Productivity Features
+
+* **Session Management**: Work across multiple isolated tabs; sessions are restored automatically on restart.
+* **Advanced Formatting**: Custom indentation (1–8 spaces), alphabetical sorting, and one-click Minify/Uglify.
+* **Visual Navigation**: Explore complex objects using the intuitive Tree View and Graph View.
+* **Live Statistics**: Real-time tracking of key count, nesting depth, object/array counts, and file size.
+
+----
+Thank you for upgrading to **Advanced JSON Studio**. If you find this tool helpful, please consider leaving a review on
+the JetBrains Marketplace!
+
+## Features
 
 <!-- Plugin description -->
-JSON Parser is a powerful tool that simplifies working with JSON — from instant parsing and formatting to code generation, querying, diffing, and more.
+**Advanced JSON Studio: The Intelligent JSON Workspace**
 
-1. Auto-parse as you type — results update instantly without pressing a button.
-2. Present JSON in a clean, readable format with automated pretty printing.
-3. Validate JSON for accuracy and integrity with ease.
-4. Load local JSON files effortlessly with a dedicated sidebar button.
-5. Retrieve JSON from web sources quickly — supports custom headers too.
-6. Work across multiple tabs — each session is isolated, close tabs individually.
-7. Navigate JSON structures effortlessly using an intuitive tree view.
-8. Query JSON using **JSONPath** and **JMESPath** expressions with live autocomplete.
-9. Convert JSON to YAML instantly.
-10. Infer a JSON Schema from your JSON structure automatically.
-11. Minify JSON to a single line with one click.
-12. Custom indentation size (1–8 spaces) and alphabetical key sorting.
-13. View live statistics — key count, depth, object/array counts, and file size.
-14. Compare two JSON documents side-by-side with structural diff highlighting.
-15. Generate realistic dummy JSON for testing — choose structure, depth, and size.
-16. Repair malformed JSON automatically using built-in and AI-powered strategies.
-17. Generate Dart code efficiently and with precision.
-18. Create Kotlin code seamlessly using advanced tools.
-19. Your JSON input is automatically saved locally and restored on restart — no cloud sync, fully private.
+Stop wrestling with malformed data. Elevate your development workflow with the most powerful JSON toolkit for the
+IntelliJ Platform.
+**Advanced JSON Studio** isn't just a formatter—it's a complete engineering environment designed to handle everything
+from massive API responses to broken configuration files. It’s the last JSON tool you’ll ever need.
+
+1. **Auto-parse** as you type — results update instantly without pressing a button.
+2. Support converting JSON5, JSON, YAML, XML and TOML.
+3. Present JSON in a clean, readable format with automated pretty printing.
+4. Validate JSON for accuracy and integrity with ease.
+5. **Load local JSON** files effortlessly with a dedicated sidebar button.
+6. **Retrieve JSON from web** sources quickly — supports custom headers too.
+7. Work across **multiple tabs** — each session is isolated, close tabs individually.
+8. Navigate JSON structures effortlessly using an intuitive **Tree View**.
+9. Visualize complex JSON structures as interactive **graphs**. Expand the view to explore large datasets with ease.
+10. Query JSON using **JSONPath** and **JMESPath** expressions with live autocomplete.
+11. Convert **JSON to YAML** instantly.
+12. Covert **JSON to XML** instantly
+13. Covert **JSON to TOML** instantly
+14. Covert **JSON to .properties** instantly
+15. Covert **JSON to CBOR** instantly
+16. Covert **JSON to BSON** instantly
+17. Infer a JSON Schema from your JSON structure automatically.
+18. **Minify/Uglify JSON** to a single line with one click.
+19. **Custom indentation** size (1–8 spaces) and alphabetical key sorting.
+20. View **live statistics** — key count, depth, object/array counts, and file size.
+21. **Compare two JSON documents** side-by-side with structural diff highlighting.
+22. **Generate realistic dummy JSON** for testing — choose structure, depth, and size.
+23. **Repair malformed JSON** automatically using built-in and AI-powered strategies(You can always disable it).
+24. **Generate Dart code** efficiently and with precision.
+25. **Create Kotlin code** seamlessly using advanced tools.
+26. Your JSON input is automatically **saved locally** and restored on restart — no cloud sync, fully private.
 
 <!-- Plugin description end -->
 
@@ -47,8 +109,15 @@ JSON Parser is a powerful tool that simplifies working with JSON — from instan
 - [x] JSON data persistance(Data will saved locally)
 - [x] Multiple tabs with per-tab close button
 - [x] Tree model view
+- [x] Graph View
 - [x] JSONPath & JMESPath query with autocomplete suggestions
 - [x] Convert to YAML
+- [x] Convert to XML
+- [x] Convert to TOML
+- [x] Convert to properties
+- [x] Convert to CBOR
+- [x] Convert to BSON
+- [x] Download converted files
 - [x] Infer JSON Schema
 - [x] Minify JSON
 - [x] Custom indentation size and key sorting
@@ -62,7 +131,8 @@ JSON Parser is a powerful tool that simplifies working with JSON — from instan
 ## Installation
 
 - Using IDE built-in plugin system:
-  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd> > <kbd>Search for "Json Parser"</kbd> >
+  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd> > <kbd>Search for "Advance Json
+  Studio"</kbd> >
   <kbd>Install Plugin</kbd>
 
 - Manually:
@@ -111,48 +181,57 @@ Every donation, no matter the size, makes a difference and is deeply appreciated
 
 ## Changelog
 
-### Version 2.0.0 🚀
+### Version 2026.1.1
 
 A massive update packed with new tools for power users.
 
 **Query**
+
 - JSONPath and JMESPath query engine built right into the parser
 - Live autocomplete — suggestions come from your actual JSON keys as you type
 - Inline help popup with syntax reference and examples for both query languages
 
 **Views**
+
 - YAML tab — convert any JSON to YAML instantly with syntax highlighting
 - Schema tab — infer a JSON Schema from your JSON structure automatically
 - Minify tab — collapse JSON to a single line
 - Statistics bar — key count, nesting depth, object/array counts, and file size at a glance
 
 **HTTP Client**
+
 - Full HTTP client dialog replacing the basic URL input
 - Supports GET/POST with custom headers table and request body
 - Response loads into a new tab automatically
 
 **JSON Diff**
+
 - Side-by-side editable diff viewer using IntelliJ's native diff engine
 - Inline line-level highlighting — same as git merge view
 - Auto-formats pasted JSON on the right side
 
 **Dummy JSON Generator**
+
 - Generate realistic fake JSON for testing — no external library required
 - Choose Object or Array, set property count (1–100), nesting depth (1–10), and array size
 
 **Tab Persistence**
+
 - Sessions saved and restored across IDE restarts (up to 10 tabs)
 - Tab content auto-saved on every parse
 
 **Tree Search**
+
 - Search bar above the tree view — filters and highlights matching nodes
 - Shows JSONPath of the selected node in a label below the tree
 
 **Onboarding Tutorial**
+
 - Interactive tutorial with GIFs for every feature
 - Auto-shows on first install, accessible anytime from the sidebar
 
 **Quality of Life**
+
 - Auto-parse — results update as you type, no need to press Parse
 - Load from file or URL opens a new tab automatically
 - Custom indentation size (1–8 spaces) and alphabetical key sorting
