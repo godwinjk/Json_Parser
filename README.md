@@ -7,7 +7,9 @@
 [![](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://paypal.me/godwinj)  OR
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/S6S0176OVQ)
 
-# Advanced JSON Studio v2026.1.1
+📖 **[Frequently Asked Questions →](FAQ.md)**
+
+# Advanced JSON Studio v2026.1.3
 
 The Intelligent JSON Workspace for IntelliJ
 
@@ -16,11 +18,36 @@ designed to handle everything from massive API responses to broken configuration
 ever need.
 
 <kbd>Auto-Parse</kbd> <kbd>Pretty-Print</kbd> <kbd>Validator</kbd> <kbd>Local-Load</kbd> <kbd>Web-Fetch</kbd> <kbd>
-Persistence</kbd> <kbd>Tabs</kbd><kbd>Tree-View</kbd> <kbd>Graph-View</kbd> <kbd>JSONPath</kbd> <kbd>
+Persistence</kbd> <kbd>Tabs</kbd> <kbd>Rename-Tabs</kbd> <kbd>Open-In-Editor</kbd> <kbd>Tree-View</kbd> <kbd>Graph-View</kbd> <kbd>JSONPath</kbd> <kbd>
 JMESPath</kbd> <kbd>Autocomplete</kbd>
-<kbd>YAML</kbd> <kbd>XML</kbd> <kbd>TOML</kbd> <kbd>Properties</kbd> <kbd>CBOR</kbd> <kbd>BSON</kbd> <kbd>Export</kbd>
+<kbd>JWT-Decode</kbd> <kbd>JWT-Verify</kbd> <kbd>YAML</kbd> <kbd>XML</kbd> <kbd>TOML</kbd> <kbd>Properties</kbd> <kbd>CBOR</kbd> <kbd>BSON</kbd> <kbd>Export</kbd>
 <kbd>Schema-Inference</kbd> <kbd>Minifier</kbd> <kbd>Sorting</kbd> <kbd>Stats-Bar</kbd> <kbd>Diff-Checker</kbd> <kbd>
-Mock-Data</kbd> <kbd>AI-Repair</kbd><kbd>Dart</kbd> <kbd>Kotlin</kbd>
+Mock-Data</kbd> <kbd>AI-Repair</kbd> <kbd>Dart</kbd> <kbd>Kotlin</kbd> <kbd>Cloud-CodeGen</kbd> <kbd>Tip-of-the-Day</kbd>
+
+> ## Important Update: Advanced JSON Studio is moving to a Freemium Model
+>
+> Advanced JSON Studio is evolving. To ensure this tool remains a high-quality, professional-grade asset for the ecosystem, I am transitioning the plugin to a freemium model.
+>
+> For the past several years, I have been the sole developer building and maintaining this project as a gift to the community. However, for the plugin to reach a truly sustainable state—one that guarantees rapid bug fixes, long-term support, and continuous innovation—it requires a model that supports the development efforts. This shift is a necessary step to transform a passion project into a stable, professional ecosystem that you can rely on for your daily workflow.
+>
+> #### What stays Free?
+> The core features you’ve always relied on remain accessible at no cost. I believe in keeping the essentials available to everyone:
+>
+> 1. Core JSON Parsing: Fast, reliable tree views and data exploration.
+> 2. Basic Search & Filter: Essential tools to find what you need in large files.
+>
+> #### The Premium Hood
+> To support the project's growth, advanced and newly added features will now require a subscription. These include:
+>
+> 1. Advanced Export Options: Enhanced XML and custom format conversions.
+> 2. High-Performance Layouts: New, complex graph algorithms for massive datasets.
+>
+> #### A Generous Daily Allowance
+> I want to ensure that students and casual users are never fully blocked. I have implemented a generous daily free usage limit for premium features. This means you can still access advanced tools every day; your access is simply restricted once the daily threshold is met, rather than being locked away behind a hard wall.
+>
+> Thank you for being part of this journey. Your support directly allows me to dedicate the time needed to keep this plugin bug-free, modern, and powerful. Together, we are building a more sustainable future for the developer community.
+>
+> _— Godwin_
 
 ## 🚀 What's New in this Version?
 
@@ -67,66 +94,75 @@ the JetBrains Marketplace!
 
 Stop wrestling with malformed data. Elevate your development workflow with the most powerful JSON toolkit for the
 IntelliJ Platform.
-**Advanced JSON Studio** isn't just a formatter—it's a complete engineering environment designed to handle everything
+**Advanced JSON Studio** isn’t just a formatter—it’s a complete engineering environment designed to handle everything
 from massive API responses to broken configuration files. It’s the last JSON tool you’ll ever need.
 
 1. **Auto-parse** as you type — results update instantly without pressing a button.
-2. Support converting JSON5, JSON, YAML, XML and TOML.
+2. Support converting JSON5, JSON, YAML, XML, TOML, Properties, JWT, CBOR and BSON in a single unified interface.
 3. Present JSON in a clean, readable format with automated pretty printing.
 4. Validate JSON for accuracy and integrity with ease.
 5. **Load local JSON** files effortlessly with a dedicated sidebar button.
-6. **Retrieve JSON from web** sources quickly — supports custom headers too.
-7. Work across **multiple tabs** — each session is isolated, close tabs individually.
-8. Navigate JSON structures effortlessly using an intuitive **Tree View**.
+6. **Retrieve JSON from web** sources quickly — supports custom headers and POST body too.
+7. Work across **multiple tabs** — each session is isolated, close and rename tabs individually.
+8. Navigate JSON structures effortlessly using an intuitive **Tree View** with live search.
 9. Visualize complex JSON structures as interactive **graphs**. Expand the view to explore large datasets with ease.
 10. Query JSON using **JSONPath** and **JMESPath** expressions with live autocomplete.
 11. Convert **JSON to YAML** instantly.
-12. Covert **JSON to XML** instantly
-13. Covert **JSON to TOML** instantly
-14. Covert **JSON to .properties** instantly
-15. Covert **JSON to CBOR** instantly
-16. Covert **JSON to BSON** instantly
-17. Infer a JSON Schema from your JSON structure automatically.
-18. **Minify/Uglify JSON** to a single line with one click.
-19. **Custom indentation** size (1–8 spaces) and alphabetical key sorting.
-20. View **live statistics** — key count, depth, object/array counts, and file size.
-21. **Compare two JSON documents** side-by-side with structural diff highlighting.
-22. **Generate realistic dummy JSON** for testing — choose structure, depth, and size.
-23. **Repair malformed JSON** automatically using built-in and AI-powered strategies(You can always disable it).
-24. **Generate Dart code** efficiently and with precision.
-25. **Create Kotlin code** seamlessly using advanced tools.
-26. Your JSON input is automatically **saved locally** and restored on restart — no cloud sync, fully private.
+12. Convert **JSON to XML** instantly.
+13. Convert **JSON to TOML** instantly — arrays of objects use correct `[[table]]` syntax.
+14. Convert **JSON to .properties** instantly.
+15. Convert **JSON to CBOR** instantly.
+16. Convert **JSON to BSON** instantly.
+17. Infer a **JSON Schema** from your JSON structure automatically.
+18. **Decode and verify JWT tokens** — supports HMAC (HS256/384/512), RSA and ECDSA signatures.
+19. **Minify/Uglify JSON** to a single line with one click.
+20. **Custom indentation** size (1–8 spaces) and alphabetical key sorting.
+21. View **live statistics** — key count, depth, object/array counts, and file size.
+22. **Compare two JSON documents** side-by-side with structural diff highlighting.
+23. **Generate realistic dummy JSON** for testing — choose structure, depth, and size.
+24. **Repair malformed JSON** automatically using built-in and AI-powered strategies (can be disabled in settings).
+25. **Generate code from JSON** powered by the acclaimed **Quicktype** engine — supports 12 languages: TypeScript, JavaScript, TypeScript + Zod, Python, Java, Kotlin, Swift, Go, C#, Rust, Ruby, and Dart. Output is written directly into your project directory.
+26. **Open parser as a full editor tab** — pop the tool window into the main editor area for more screen space.
+27. **Tip of the day** — discover features with in-app tips; dismiss, navigate or disable anytime.
+28. Your JSON input is automatically **saved locally** and restored on restart — no cloud sync, fully private.
+29. **Localization** — the entire UI is available in 13 languages: Japanese, Korean, Chinese (Simplified), German, French, Spanish, Italian, Portuguese (Brazilian), Russian, Polish, Dutch, Turkish, and Czech. Follows your IDE locale automatically.
 
 <!-- Plugin description end -->
 
 ## Features
 
 - [x] Auto-parse on input change
-- [x] Pretty print Json
-- [x] Validate Json
-- [x] Load Json from local (dedicated sidebar button)
-- [x] Retrieve Json from web (dedicated sidebar button)
-- [x] JSON data persistance(Data will saved locally)
+- [x] Pretty print JSON
+- [x] Validate JSON
+- [x] Load JSON from local (dedicated sidebar button)
+- [x] Retrieve JSON from web — GET/POST with custom headers
+- [x] JSON data persistence (saved locally, restored on restart)
 - [x] Multiple tabs with per-tab close button
-- [x] Tree model view
-- [x] Graph View
+- [x] Rename tabs by double-clicking (works on IntelliJ 2025.1+)
+- [x] Open parser as a full editor tab (pop-out from tool window)
+- [x] Tree model view with live search and JSONPath copy
+- [x] Graph View with expandable dialog
 - [x] JSONPath & JMESPath query with autocomplete suggestions
+- [x] JWT decode — header, payload, signature verification (HMAC / RSA / ECDSA)
 - [x] Convert to YAML
 - [x] Convert to XML
-- [x] Convert to TOML
-- [x] Convert to properties
+- [x] Convert to TOML (arrays of objects use correct `[[table]]` syntax)
+- [x] Convert to Properties
 - [x] Convert to CBOR
 - [x] Convert to BSON
-- [x] Download converted files
+- [x] Download / save converted files locally
 - [x] Infer JSON Schema
 - [x] Minify JSON
 - [x] Custom indentation size and key sorting
-- [x] Live statistics bar (keys, depth, size)
+- [x] Live statistics bar (keys, depth, objects, arrays, nulls, size)
 - [x] Side-by-side JSON diff checker
 - [x] Generate dummy/fake JSON data
 - [x] AI-powered JSON repair
-- [x] Dart code generation
-- [x] Kotlin code generation
+- [x] Cloud-based code generation powered by **Quicktype** — TypeScript, JavaScript, TypeScript + Zod, Python, Java, Kotlin, Swift, Go, C#, Rust, Ruby, Dart
+- [x] Tip of the day — in-app feature discovery bubble
+- [x] Open JSON string from editor via intention action
+- [x] Inline JSON hints in source files
+- [x] Localization — UI available in 13 languages (Japanese, Korean, Chinese, German, French, Spanish, Italian, Portuguese BR, Russian, Polish, Dutch, Turkish, Czech)
 
 ## Installation
 
@@ -180,6 +216,67 @@ community.
 Every donation, no matter the size, makes a difference and is deeply appreciated. ❤️
 
 ## Changelog
+
+### Version 2026.1.3
+
+**Localization — 13 Languages**
+
+- The entire plugin UI is now available in 13 languages in addition to English: Japanese, Korean, Chinese (Simplified), German, French, Spanish, Italian, Portuguese (Brazilian), Russian, Polish, Dutch, Turkish, and Czech
+- The language follows your IDE locale automatically — no configuration required
+
+**Open in Editor**
+
+- Pop the parser out of the tool window into a standalone editor tab — gives you full screen space when the tool window feels cramped
+- The current tab's name and content are carried over automatically
+- Editor tabs are fully independent — input, parse, repair, generate code, all features work the same
+
+**Tip of the Day**
+
+- Floating bubble overlaid on the output panel surfaces one tip per session
+- 20 tips covering every major feature — cycles automatically across sessions
+- Navigate tips manually with ‹ › arrows, dismiss with ✕, or check "Don't show again" to silence permanently
+- Re-enable tips anytime from Parser Settings
+
+**TOML Bug Fix**
+
+- Fixed broken output for JSON arrays — arrays of objects now use correct `[[table]]` array-of-tables syntax instead of invalid inline `[{...}]` notation
+- Root-level arrays are wrapped under the key `items` with an explanatory comment (TOML does not support bare root arrays by spec)
+
+**Tab Rename Fix**
+
+- Double-click to rename a tab now works correctly on IntelliJ 2025.1 and 2026
+- Fixed by attaching the listener directly to each tab label rather than the container (which stopped receiving events in 2025.1)
+
+### Version 2026.1.2
+
+**JWT Support**
+
+- Paste any JWT token — header and payload are automatically decoded and displayed as formatted JSON
+- Signature verification for HMAC (HS256/384/512), RSA (RS256/384/512) and ECDSA (ES256/384/512)
+- Enter your HMAC secret or PEM public key directly in the panel; result shown with colour-coded status
+
+**CBOR & BSON**
+
+- Two new output tabs — convert any JSON to CBOR or BSON binary and inspect the hex dump
+- Byte size shown in the header comment
+
+**Graph View**
+
+- Interactive node-graph visualisation of JSON structure
+- Expand into a full-screen dialog for large datasets
+
+**Code Generation (Powered by Quicktype)**
+
+- Cloud-based code generation using the acclaimed **Quicktype** engine
+- Supports 12 languages: **TypeScript, JavaScript, TypeScript + Zod, Python, Java, Kotlin, Swift, Go, C#, Rust, Ruby, Dart**
+- Language selector, custom type name, and advanced settings panel
+- Generated file is written directly into the chosen project directory
+
+**Open JSON from Editor**
+
+- Intention action detects JSON strings embedded in code (single-line or triple-quoted)
+- Click the lightbulb or use Alt+Enter → "Open in JSON Parser"
+- Inline inlay hint appears on lines containing JSON strings
 
 ### Version 2026.1.1
 
