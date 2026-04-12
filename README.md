@@ -467,46 +467,6 @@ Parse VALID JSON string only.
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/S6S0176OVQ)
 
-## Features
-
-- [x] Dart code generation
-- [x] Kotlin code generation
-- [x] Retrieve Json from web
-- [x] Load Json from local
-- [x] Pretty print Json
-- [x] Validate Json
-- [x] Single click formatting from logcat or console window
-- [x] Open Json Files in tool window
-- [x] Tree model view, so user can easily hide or expand particular object
-
-## Installation
-
-- Using IDE built-in plugin system:
-  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd> > <kbd>Search for "Json Parser"</kbd> >
-  <kbd>Install Plugin</kbd>
-
-- Manually:
-  Download the [latest release](https://github.com/godwinjk/Json_Parser/releases/latest) and install it manually using
-  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
-
-[![](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://paypal.me/godwinj)
-
-❤️❤️❤️❤️❤️
-
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/S6S0176OVQ)
-
-## Functions example
-
-<img src="assets/json_fn.gif" width="400">
-<img src="assets/json_tabs.gif" width="400">
-<img src="assets/retreive_web.gif" width="400">
-<img src="assets/parse_from_anywhere.gif" width="400">
-<img src="assets/load_from_file.gif" width="400">
-<img src="assets/json_gen_dart.gif" width="400">
-<img src="assets/kotlin_gen.gif" width="400">
-<img src="assets/dart_settings.gif" width="400">
-<img src="assets/kotlin_settings.gif" width="400">
-
 ## Support My Work
 
 If you’ve found this project helpful or valuable, consider supporting its development!
