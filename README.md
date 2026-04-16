@@ -4,10 +4,20 @@
 [![Version](https://img.shields.io/jetbrains/plugin/v/10650-json-parser.svg)](https://plugins.jetbrains.com/plugin/10650-json-parser)
 [![Downloads](https://img.shields.io/jetbrains/plugin/d/10650-json-parser.svg)](https://plugins.jetbrains.com/plugin/10650-json-parser)
 
-[![](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://paypal.me/godwinj)  OR
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/S6S0176OVQ)
-
 📖 **[Frequently Asked Questions →](FAQ.md)**
+
+---
+
+> ## 🎉 Early Adopter Offer — 50% Off Pro for the First 500 Users!
+>
+> As a thank-you to the first 500 users of Advanced JSON Studio, I'm offering an exclusive **50% discount** on a Pro licence — valid for **3 months**.
+>
+> ### 👉 [Claim your discount → Submit the form](https://docs.google.com/forms/d/e/1FAIpQLSfs3Djo6Cg7M7D_Siqnprw2ZVKZ6kOcnjZD-bcnJbwAOacALA/viewform?usp=publish-editor)
+>
+> Fill out the form and I'll reply with your personal discount code.
+> ⚠️ Limited to the **first 500 users** — once the codes run out, the offer closes.
+
+---
 
 # Advanced JSON Studio v2026.1.4
 
