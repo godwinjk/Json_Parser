@@ -12,6 +12,11 @@ A comprehensive guide to everything the plugin can do, how to use it, and how to
 - [Parsing & Formatting](#parsing--formatting)
 - [Tabs & Sessions](#tabs--sessions)
 - [Output Tabs & Conversions](#output-tabs--conversions)
+- [Flatten & Unflatten](#flatten--unflatten)
+- [CSV View](#csv-view)
+- [Base64 Encode](#base64-encode)
+- [Schema Validator](#schema-validator)
+- [Rich Editor Decorations](#rich-editor-decorations)
 - [Tree View](#tree-view)
 - [Graph View](#graph-view)
 - [Query (JSONPath & JMESPath)](#query-jsonpath--jmespath)
@@ -20,7 +25,9 @@ A comprehensive guide to everything the plugin can do, how to use it, and how to
 - [Code Generation](#code-generation)
 - [Dummy JSON Generator](#dummy-json-generator)
 - [AI-Powered Repair](#ai-powered-repair)
+- [Privacy Mode](#privacy-mode)
 - [Loading JSON from Files & URLs](#loading-json-from-files--urls)
+- [HTTP Client & cURL](#http-client--curl)
 - [Open in Editor](#open-in-editor)
 - [Inline JSON Hints](#inline-json-hints)
 - [Settings & Customization](#settings--customization)
@@ -140,7 +147,7 @@ You can open up to 10 tabs. The Add Tab button is hidden once you reach that lim
 The output panel has the following tabs:
 
 | Tab | Description |
-|-----|-------------|
+|---|---|
 | **Pretty** | Formatted, indented JSON |
 | **Minify** | Single-line JSON |
 | **YAML** | Converted to YAML |
@@ -150,6 +157,10 @@ The output panel has the following tabs:
 | **CBOR** | Binary CBOR encoding shown as hex |
 | **BSON** | Binary BSON encoding shown as hex |
 | **Schema** | Auto-inferred JSON Schema |
+| **Flatten** | Flattens nested JSON to dot-notation keys |
+| **Unflatten** | Rebuilds nested JSON from dot-notation keys |
+| **CSV** | Renders an array of objects as an interactive table |
+| **Base64** | Minifies JSON and encodes it as a Base64 string |
 | **Tree** | Interactive tree view |
 | **Graph** | Node-graph visualisation |
 | **Query** | JSONPath / JMESPath query engine |
@@ -169,6 +180,141 @@ Yes. Each output tab has a **Save to Local** button in its toolbar.
 
 **Do you support JSON Schema generation?**
 Yes. The **Schema** tab auto-infers a JSON Schema from your input structure instantly.
+
+---
+
+## Flatten & Unflatten
+
+**What does Flatten do?**
+The **Flatten** tab converts a deeply nested JSON object into a single-level object where each key is the full dot-notation path to the original value. Array indices use bracket notation (e.g. `address.phones[0].number`).
+
+**Example:**
+```json
+{ "user": { "name": "Alice", "address": { "city": "London" } } }
+```
+becomes:
+```json
+{ "user.name": "Alice", "user.address.city": "London" }
+```
+
+**What does Unflatten do?**
+The **Unflatten** tab is the inverse — it takes a flat dot-notation object and reconstructs the original nested structure.
+
+**When would I use this?**
+Flattening is useful when comparing two deeply nested documents, inserting values into flat key-value stores (Redis, config files), or debugging path resolution issues.
+
+---
+
+## CSV View
+
+**What is the CSV tab?**
+When your JSON input is an array of objects (a common API response shape), the **CSV** tab renders it as an interactive table with auto-sized columns and alternating row colors.
+
+**Can I download the table as a CSV file?**
+Yes. Click the **Download** button in the CSV tab toolbar. The file is exported in RFC-4180 compliant format with a header row and proper quoting.
+
+**What happens if my JSON is not an array of objects?**
+The CSV tab shows a message explaining that the format is not supported. It expects a top-level JSON array where each element is a JSON object.
+
+---
+
+## Base64 Encode
+
+**What does the Base64 tab do?**
+The **Base64** tab minifies your JSON (removes all whitespace) and encodes it as a Base64 string — useful for embedding JSON in URLs, HTTP headers, or config files that require Base64.
+
+**Does the plugin also decode Base64?**
+Yes — automatically. If you paste a Base64 string into the input area, the parser detects it, decodes it, and processes the embedded JSON transparently. You will see **Base64** shown as the detected format label. No separate decode step is needed.
+
+---
+
+## Schema Validator
+
+**What is the Schema Validator?**
+The **Schema Validator** tab lets you validate your JSON input against any JSON Schema (Draft 4/6/7/2019-09/2020-12). You write or paste a schema in the top editor; the results appear in the bottom editor automatically as you type.
+
+**Do I have to click a Validate button?**
+No. Validation is fully automatic — it re-runs on every change to either the JSON input or the schema, with a short debounce delay.
+
+**How are errors shown?**
+There are two view modes, toggled by the icons in the tab toolbar:
+
+- **List mode** — errors are listed as text lines in the results editor with path and message.
+- **Annotated mode** — the results editor shows the pretty-printed JSON with inline error hints displayed after the relevant line (virtual text, no document modification) and a colored background highlight on affected lines.
+
+**Is the schema saved between sessions?**
+Yes. The last schema you entered is saved automatically and restored when you reopen the tab.
+
+**Can I manage multiple schemas?**
+Yes. Use the dropdown at the top of the tab to switch between saved schemas. The **+** button saves the current schema under a new name, and the trash icon deletes the selected entry.
+
+---
+
+## Rich Editor Decorations
+
+**What are Rich Editor Decorations?**
+When enabled, the **Pretty** output tab shows additional visual hints in the gutter and inline — these help you understand values at a glance without leaving the plugin.
+
+**What decorations are available?**
+
+| Decoration | Trigger | Where shown |
+|---|---|---|
+| Color swatch | Hex `#rrggbb`, `rgb()`, `hsl()` values | Gutter icon |
+| Image thumbnail | Image URLs and `data:image/…` URIs | Gutter icon (clickable → popup preview) |
+| Link icon | `https://` / `http://` URLs | Gutter icon |
+| Clock icon | ISO datetime strings, Unix timestamps | Gutter icon |
+| Calendar icon | Date-only strings (`2024-01-15`) | Gutter icon |
+| UUID badge | UUID strings | Gutter icon |
+| Human timestamp | Unix timestamps | Inline hint (formatted date) |
+| File size | Fields named `size`, `bytes`, `filesize` | Inline hint (e.g. `1.2 MB`) |
+| Duration | Fields named `duration`, `millis`, `ttl` | Inline hint (e.g. `3m 20s`) |
+| Large number | Any large numeric value | Inline hint (formatted with commas) |
+
+**How do I toggle individual decorations?**
+Each decoration type has its own toggle in **Parser Settings** under the **Rich Editor** section.
+
+**Is Rich Editor a Pro feature?**
+Yes. Rich Editor decorations are gated under the Pro plan, with a daily free usage allowance so you can try them out.
+
+---
+
+## Privacy Mode
+
+**What is Privacy Mode?**
+Privacy Mode is a per-session toggle (shield icon in the toolbar) that ensures **no data leaves your machine** for that session. When active, a green animated border draws around the parser widget as a clear visual indicator.
+
+**What does Privacy Mode block?**
+- AI-powered JSON repair (cloud step only — local heuristic repair still runs fully offline)
+- Cloud-based code generation
+
+**Is Privacy Mode on by default?**
+No. It is off by default and resets to off every time you restart the IDE — it is a session-only safeguard, never persisted to disk.
+
+**How is Privacy Mode different from disabling AI repair in Settings?**
+Settings changes are permanent and global. Privacy Mode is a quick, temporary, per-session lock — flip it on when working with sensitive data without changing your permanent settings.
+
+---
+
+## HTTP Client & cURL
+
+**What is the cURL tab in the HTTP client?**
+The HTTP client dialog has a **cURL** tab where you can paste any curl command directly. The plugin parses it locally and populates the URL, method, headers, and body fields automatically — no shell process is ever invoked, so there is no command injection risk.
+
+**Which curl flags are supported?**
+
+| Flag | Effect |
+|---|---|
+| `-X` / `--request` | Sets the HTTP method |
+| `-H` / `--header` | Adds a request header |
+| `-d` / `--data` / `--data-raw` / `--data-binary` | Sets the request body |
+| `-u` / `--user` | Encodes credentials as a Basic Auth header |
+| `-L`, `-s`, `-v`, `--compressed`, `--insecure` | Silently ignored (safe flags) |
+
+**Does the cURL parser handle multi-line curl commands?**
+Yes. Backslash line continuation (`\` at end of line) is handled correctly, so commands copied from documentation or terminal history work as-is.
+
+**Does it support quoted strings and escaped characters?**
+Yes. Single-quoted strings are treated literally; double-quoted strings handle `\"` and `\\` escapes — matching standard shell quoting rules.
 
 ---
 
@@ -253,8 +399,11 @@ Yes. Dart generation includes correct `_$ClassName` mixin and `fromJson` generat
 **Can I generate Kotlin data classes?**
 Yes. Kotlin code generation produces idiomatic data classes from your JSON structure.
 
+**Does code generation send my JSON to the cloud?**
+No — your actual JSON data never leaves your machine. The plugin parses your JSON locally and extracts only the **schema structure** (field names and types). That schema is what gets sent to the cloud for code generation. Your values, your data, and your business logic stay entirely on your system.
+
 **Does code generation require an internet connection?**
-Yes. Code generation is cloud-based (Quicktype API). An active internet connection is required.
+Yes. The schema-to-code step is cloud-based (Quicktype API) and requires an active internet connection.
 
 ---
 
@@ -279,14 +428,20 @@ Clicking **Repair** attempts to fix malformed JSON using built-in heuristics. If
 **What kinds of errors can it fix?**
 Missing quotes around keys, missing or extra commas, mismatched brackets, trailing commas, and other common structural mistakes.
 
-**Does the AI repair send my JSON to a server?**
-Only if the AI repair option is enabled in settings. The AI strategy sends your JSON to a repair service. Built-in heuristics run entirely offline.
+**Does AI repair send my JSON to a server?**
+When AI repair is enabled, your JSON is sent to a **private cloud** exclusively for the repair operation. Running a capable AI repair model locally is not feasible — the model size would make the plugin impractical to install for everyone. To protect your privacy:
+
+- Your data is **never logged**, **never stored**, and **never used** to train any AI model.
+- The data is processed in transit solely to produce a repaired result and is discarded immediately.
+- It is **completely safe** — but if you still prefer to keep all data local, you can disable the feature entirely (see below).
+
+Built-in heuristic repair (missing quotes, commas, brackets) always runs **100% offline** regardless of this setting.
 
 **How do I disable AI repair?**
-Go to `Settings` → `Json Studio` and uncheck **Enable fixing your JSON using AI**.
+Go to `Settings` → `Json Studio` and uncheck **Enable fixing your JSON using AI**. Only the offline heuristic repair will run after that.
 
 **What happens if repair fails?**
-A notification is shown: _"This JSON can't be fixed"_. If error tracking is enabled in settings, the failing JSON string is logged to help improve the plugin.
+A notification is shown: _"This JSON can't be fixed"_. If error tracking is enabled in settings, the failing JSON string may be logged anonymously to help diagnose edge cases — you can disable that too from the same settings page.
 
 ---
 
@@ -296,10 +451,10 @@ A notification is shown: _"This JSON can't be fixed"_. If error tracking is enab
 Right-click in the input area → **Load from File**, or click the **Load from File** button in the toolbar. A file picker opens at your project root.
 
 **How do I fetch JSON from a URL?**
-Right-click in the input area → **Retrieve content from URL**, or click **Load from URL** in the toolbar. An HTTP client dialog opens where you can set the URL, method (GET/POST), custom headers, and a request body.
+Right-click in the input area → **Retrieve content from URL**, or click **Load from URL** in the toolbar. An HTTP client dialog opens where you can set the URL, method, custom headers, and a request body.
 
-**Does the HTTP client support POST requests?**
-Yes. Choose **POST** from the method dropdown and fill in the body field.
+**Which HTTP methods are supported?**
+GET, POST, PUT, and PATCH — all with optional request body support.
 
 **Can I add custom request headers?**
 Yes. The HTTP client dialog has a headers table — click **Add** to insert key-value header rows.
