@@ -8,9 +8,9 @@
 
 ---
 
-> ## 🎉 Early Adopter Offer — 50% Off Pro for the First 500 Users!
+> ## 🎉 Early Adopter Offer — 70% Off Pro for the First 500 Users!
 >
-> As a thank-you to the first 500 users of Advanced JSON Studio, I'm offering an exclusive **50% discount** on a Pro licence — valid for **3 months**.
+> As a thank-you to the first 500 users of Advanced JSON Studio, I'm offering an exclusive **70% discount** on a Pro licence — valid for **3 months**.
 >
 > ### 👉 [Claim your discount → Submit the form](https://docs.google.com/forms/d/e/1FAIpQLSfs3Djo6Cg7M7D_Siqnprw2ZVKZ6kOcnjZD-bcnJbwAOacALA/viewform?usp=publish-editor)
 >
@@ -19,7 +19,7 @@
 
 ---
 
-# Advanced JSON Studio v2026.1.4
+# Advanced JSON Studio v2026.1.6
 
 The Intelligent JSON Workspace for IntelliJ
 
@@ -35,7 +35,7 @@ JMESPath</kbd> <kbd>Autocomplete</kbd>
 CBOR</kbd> <kbd>BSON</kbd> <kbd>Export</kbd>
 <kbd>Schema-Inference</kbd> <kbd>Minifier</kbd> <kbd>Sorting</kbd> <kbd>Stats-Bar</kbd> <kbd>Diff-Checker</kbd> <kbd>
 Mock-Data</kbd> <kbd>AI-Repair</kbd> <kbd>Dart</kbd> <kbd>Kotlin</kbd> <kbd>Cloud-CodeGen</kbd> <kbd>
-Tip-of-the-Day</kbd> <kbd>Schema-Validator</kbd> <kbd>CSV-Table</kbd> <kbd>Flatten</kbd> <kbd>Unflatten</kbd> <kbd>Base64-Decode</kbd> <kbd>Rich-Pretty-Print</kbd>
+Tip-of-the-Day</kbd> <kbd>Schema-Validator</kbd> <kbd>CSV-Table</kbd> <kbd>Flatten</kbd> <kbd>Unflatten</kbd> <kbd>Base64-Decode</kbd> <kbd>Rich-Pretty-Print</kbd> <kbd>Code-to-JSON</kbd> <kbd>GraphQL-Formatter</kbd>
 
 > ## Important Update: Advanced JSON Studio is moving to a Freemium Model
 >
@@ -72,6 +72,49 @@ Tip-of-the-Day</kbd> <kbd>Schema-Validator</kbd> <kbd>CSV-Table</kbd> <kbd>Flatt
 > community.
 >
 > _— Godwin_
+
+## 🚀 What's New in v2026.1.6
+
+## 💻 Code → JSON
+
+- New **Code tab** converts code literals directly to JSON — paste a snippet and get clean, formatted JSON instantly
+- **Python** — dicts, lists, tuples, `True`/`False`/`None`, numeric underscores (`1_000_000`), `#` line comments, assignment stripping (`data = {...}`)
+- **JavaScript** — unquoted keys, single-quoted strings, `undefined → null`, trailing commas, `//` and `/* */` comments, declaration stripping (`const`, `let`, `var`)
+- **TypeScript** — everything JavaScript supports, plus:
+  - `interface` and `type` declaration blocks are stripped automatically so the data literal is always found
+  - Type annotations on variables (`const x: MyType = {…}`) are handled correctly
+  - Template literals (backticks) converted to JSON strings, including `\n`, `\t`, `\"` escape sequences
+  - `NaN` and `Infinity` / `-Infinity` mapped to `null` (JSON has no equivalent)
+- Language selector in the toolbar — switch between Python, JavaScript, and TypeScript instantly
+- Auto-parses 400 ms after you stop typing — no button press needed
+
+## 🔷 GraphQL Formatter
+
+- New **GraphQL tab** formats and validates GraphQL documents using **graphql-java**
+- Supports **queries** (with variables, aliases, fragments), **mutations**, **subscriptions**, and full **SDL** (types, interfaces, enums, input types, directives, schema blocks)
+- Produces canonical, consistently indented output — re-formatting is idempotent
+- Auto-formats 400 ms after you stop typing
+- Invalid GraphQL shows a clear inline error message instead of silently failing
+
+---
+
+## 🚀 What's New in v2026.1.5
+
+## 🔒 Privacy Mode — Now Persistent
+
+- Privacy Mode preference is now **saved across IDE restarts** — enable it once and it stays on
+- Control it from **Settings → Privacy & Data** tab alongside Analytics and AI Repair toggles
+- Settings dialog redesigned with three tabs: **General**, **Rich Editor**, **Privacy & Data**
+
+## 🎨 Icon Refresh
+
+- Updated plugin and tool-window icons
+
+## 🐛 Bug Fixes
+
+- Various stability improvements
+
+---
 
 ## 🚀 What's New in v2026.1.4
 
@@ -121,10 +164,11 @@ Tip-of-the-Day</kbd> <kbd>Schema-Validator</kbd> <kbd>CSV-Table</kbd> <kbd>Flatt
 
 ## 🔒 Privacy Mode
 
-- Toggle the **Privacy Mode** shield icon next to the detected format label to block all cloud calls for the session
+- Toggle the **Privacy Mode** shield icon next to the detected format label to block all cloud calls
 - A green animated border strokes clockwise around the parser as visual confirmation
 - **AI repair** and **cloud code generation** are blocked; local heuristic repair still runs fully offline
-- State is session-only — never saved to disk, always off on restart
+- Your preference is **saved across restarts** — enable it once and it stays on
+- Also configurable from **Settings → Privacy & Data**
 
 ## 🌐 HTTP Client Upgrades
 
@@ -227,6 +271,11 @@ from massive API responses to broken configuration files. It’s the last JSON t
 33. **Flatten / Unflatten** — expand nested JSON into dot-notation flat pairs, or rebuild nested structure from flat keys.
 34. **Rich Pretty Print** — live gutter decorations (color swatches, image thumbnails, clock/calendar/link/UUID icons)
     and inline inlay hints (timestamps, sizes, durations, large numbers) in the Pretty tab. All individually toggleable.
+35. **Code → JSON** — convert Python dicts/lists/tuples, JavaScript objects/arrays, and TypeScript exports directly to
+    JSON. Handles `interface`/`type` declaration stripping, template literals, `undefined → null`,
+    `NaN`/`Infinity → null`, trailing commas, and comments. Auto-converts as you type.
+36. **GraphQL Formatter** — format and validate GraphQL SDL, queries (with variables, aliases, fragments), mutations,
+    subscriptions, and all SDL types via graphql-java. Auto-formats as you type.
 
 <!-- Plugin description end -->
 
@@ -238,7 +287,7 @@ from massive API responses to broken configuration files. It’s the last JSON t
 - [x] Load JSON from local (dedicated sidebar button)
 - [x] Retrieve JSON from web — GET/POST with custom headers
 - [x] JSON data persistence (saved locally, restored on restart)
-- [x] **Local Mode** — session-scoped privacy toggle; blocks AI repair and cloud code generation; animated green border indicator
+- [x] **Privacy Mode** — persistent privacy toggle; blocks AI repair and cloud code generation; animated green border indicator; preference saved across restarts
 - [x] Multiple tabs with per-tab close button (last tab protected)
 - [x] Rename tabs by double-clicking (2–30 character validation)
 - [x] Open parser as a full editor tab (pop-out from tool window)
@@ -260,7 +309,7 @@ from massive API responses to broken configuration files. It’s the last JSON t
 - [x] Side-by-side JSON diff checker
 - [x] Generate dummy/fake JSON data
 - [x] AI-powered JSON repair
-- [x] Cloud-based code generation powered by **Quicktype** — TypeScript, JavaScript, TypeScript + Zod, Python, Java, Kotlin, Swift, Go, C#, Rust, Ruby, Dart (blocked in Local Mode)
+- [x] Cloud-based code generation powered by **Quicktype** — TypeScript, JavaScript, TypeScript + Zod, Python, Java, Kotlin, Swift, Go, C#, Rust, Ruby, Dart (blocked in Privacy Mode)
 - [x] HTTP Client with GET, POST, PUT, PATCH, DELETE — plus a cURL tab (safe, shell-free curl parsing)
 - [x] Tip of the day — in-app feature discovery bubble
 - [x] Open JSON string from editor via intention action
@@ -272,6 +321,8 @@ from massive API responses to broken configuration files. It’s the last JSON t
 - [x] **Base64 auto-detection** — paste Base64 JSON and it decodes automatically; Base64 Encode tab for the reverse
 - [x] **Flatten / Unflatten** — dot-notation flat pairs ↔ nested JSON
 - [x] **Rich Pretty Print** — gutter color swatches, image thumbnails, clock/calendar/UUID icons; inlay hints for timestamps, sizes, durations and large numbers
+- [x] **Code → JSON** — convert Python, JavaScript, and TypeScript literals to JSON; strips `interface`/`type` declarations, handles template literals, `undefined`/`NaN`/`Infinity → null`; auto-converts as you type
+- [x] **GraphQL Formatter** — format and validate GraphQL SDL, queries, mutations, subscriptions via graphql-java; auto-formats as you type
 
 ## Installation
 
@@ -694,129 +745,6 @@ Your contributions help me dedicate more time to improving the project, adding f
 community.
 Every donation, no matter the size, makes a difference and is deeply appreciated. ❤️
 
-## Changelog
-
-### Version 1.9.4
-
-1. Adding repair using AI(You can disable it in settings)
-
-### Version 1.9.3
-
-1. Improved the Analytics by adding session
-2. Improved dart code generation
-3. Tracking JSON when repair failed(This will be removed in next versions)
-
-### Version 1.9.2
-
-1. Improved the Analytics
-2. Bug fixes
-3. Added the code generation button on main parser
-
-### Version 1.9.1
-
-1. Implemented Analytics
-
-### Version 1.9.0
-
-1. Official Farewell to Java
-2. New Repair function added for malformed JSON
-
-### Version 1.8.5
-
-Support for version 253
-
-### Version 1.8.3
-
-1. Bug Fixes
-2. Code generation for dart issues fixed
-
-### Version 1.8.2
-
-1. Automation added
-
-### Version 1.8.1
-
-1. Added open menu for Json files in "Open In" menu
-2. Changed generate menu item to last
-3. Minor bug fixes`
-
-### Version 1.8.0 🎉
-
-You wll love this.
-
-Json parser now support code generation. Yes you heard it right. Json Parser now support
-code generation from Kotlin and Dart.
-
-### Version 1.7.4
-
-Added a bunch of features to JSON parser. Now you can retrieve JSON from web and also you can load from your local
-system.
-
-1. Retrieve from Web. You can add header too in the next line separated with colon symbol. Each header key value pair
-   should be in the next line.
-2. Load from your local system
-
-### Version 1.7.3
-
-1. Compatibility issue resolved
-
-### Version 1.7.2
-
-1. Unquoted fields and single quoted fields now supported
-2. YAML comments and normal comments will not throw error anymore
-3. Deprecation fixes
-4. Runtime error fixed
-
-### Version 1.7.1
-
-1. Tree view bug fixes
-
-### Version 1.7
-
-1. Significant Change in tree view.
-2. Major bug fixes
-
-### Version 1.6.1
-
-1. Updated for new latest version support
-
-### Version 1.5
-
-1. Now you can directly open JsonParser window from logcat or console window. No need to copy and paste from multiple
-   window.
-2. Tree structure updated with child number and object number for arrays.
-3. Copy to clipboard added.
-
-### Version 1.4
-
-1. Multiple tabs added
-2. Rate/ donate tab issue fixed
-3. Menu item added under Edit menu (ctrl shift alt J)
-
-### Version 1.3
-
-1. Bug fixes
-
-### Version 1.2
-
-Added 3 options
-
-- Pretty print
-- Raw
-- Tree
-
-### Version 1.2.1
-
-1. Error message if not a valid json
-2. Bug fixes
-
-### Version 1.1
-
-Support for all platforms.
-
-### Version 1.0
-
-Parse VALID JSON string only.
 
 [![](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://paypal.me/godwinj)
 
