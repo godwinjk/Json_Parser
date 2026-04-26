@@ -8,7 +8,7 @@
 
 ---
 
-> ## 🎉 Early Adopter Offer — 70% Off Pro for the First 500 Users!
+> ## 🎉 Early Adopter Offer — Upto 70% Off Pro for the First 500 Users!
 >
 > As a thank-you to the first 500 users of Advanced JSON Studio, I'm offering an exclusive **70% discount** on a Pro licence — valid for **3 months**.
 >
@@ -17,6 +17,8 @@
 > Fill out the form and I'll reply with your personal discount code.
 > ⚠️ Limited to the **first 500 users** — once the codes run out, the offer closes.
 
+---
+> 🧡 More of a VS Code fan? Check out the repository here → [VS Code Repo](https://github.com/godwinjk/advanced_json_studio_vscode)
 ---
 
 # Advanced JSON Studio v2026.1.6
@@ -260,8 +262,7 @@ from massive API responses to broken configuration files. It’s the last JSON t
 26. **Open parser as a full editor tab** — pop the tool window into the main editor area for more screen space.
 27. **Tip of the day** — discover features with in-app tips; dismiss, navigate or disable anytime.
 28. Your JSON input is automatically **saved locally** and restored on restart — no cloud sync, fully private.
-29. **Localization** — the entire UI is available in 13 languages: Japanese, Korean, Chinese (Simplified), German,
-    French, Spanish, Italian, Portuguese (Brazilian), Russian, Polish, Dutch, Turkish, and Czech. Follows your IDE
+29. **Localization** — the entire UI is available in Japanese, Korean, and Chinese (Simplified), following your IDE
     locale automatically.
 30. **JSON Schema Validator** — validate your JSON against any JSON Schema; save, edit and delete named schemas; view
     errors in a list or as live annotations in the Pretty tab.
@@ -314,8 +315,7 @@ from massive API responses to broken configuration files. It’s the last JSON t
 - [x] Tip of the day — in-app feature discovery bubble
 - [x] Open JSON string from editor via intention action
 - [x] Inline JSON hints in source files
-- [x] Localization — UI available in 13 languages (Japanese, Korean, Chinese, German, French, Spanish, Italian,
-  Portuguese BR, Russian, Polish, Dutch, Turkish, Czech)
+- [x] Localization — UI available in Japanese, Korean, and Chinese (Simplified)
 - [x] **JSON Schema Validator** — validate against saved schemas; List and Annotated result modes; save/edit/delete schemas
 - [x] **CSV Table View** — JSON arrays rendered as a sortable JTable; download as .csv
 - [x] **Base64 auto-detection** — paste Base64 JSON and it decodes automatically; Base64 Encode tab for the reverse
@@ -430,7 +430,7 @@ Every donation, no matter the size, makes a difference and is deeply appreciated
 - Local Mode blocks AI-powered JSON repair from sending data to the cloud — local heuristic repair still works fully offline
 - Local Mode blocks cloud-based code generation — a clear warning is shown when the feature is attempted
 - State is session-only and never persisted to disk — Local Mode is always off on restart
-- Localized: all Local Mode UI strings are part of the plugin's localization system (13 languages)
+- Localized: all Local Mode UI strings are part of the plugin's localization system (Japanese, Korean, Chinese)
 
 **HTTP Client**
 
@@ -444,10 +444,9 @@ Every donation, no matter the size, makes a difference and is deeply appreciated
 - The last tab is now protected and cannot be closed
 - Tab rename dialog now validates input: names must be 2–30 characters; OK button stays disabled until the requirement is met
 
-**Localization — 13 Languages**
+**Localization — Japanese, Korean, Chinese**
 
-- The entire plugin UI is now available in 13 languages in addition to English: Japanese, Korean, Chinese (Simplified),
-  German, French, Spanish, Italian, Portuguese (Brazilian), Russian, Polish, Dutch, Turkish, and Czech
+- The entire plugin UI is now available in Japanese, Korean, and Chinese (Simplified) in addition to English
 - The language follows your IDE locale automatically — no configuration required
 
 **Open in Editor**
@@ -745,6 +744,129 @@ Your contributions help me dedicate more time to improving the project, adding f
 community.
 Every donation, no matter the size, makes a difference and is deeply appreciated. ❤️
 
+## Changelog
+
+### Version 1.9.4
+
+1. Adding repair using AI(You can disable it in settings)
+
+### Version 1.9.3
+
+1. Improved the Analytics by adding session
+2. Improved dart code generation
+3. Tracking JSON when repair failed(This will be removed in next versions)
+
+### Version 1.9.2
+
+1. Improved the Analytics
+2. Bug fixes
+3. Added the code generation button on main parser
+
+### Version 1.9.1
+
+1. Implemented Analytics
+
+### Version 1.9.0
+
+1. Official Farewell to Java
+2. New Repair function added for malformed JSON
+
+### Version 1.8.5
+
+Support for version 253
+
+### Version 1.8.3
+
+1. Bug Fixes
+2. Code generation for dart issues fixed
+
+### Version 1.8.2
+
+1. Automation added
+
+### Version 1.8.1
+
+1. Added open menu for Json files in "Open In" menu
+2. Changed generate menu item to last
+3. Minor bug fixes`
+
+### Version 1.8.0 🎉
+
+You wll love this.
+
+Json parser now support code generation. Yes you heard it right. Json Parser now support
+code generation from Kotlin and Dart.
+
+### Version 1.7.4
+
+Added a bunch of features to JSON parser. Now you can retrieve JSON from web and also you can load from your local
+system.
+
+1. Retrieve from Web. You can add header too in the next line separated with colon symbol. Each header key value pair
+   should be in the next line.
+2. Load from your local system
+
+### Version 1.7.3
+
+1. Compatibility issue resolved
+
+### Version 1.7.2
+
+1. Unquoted fields and single quoted fields now supported
+2. YAML comments and normal comments will not throw error anymore
+3. Deprecation fixes
+4. Runtime error fixed
+
+### Version 1.7.1
+
+1. Tree view bug fixes
+
+### Version 1.7
+
+1. Significant Change in tree view.
+2. Major bug fixes
+
+### Version 1.6.1
+
+1. Updated for new latest version support
+
+### Version 1.5
+
+1. Now you can directly open JsonParser window from logcat or console window. No need to copy and paste from multiple
+   window.
+2. Tree structure updated with child number and object number for arrays.
+3. Copy to clipboard added.
+
+### Version 1.4
+
+1. Multiple tabs added
+2. Rate/ donate tab issue fixed
+3. Menu item added under Edit menu (ctrl shift alt J)
+
+### Version 1.3
+
+1. Bug fixes
+
+### Version 1.2
+
+Added 3 options
+
+- Pretty print
+- Raw
+- Tree
+
+### Version 1.2.1
+
+1. Error message if not a valid json
+2. Bug fixes
+
+### Version 1.1
+
+Support for all platforms.
+
+### Version 1.0
+
+Parse VALID JSON string only.
 
 [![](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://paypal.me/godwinj)
 
