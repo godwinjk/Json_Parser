@@ -8,20 +8,20 @@
 
 ---
 
-> ## 🎉 Early Adopter Offer — Upto 70% Off Pro for the First 500 Users!
+> ## 🎉 Early Adopter Offer — Upto 70% Off Pro!
 >
-> As a thank-you to the first 500 users of Advanced JSON Studio, I'm offering an exclusive **70% discount** on a Pro licence — valid for **3 months**.
+> As a thank-you for being an early adopter, I'm offering an exclusive **70% discount** on a Pro licence.
 >
 > ### 👉 [Claim your discount → Submit the form](https://docs.google.com/forms/d/e/1FAIpQLSfs3Djo6Cg7M7D_Siqnprw2ZVKZ6kOcnjZD-bcnJbwAOacALA/viewform?usp=publish-editor)
 >
 > Fill out the form and I'll reply with your personal discount code.
-> ⚠️ Limited to the **first 500 users** — once the codes run out, the offer closes.
+
 
 ---
 > 🧡 More of a VS Code fan? Check out the repository here → [VS Code Repo](https://github.com/godwinjk/advanced_json_studio_vscode)
 ---
 
-# Advanced JSON Studio v2026.1.6
+# Advanced JSON Studio v2026.1.8
 
 The Intelligent JSON Workspace for IntelliJ
 
@@ -75,6 +75,36 @@ Tip-of-the-Day</kbd> <kbd>Schema-Validator</kbd> <kbd>CSV-Table</kbd> <kbd>Flatt
 >
 > _— Godwin_
 
+## 🚀 What's New in v2026.1.8
+
+## 🔑 JWT Tab
+
+- New dedicated **JWT tab** — decode and inspect JSON Web Tokens directly inside the plugin
+- View header, payload, and signature in a clean, structured layout
+
+## 💳 Polar Direct Purchase
+
+- Buy a Pro licence directly via **Polar** — a cheaper alternative to the JetBrains Marketplace
+- Access the purchase link and licence activation from the new **Licence tab** in the Settings dialog
+
+---
+
+## 🚀 What's New in v2026.1.7
+
+## ℹ️ About Tab
+
+- New **About tab** inside the plugin — view version info, licence status, and links to the marketplace, privacy policy, and support in one place
+
+## 🔐 Secure Licence Storage
+
+- Licence keys are now stored in the **IDE's built-in secure credential store** — no more plain-text persistence
+
+## 📄 Licence & Privacy Policy Updated
+
+- Licence terms updated to reflect the freemium model
+- Privacy policy updated with clearer data-handling practices
+
+---
 ## 🚀 What's New in v2026.1.6
 
 ## 💻 Code → JSON
@@ -376,6 +406,48 @@ community.
 Every donation, no matter the size, makes a difference and is deeply appreciated. ❤️
 
 ## Changelog
+
+### Version 2026.1.8
+
+**JWT Tab**
+
+- New dedicated **JWT tab** for decoding and inspecting JSON Web Tokens
+- Displays header, payload, and signature in a structured, readable layout
+
+**Polar Direct Purchase**
+
+- Pro licence now available via **Polar** as a cheaper alternative to the JetBrains Marketplace
+- Buy link and licence key activation accessible from the **Licence tab** in the Settings dialog
+
+### Version 2026.1.7
+
+**About Tab & Secure Storage**
+
+- New **About tab** inside the plugin — shows version info, licence status, privacy policy link, and quick links to the marketplace and support
+- **Secure storage** for licence key — keys are now stored using the IDE's built-in credential store instead of plain-text persistence
+- **Licence** terms and privacy policy updated to reflect the freemium model and data-handling practices
+
+### Version 2026.1.6
+
+**GraphQL Introspection & Query Runner**
+
+- New **Introspection tab** — connect to any live GraphQL endpoint and fetch the full schema automatically
+- Browse the entire schema: types, fields, arguments, enums, interfaces, and directives
+- **Schema tab** — view the raw SDL of the fetched schema
+- **Query Runner** — write and execute GraphQL queries with variables directly against your connected endpoint
+- Results load into the Pretty tab for full JSON tooling support
+
+**Code → JSON**
+
+- New **Code tab** converts code literals directly to JSON — paste a snippet and get clean, formatted JSON instantly
+- Supports Python dicts/lists/tuples, JavaScript objects/arrays, and TypeScript exports
+- Language selector in the toolbar — auto-detects language as you type
+
+**GraphQL Formatter**
+
+- New **GraphQL tab** formats and validates GraphQL SDL, queries, mutations, and subscriptions via graphql-java
+- Canonical indented output — idempotent re-formatting guaranteed
+- Invalid input shows a clear inline error message
 
 ### Version 2026.1.4
 
