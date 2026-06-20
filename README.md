@@ -21,7 +21,17 @@
 > 🧡 More of a VS Code fan? Check out the repository here → [VS Code Repo](https://github.com/godwinjk/advanced_json_studio_vscode)
 ---
 
-# Advanced JSON Studio v2026.1.8
+> ## 💎 Advanced JSON Studio Pro — 70% Off
+>
+> Unlock every Pro feature — Rich Editor, AI Repair, GraphQL tools, and more — for **70% less**.
+>
+> ### 👉 [Get your discount code instantly](https://ajs-codes.godwinjoseph-k.workers.dev)
+>
+> No sign-up required — your code is shown immediately.
+
+---
+
+# Advanced JSON Studio v2026.1.10
 
 The Intelligent JSON Workspace for IntelliJ
 
@@ -37,7 +47,7 @@ JMESPath</kbd> <kbd>Autocomplete</kbd>
 CBOR</kbd> <kbd>BSON</kbd> <kbd>Export</kbd>
 <kbd>Schema-Inference</kbd> <kbd>Minifier</kbd> <kbd>Sorting</kbd> <kbd>Stats-Bar</kbd> <kbd>Diff-Checker</kbd> <kbd>
 Mock-Data</kbd> <kbd>AI-Repair</kbd> <kbd>Dart</kbd> <kbd>Kotlin</kbd> <kbd>Cloud-CodeGen</kbd> <kbd>
-Tip-of-the-Day</kbd> <kbd>Schema-Validator</kbd> <kbd>CSV-Table</kbd> <kbd>Flatten</kbd> <kbd>Unflatten</kbd> <kbd>Base64-Decode</kbd> <kbd>Rich-Pretty-Print</kbd> <kbd>Code-to-JSON</kbd> <kbd>GraphQL-Formatter</kbd>
+Tip-of-the-Day</kbd> <kbd>Schema-Validator</kbd> <kbd>CSV-Table</kbd> <kbd>Flatten</kbd> <kbd>Unflatten</kbd> <kbd>Base64-Decode</kbd> <kbd>Rich-Pretty-Print</kbd> <kbd>Code-to-JSON</kbd> <kbd>GraphQL-Formatter</kbd> <kbd>GraphQL-Introspection</kbd> <kbd>GraphQL-Query-Runner</kbd>
 
 > ## Important Update: Advanced JSON Studio is moving to a Freemium Model
 >
@@ -74,6 +84,32 @@ Tip-of-the-Day</kbd> <kbd>Schema-Validator</kbd> <kbd>CSV-Table</kbd> <kbd>Flatt
 > community.
 >
 > _— Godwin_
+
+## 🚀 What's New in v2026.1.10
+
+**Quick Access Toolbar**
+
+- The output toolbar now shows your **three most recently used tabs** for one-click access — no more digging through group menus for the formats you use every day
+- Placed at the end of the toolbar so it never shifts the group buttons and overflows gracefully on narrow tool windows
+- Starts with Pretty, Tree, and YAML; reshuffles automatically as you work
+
+**Per-Tab Key Sorting**
+
+- New **Sort keys** toggle in the output toolbar — sorts object keys alphabetically for the current tab only
+- Each tab keeps its own sort state; nothing is persisted, so every session starts unsorted
+- Replaces the global "Sort keys alphabetically" checkbox in Settings
+
+---
+## 🚀 What's New in v2026.1.9
+
+## 🔷 GraphQL Query Variables
+
+- New **Variables panel** in the GraphQL Introspection tab — write parameterised queries with `$variable` syntax and supply their values as JSON
+- Toggle the panel on/off with the **Variables** button above the query editor — hidden by default to keep the workspace clean
+- Variables are sent as a proper `variables` object in the GraphQL HTTP payload alongside the `query` field
+- Variable content is persisted across IDE restarts, so your test data is always ready
+
+---
 
 ## 🚀 What's New in v2026.1.8
 
