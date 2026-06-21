@@ -7,17 +7,6 @@
 📖 **[Frequently Asked Questions →](FAQ.md)**
 
 ---
-
-> ## 🎉 Early Adopter Offer — Upto 70% Off Pro!
->
-> As a thank-you for being an early adopter, I'm offering an exclusive **70% discount** on a Pro licence.
->
-> ### 👉 [Claim your discount → Submit the form](https://docs.google.com/forms/d/e/1FAIpQLSfs3Djo6Cg7M7D_Siqnprw2ZVKZ6kOcnjZD-bcnJbwAOacALA/viewform?usp=publish-editor)
->
-> Fill out the form and I'll reply with your personal discount code.
-
-
----
 > 🧡 More of a VS Code fan? Check out the repository here → [VS Code Repo](https://github.com/godwinjk/advanced_json_studio_vscode)
 ---
 
